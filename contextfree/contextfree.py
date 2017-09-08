@@ -7,8 +7,8 @@ import cairo
 
 cnt_elements = 0
 depth = 0
-MAX_ELEMENTS = 1000
-MAX_DEPTH = 100
+MAX_ELEMENTS = 10000
+MAX_DEPTH = 10
 
 
 def surface_to_image(surface):
@@ -70,7 +70,7 @@ def check_limits(some_function):
         depth += 1
         if cnt_elements < MAX_ELEMENTS and depth < MAX_DEPTH:
             some_function(*args, **kwargs)
-        cnt_elements -= 1
+        depth -= 1
     return wrapper
 
 
@@ -92,12 +92,13 @@ def circle(rad):
     ctx.fill()
 
 
-def init(canvas_size=(512, 512)):
+def init(canvas_size=(512, 512)):                
     global surface
     global ctx
     global cnt_elements
     global depth
     cnt_elements = 0
+    depth = 0
     WIDTH, HEIGHT = canvas_size
     surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, WIDTH, HEIGHT)
     ctx = cairo.Context(surface)
