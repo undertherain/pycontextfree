@@ -8,7 +8,7 @@ import cairocffi as cairo
 cnt_elements = 0
 depth = 0
 MAX_ELEMENTS = 10000
-MAX_DEPTH = 10
+MAX_DEPTH = 8
 
 
 def surface_to_image(surface):
