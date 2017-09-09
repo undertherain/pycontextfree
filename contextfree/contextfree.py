@@ -2,7 +2,7 @@ from IPython.display import Image
 from io import BytesIO
 import random
 import math
-import cairo
+import cairocffi as cairo
 
 
 cnt_elements = 0
@@ -86,13 +86,24 @@ def line(x, y, w=0.1):
 
 def circle(rad):
     global ctx
-    ctx.arc(0, 0, rad, 0, 2*math.pi)
+    ctx.arc(0, 0, rad, 0, 2 * math.pi)
     # ctx.stroke_preserve()
     # ctx.set_source_rgb(0.3, 0.4, 0.6)
     ctx.fill()
 
 
-def init(canvas_size=(512, 512)):                
+def triangle(side):
+    global ctx
+    ctx.move_to(0, 0)
+    ctx.line_to(-side / 2, 0)
+    ctx.line_to(0, side)
+    ctx.line_to(side / 2, 0)
+    ctx.close_path()
+    # ctx.set_line_width(w)
+    ctx.stroke()
+
+
+def init(canvas_size=(512, 512)):
     global surface
     global ctx
     global cnt_elements
