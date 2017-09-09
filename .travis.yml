@@ -1,0 +1,15 @@
+language: python
+
+sudo: false
+
+dist: trusty
+
+python:
+- '3.6'
+
+os:
+- linux
+
+script:
+- python -m unittest discover
+
