@@ -77,9 +77,9 @@ def check_limits(some_function):
 def line(x, y, w=0.1):
     global ctx
     ctx.move_to(0, 0)
-    ctx.line_to(x, y)  # Line to (x,y)
+    ctx.line_to(x, y)
     ctx.close_path()
-    # ctx.set_source_rgb (0.3, 0.2, 0.5) # Solid color
+    # ctx.set_source_rgb (0.3, 0.2, 0.5)
     ctx.set_line_width(w)
     ctx.stroke()
 
@@ -100,8 +100,7 @@ def triangle(side):
     ctx.line_to(0, h)
     ctx.line_to(side / 2, 0)
     ctx.close_path()
-    # ctx.set_line_width(w)
-    ctx.stroke()
+    ctx.fill()
 
 
 def init(canvas_size=(512, 512)):
