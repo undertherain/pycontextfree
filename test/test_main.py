@@ -4,5 +4,5 @@ from contextfree.contextfree import init
 
 class Tests(unittest.TestCase):
 
-    def test_file_iter(self):
+    def test_main(self):
         init()
