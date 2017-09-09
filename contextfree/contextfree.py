@@ -62,6 +62,20 @@ class scale:
         ctx.set_matrix(self.matrix_old)
 
 
+class flip_y:
+    def __init__(self):
+        pass
+
+    def __enter__(self):
+        global ctx
+        self.matrix_old = ctx.get_matrix()
+        ctx.scale(-1, 1)
+
+    def __exit__(self, type, value, traceback):
+        global ctx
+        ctx.set_matrix(self.matrix_old)
+
+
 def check_limits(some_function):
     def wrapper(*args, **kwargs):
         global cnt_elements
@@ -103,11 +117,13 @@ def triangle(side):
     ctx.fill()
 
 
-def init(canvas_size=(512, 512)):
+def init(canvas_size=(512, 512), max_depth=10):
     global surface
     global ctx
     global cnt_elements
     global depth
+    global MAX_DEPTH
+    MAX_DEPTH = max_depth
     cnt_elements = 0
     depth = 0
     WIDTH, HEIGHT = canvas_size
