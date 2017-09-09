@@ -94,9 +94,10 @@ def circle(rad):
 
 def triangle(side):
     global ctx
+    h = math.sqrt(3) * side / 2
     ctx.move_to(0, 0)
     ctx.line_to(-side / 2, 0)
-    ctx.line_to(0, side)
+    ctx.line_to(0, h)
     ctx.line_to(side / 2, 0)
     ctx.close_path()
     # ctx.set_line_width(w)
