@@ -164,3 +164,10 @@ def get_npimage(transparent=False, y_origin="top"):
 
 def rnd(c):
     return (random.random() - 0.5) * c
+
+
+def coinflip(sides):
+    c = random.randint(0, sides)
+    if c == 1:
+        return True
+    return False
