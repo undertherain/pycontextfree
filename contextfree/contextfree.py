@@ -1,4 +1,3 @@
-from IPython.display import Image
 from io import BytesIO
 import random
 import math
@@ -12,6 +11,7 @@ MAX_DEPTH = 8
 
 
 def surface_to_image(surface):
+    from IPython.display import Image
     buf = BytesIO()
     surface.write_to_png(buf)
     data = buf.getvalue()
