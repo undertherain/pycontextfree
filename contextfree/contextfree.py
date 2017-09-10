@@ -122,7 +122,7 @@ def triangle(side):
     ctx.fill()
 
 
-def init(canvas_size=(512, 512), max_depth=10, background_color=None):
+def init(canvas_size=(512, 512), max_depth=10, face_color=None, background_color=None):
     global surface
     global ctx
     global cnt_elements
@@ -147,6 +147,8 @@ def init(canvas_size=(512, 512), max_depth=10, background_color=None):
         ctx.set_source(pat)
         ctx.fill()
         ctx.set_source(source)
+    if face_color is not None:
+        ctx.set_source_rgb(* htmlcolor_to_rgb(face_color))
 
 
 def display_ipython():
