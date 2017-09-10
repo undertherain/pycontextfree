@@ -7,7 +7,7 @@ import cairocffi as cairo
 
 cnt_elements = 0
 depth = 0
-MAX_ELEMENTS = 10000
+MAX_ELEMENTS = 100000
 MAX_DEPTH = 8
 
 
@@ -190,5 +190,4 @@ def htmlcolor_to_rgb(s):
     if not (s.startswith('#') and len(s) == 7):
         raise ValueError("Bad html color format. Expected: '#RRGGBB' ")
     result = [1.0 * int(n, 16) / 255 for n in (s[1:3], s[3:5], s[5:])]
-    print(result)
     return result
