@@ -20,6 +20,10 @@ def surface_to_image(surface):
     return Image(data=data)
 
 
+def write_to_png(*args, **kwargs):
+    return surface.write_to_png(*args, **kwargs)
+
+
 class rotate:
     def __init__(self, angle):
         self.angle = angle
@@ -118,7 +122,7 @@ def triangle(side):
     ctx.fill()
 
 
-def init(canvas_size=(512, 512), max_depth=10):
+def init(canvas_size=(512, 512), max_depth=10, background_color=None):
     global surface
     global ctx
     global cnt_elements
@@ -136,6 +140,13 @@ def init(canvas_size=(512, 512), max_depth=10):
     scale = min(WIDTH, HEIGHT) / 2
     ctx.scale(scale, scale)  # Normalizing the canvas
     ctx.rotate(math.pi)
+    if background_color is not None:
+        source = ctx.get_source()
+        pat = cairo.SolidPattern(* htmlcolor_to_rgb(background_color))
+        ctx.rectangle(-1, -1, 2, 2)  # Rectangle(x0, y0, x1, y1)
+        ctx.set_source(pat)
+        ctx.fill()
+        ctx.set_source(source)
 
 
 def display_ipython():
@@ -171,3 +182,11 @@ def coinflip(sides):
     if c == 1:
         return True
     return False
+
+
+def htmlcolor_to_rgb(s):
+    if not (s.startswith('#') and len(s) == 7):
+        raise ValueError("Bad html color format. Expected: '#RRGGBB' ")
+    result = [1.0 * int(n, 16) / 255 for n in (s[1:3], s[3:5], s[5:])]
+    print(result)
+    return result
