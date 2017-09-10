@@ -1,6 +1,7 @@
 from io import BytesIO
 import random
 import math
+import numpy as np
 import cairocffi as cairo
 
 
@@ -123,6 +124,8 @@ def init(canvas_size=(512, 512), max_depth=10):
     global cnt_elements
     global depth
     global MAX_DEPTH
+    global WIDTH
+    global HEIGHT
     MAX_DEPTH = max_depth
     cnt_elements = 0
     depth = 0
@@ -138,6 +141,25 @@ def init(canvas_size=(512, 512), max_depth=10):
 def display_ipython():
     global surface
     return surface_to_image(surface)
+
+
+def get_npimage(transparent=False, y_origin="top"):
+    """ Returns a WxHx[3-4] numpy array representing the RGB picture.
+
+    If `transparent` is True the image is WxHx4 and represents a RGBA picture,
+    i.e. array[i,j] is the [r,g,b,a] value of the pixel at position [i,j].
+    If `transparent` is false, a RGB array is returned.
+
+    Parameter y_origin ("top" or "bottom") decides whether point (0,0) lies in
+    the top-left or bottom-left corner of the screen.
+    """
+    global surface
+    im = 0 + np.frombuffer(surface.get_data(), np.uint8)
+    im.shape = (HEIGHT, WIDTH, 4)
+    im = im[:, :, [2, 1, 0, 3]]
+    if y_origin == "bottom":
+        im = im[::-1]
+    return im if transparent else im[:, :, : 3]
 
 
 def rnd(c):
