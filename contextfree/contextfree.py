@@ -7,7 +7,7 @@ import cairocffi as cairo
 
 cnt_elements = 0
 depth = 0
-MAX_ELEMENTS = 100000
+MAX_ELEMENTS = 200000
 MAX_DEPTH = 8
 
 
@@ -79,6 +79,22 @@ class flip_y:
     def __exit__(self, type, value, traceback):
         global ctx
         ctx.set_matrix(self.matrix_old)
+
+
+class color:
+    def __init__(self, alpha=1):
+        self.alpha = alpha
+
+    def __enter__(self):
+        global ctx
+        self.source_old = ctx.get_source()
+        rgba = self.source_old.get_rgba()
+        rgba = rgba[:3] + (rgba[-1] * self.alpha,)
+        ctx.set_source_rgba(* rgba)
+
+    def __exit__(self, type, value, traceback):
+        global ctx
+        ctx.set_source(self.source_old)
 
 
 def check_limits(some_function):
