@@ -67,7 +67,7 @@ def setup():
         version=find_version(name.replace('-', '_')),
         url=url,
         classifiers=classifiers,
-        keywords=['NLP', 'linguistics', 'language'],
+        keywords=['generative', 'art', 'graphics'],
         install_requires=parse_requirements(),
         description=description,
         long_description=parse_readme(),
