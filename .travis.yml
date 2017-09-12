@@ -5,6 +5,7 @@ sudo: false
 dist: trusty
 
 python:
+- '3.4'
 - '3.6'
 
 os:
