@@ -1,7 +1,8 @@
 pycontextfree
 =============
 
-cfdg-inspired cairo-based pythonic generative art tool
+`CFDG
+<https://www.contextfreeart.org/>`_-inspired cairo-based pythonic generative art tool
 
 How do I get set up?
 --------------------
