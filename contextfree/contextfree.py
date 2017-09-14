@@ -5,10 +5,15 @@ import numpy as np
 import cairocffi as cairo
 
 
-cnt_elements = 0
-depth = 0
 MAX_ELEMENTS = 200000
 MAX_DEPTH = 8
+
+
+def _init_state():
+    global state
+    state = {}
+    state["depth"] = 0
+    state["cnt_elements"] = 0
 
 
 def surface_to_image(surface):
@@ -99,13 +104,12 @@ class color:
 
 def check_limits(some_function):
     def wrapper(*args, **kwargs):
-        global cnt_elements
-        global depth
-        cnt_elements += 1
-        depth += 1
-        if cnt_elements < MAX_ELEMENTS and depth < MAX_DEPTH:
+        global state
+        state["cnt_elements"] += 1
+        state["depth"] += 1
+        if state["cnt_elements"] < MAX_ELEMENTS and state["depth"] < MAX_DEPTH:
             some_function(*args, **kwargs)
-        depth -= 1
+        state["depth"] -= 1
     return wrapper
 
 
@@ -153,9 +157,8 @@ def init(canvas_size=(512, 512), max_depth=10, face_color=None, background_color
     global MAX_DEPTH
     global WIDTH
     global HEIGHT
+    _init_state()
     MAX_DEPTH = max_depth
-    cnt_elements = 0
-    depth = 0
     WIDTH, HEIGHT = canvas_size
     surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, WIDTH, HEIGHT)
     ctx = cairo.Context(surface)
