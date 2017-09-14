@@ -15,7 +15,7 @@ pycontextfree
 `CFDG
 <https://www.contextfreeart.org/>`_-inspired cairo-based pythonic generative art tool
 
-Here is and example if simple code producing stochastic fractal tree:
+Here is an example of simple code producing stochastic fractal tree:
 
 .. code:: python
 
@@ -40,6 +40,8 @@ Here is the output:
 .. image:: https://user-images.githubusercontent.com/1635907/30413703-9e585f54-995a-11e7-8566-bdded386be8d.png
    :alt: [tree_example]
    :align: center
+
+Check examples folder for more fun stuff. 
 
 How do I get set up?
 --------------------
