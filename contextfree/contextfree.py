@@ -138,6 +138,13 @@ def triangle(side):
     ctx.fill()
 
 
+def box(side):
+    global ctx
+    h = side / 2
+    ctx.rectangle(-h, -h, side, side)
+    ctx.fill()
+
+
 def init(canvas_size=(512, 512), max_depth=10, face_color=None, background_color=None):
     global surface
     global ctx
@@ -154,8 +161,9 @@ def init(canvas_size=(512, 512), max_depth=10, face_color=None, background_color
     ctx = cairo.Context(surface)
     ctx.translate(WIDTH / 2, HEIGHT / 2)
     scale = min(WIDTH, HEIGHT) / 2
-    ctx.scale(scale, scale)  # Normalizing the canvas
-    ctx.rotate(math.pi)
+    ctx.scale(scale, -scale)  # Normalizing the canvas
+    # ctx.rotate(math.pi)
+
     if background_color is not None:
         source = ctx.get_source()
         pat = cairo.SolidPattern(* htmlcolor_to_rgb(background_color))
