@@ -11,6 +11,11 @@ python:
 os:
 - linux
 
+install:
+  - pip install -U coveralls
+  - pip install -U coverage
+  - pip install -U pylint
+
 script:
   - python -m unittest discover
   - python -m coverage run --branch --source . -m unittest discover --verbose
