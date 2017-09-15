@@ -113,6 +113,11 @@ def check_limits(some_function):
     return wrapper
 
 
+def report():
+    global state
+    print("cnt elements drawn:", state["cnt_elements"])
+
+
 def line(x, y, w=0.1):
     global ctx
     ctx.move_to(0, 0)

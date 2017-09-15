@@ -1,5 +1,5 @@
 import unittest
-from contextfree.contextfree import init, get_npimage, write_to_png, circle, translate, color
+from contextfree.contextfree import init, get_npimage, write_to_png, circle, translate, color, report
 
 
 class Tests(unittest.TestCase):
@@ -9,6 +9,7 @@ class Tests(unittest.TestCase):
         circle(1)
         a = get_npimage()
         print(a.shape)
+        report()
         write_to_png("/tmp/test.png")
 
     def test_color(self):
