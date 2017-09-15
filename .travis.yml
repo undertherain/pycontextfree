@@ -13,6 +13,7 @@ os:
 
 script:
   - python -m unittest discover
+  - python -m coverage run --branch --source . -m unittest discover --verbose
 
 after_success:
   - python -m pylint --load-plugins=pylint.extensions.mccabe --docstring-min-length 5 --no-docstring-rgx "^(test)?_|.*Tests$" --unsafe-load-any-extension y --output-format colorized  --reports y $(find . -name "*.py")
