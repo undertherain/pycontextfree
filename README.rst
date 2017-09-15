@@ -12,6 +12,10 @@ pycontextfree
     :target: https://travis-ci.org/undertherain/pycontextfree
     :alt: build status from Travis CI
 
+.. image:: https://coveralls.io/repos/github/undertherain/pycontextfree/badge.svg?branch=master
+    :target: https://coveralls.io/github/undertherain/pycontextfree?branch=master
+
+
 `CFDG
 <https://www.contextfreeart.org/>`_-inspired cairo-based pythonic generative art tool
 
