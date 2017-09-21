@@ -212,7 +212,7 @@ def rnd(c):
 
 
 def coinflip(sides):
-    c = random.randint(0, sides)
+    c = random.randint(0, sides - 1)
     if c == 1:
         return True
     return False
