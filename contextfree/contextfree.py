@@ -168,7 +168,7 @@ def init(canvas_size=(512, 512), max_depth=10, face_color=None, background_color
     surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, WIDTH, HEIGHT)
     ctx = cairo.Context(surface)
     ctx.translate(WIDTH / 2, HEIGHT / 2)
-    scale = min(WIDTH, HEIGHT) / 2
+    scale = min(WIDTH, HEIGHT)
     ctx.scale(scale, -scale)  # Normalizing the canvas
     # ctx.rotate(math.pi)
 
