@@ -71,7 +71,7 @@ def setup():
         install_requires=parse_requirements(),
         description=description,
         long_description=parse_readme(),
-        packages=setuptools.find_packages(exclude=['contrib', 'docs', 'tests*'])
+        packages=setuptools.find_packages(exclude=['contrib', 'docs', 'test*'])
     )
 
 
