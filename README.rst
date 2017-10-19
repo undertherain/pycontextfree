@@ -15,6 +15,9 @@ pycontextfree
 .. image:: https://coveralls.io/repos/github/undertherain/pycontextfree/badge.svg?branch=master
     :target: https://coveralls.io/github/undertherain/pycontextfree?branch=master
 
+.. image:: https://badge.fury.io/py/contextfree.svg
+    :target: https://badge.fury.io/py/contextfree
+    :alt: pypi version
 
 `CFDG
 <https://www.contextfreeart.org/>`_-inspired cairo-based pythonic generative art tool
