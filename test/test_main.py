@@ -1,6 +1,6 @@
 import unittest
 from contextfree.contextfree import init, get_npimage, write_to_png, report, check_limits
-from contextfree.contextfree import circle, box
+from contextfree.contextfree import circle, box, line, triangle
 from contextfree.contextfree import translate, color, scale, rotate
 
 
@@ -13,6 +13,15 @@ class Tests(unittest.TestCase):
         print(a.shape)
         report()
         write_to_png("/tmp/test.png")
+
+    def test_primitives(self):
+        init(face_color="#123456", background_color="#aaaaaa")
+        line(1, 1)
+        triangle(0.5)
+        a = get_npimage()
+        print(a.shape)
+        report()
+        write_to_png("/tmp/primitives.png")
 
     def test_color(self):
         init()
