@@ -107,7 +107,9 @@ def check_limits(some_function):
         global state
         state["cnt_elements"] += 1
         state["depth"] += 1
-        if state["cnt_elements"] < MAX_ELEMENTS and state["depth"] < MAX_DEPTH:
+        m = ctx.get_matrix()
+        print(m[0])
+        if abs(m[0]) > 0.5 and state["cnt_elements"] < MAX_ELEMENTS and state["depth"] < MAX_DEPTH:
             some_function(*args, **kwargs)
         state["depth"] -= 1
     return wrapper
