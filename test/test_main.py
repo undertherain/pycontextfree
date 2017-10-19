@@ -1,5 +1,7 @@
 import unittest
-from contextfree.contextfree import init, get_npimage, write_to_png, circle, translate, color, scale, report, check_limits
+from contextfree.contextfree import init, get_npimage, write_to_png, report, check_limits
+from contextfree.contextfree import circle, box
+from contextfree.contextfree import translate, color, scale, rotate
 
 
 class Tests(unittest.TestCase):
@@ -20,6 +22,11 @@ class Tests(unittest.TestCase):
                 circle(0.5)
         write_to_png("/tmp/color.png")
 
+    def test_rotate(self):
+        init()
+        with rotate(0.1):
+            box(0.5)
+        write_to_png("/tmp/rotate.png")
 
     def test_scale_limit(self):
         @check_limits
