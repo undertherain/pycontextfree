@@ -59,13 +59,17 @@ class translate:
 
 
 class scale:
-    def __init__(self, factor):
-        self.factor = factor
+    def __init__(self, scale_x, scale_y=None):
+        self.scale_x = scale_x
+        if scale_y is None:
+            self.scale_y = scale_x
+        else:
+            self.scale_y = scale_y
 
     def __enter__(self):
         global ctx
         self.matrix_old = ctx.get_matrix()
-        ctx.scale(self.factor, self.factor)
+        ctx.scale(self.scale_x, self.scale_y)
 
     def __exit__(self, type, value, traceback):
         global ctx

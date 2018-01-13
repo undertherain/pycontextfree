@@ -42,7 +42,7 @@ class Tests(unittest.TestCase):
         def element():
             circle(0.1)
             with translate(0.2, 0):
-                with scale(0.5):
+                with scale(0.5, 0.4):
                     element()
 
         init()
