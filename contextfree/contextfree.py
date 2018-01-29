@@ -213,7 +213,11 @@ def get_npimage(transparent=False, y_origin="top"):
 
 
 def rnd(c):
-    return (random.random() - 0.5) * c
+    return (random.random() - 0.5) * 2 * c
+
+
+def prnd(c):
+    return (random.random() * c)
 
 
 def coinflip(sides):
