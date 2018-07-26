@@ -1,3 +1,5 @@
+"""CFDG-inspired cairo-based pythonic generative art tool."""
+
 from io import BytesIO
 import random
 import math
@@ -189,6 +191,7 @@ def init(canvas_size=(512, 512), max_depth=10, face_color=None, background_color
 
 
 def display_ipython():
+    """renders global surface to IPython notebook"""
     global surface
     return surface_to_image(surface)
 
@@ -204,31 +207,42 @@ def get_npimage(transparent=False, y_origin="top"):
     the top-left or bottom-left corner of the screen.
     """
     global surface
-    im = 0 + np.frombuffer(surface.get_data(), np.uint8)
-    im.shape = (HEIGHT, WIDTH, 4)
-    im = im[:, :, [2, 1, 0, 3]]
+    img = 0 + np.frombuffer(surface.get_data(), np.uint8)
+    img.shape = (HEIGHT, WIDTH, 4)
+    img = img[:, :, [2, 1, 0, 3]]
     if y_origin == "bottom":
-        im = im[::-1]
-    return im if transparent else im[:, :, : 3]
+        img = img[::-1]
+    return img if transparent else img[:, :, : 3]
 
 
-def rnd(c):
-    return (random.random() - 0.5) * 2 * c
+def rnd(diap):
+    """returns random number in diapasone from -diap  to diap"""
+    return (random.random() - 0.5) * 2 * diap
 
 
-def prnd(c):
-    return (random.random() * c)
+def prnd(diap):
+    """returns random number in diapasone from 0 to diap"""
+    return random.random() * diap
 
 
 def coinflip(sides):
-    c = random.randint(0, sides - 1)
-    if c == 1:
+    """returns true as if coin with `sides` sides is flipped"""
+    coin = random.randint(0, sides - 1)
+    if coin == 1:
         return True
     return False
 
 
-def htmlcolor_to_rgb(s):
-    if not (s.startswith('#') and len(s) == 7):
+def htmlcolor_to_rgb(str_color):
+    """function to convert HTML-styly color string to RGB values
+
+    Args:
+        s: Color in HTML format
+
+    Returns:
+        list of three RGB color coponents
+    """
+    if not (str_color.startswith('#') and len(str_color) == 7):
         raise ValueError("Bad html color format. Expected: '#RRGGBB' ")
-    result = [1.0 * int(n, 16) / 255 for n in (s[1:3], s[3:5], s[5:])]
+    result = [1.0 * int(n, 16) / 255 for n in (str_color[1:3], str_color[3:5], str_color[5:])]
     return result
