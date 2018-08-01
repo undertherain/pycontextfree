@@ -9,16 +9,21 @@ import cairocffi as cairo
 
 MAX_ELEMENTS = 200000
 MAX_DEPTH = 8
+HEIGHT = 100
+WIDTH = 100
+_state = {}
+_ctx = None
 
 
-def _init_state():
-    global state
-    state = {}
-    state["depth"] = 0
-    state["cnt_elements"] = 0
+def _init__state():
+    global _state
+    _state = {}
+    _state["depth"] = 0
+    _state["cnt_elements"] = 0
 
 
 def surface_to_image(surface):
+    """Renders current buffer surface to PIL image"""
     from IPython.display import Image
     buf = BytesIO()
     surface.write_to_png(buf)
@@ -28,39 +33,44 @@ def surface_to_image(surface):
 
 
 def write_to_png(*args, **kwargs):
+    """Saves current buffer surface to png file"""
     return surface.write_to_png(*args, **kwargs)
 
 
 class rotate:
+    """Defines a scope of rotated view """
     def __init__(self, angle):
         self.angle = angle
+        self.matrix_old = None
 
     def __enter__(self):
-        global ctx
-        self.matrix_old = ctx.get_matrix()
-        ctx.rotate(self.angle)
+        global _ctx
+        self.matrix_old = _ctx.get_matrix()
+        _ctx.rotate(self.angle)
 
     def __exit__(self, type, value, traceback):
-        global ctx
-        ctx.set_matrix(self.matrix_old)
+        global _ctx
+        _ctx.set_matrix(self.matrix_old)
 
 
 class translate:
+    """Defines a scope of linear translation"""
     def __init__(self, x, y):
         self.x = x
         self.y = y
 
     def __enter__(self):
-        global ctx
-        self.matrix_old = ctx.get_matrix()
-        ctx.translate(self.x, self.y)
+        global _ctx
+        self.matrix_old = _ctx.get_matrix()
+        _ctx.translate(self.x, self.y)
 
     def __exit__(self, type, value, traceback):
-        global ctx
-        ctx.set_matrix(self.matrix_old)
+        global _ctx
+        _ctx.set_matrix(self.matrix_old)
 
 
 class scale:
+    """Defines scope of changed scale"""
     def __init__(self, scale_x, scale_y=None):
         self.scale_x = scale_x
         if scale_y is None:
@@ -69,125 +79,138 @@ class scale:
             self.scale_y = scale_y
 
     def __enter__(self):
-        global ctx
-        self.matrix_old = ctx.get_matrix()
-        ctx.scale(self.scale_x, self.scale_y)
+        global _ctx
+        self.matrix_old = _ctx.get_matrix()
+        _ctx.scale(self.scale_x, self.scale_y)
 
     def __exit__(self, type, value, traceback):
-        global ctx
-        ctx.set_matrix(self.matrix_old)
+        global _ctx
+        _ctx.set_matrix(self.matrix_old)
 
 
 class flip_y:
+    """Defines scope of a view being reflected along the y axis"""
     def __init__(self):
         pass
 
     def __enter__(self):
-        global ctx
-        self.matrix_old = ctx.get_matrix()
-        ctx.scale(-1, 1)
+        global _ctx
+        self.matrix_old = _ctx.get_matrix()
+        _ctx.scale(-1, 1)
 
     def __exit__(self, type, value, traceback):
-        global ctx
-        ctx.set_matrix(self.matrix_old)
+        global _ctx
+        _ctx.set_matrix(self.matrix_old)
 
 
 class color:
+    """defines scope of changed color"""
     def __init__(self, alpha=1):
         self.alpha = alpha
+        self.source_old = None
 
     def __enter__(self):
-        global ctx
-        self.source_old = ctx.get_source()
+        global _ctx
+        self.source_old = _ctx.get_source()
         rgba = self.source_old.get_rgba()
         rgba = rgba[:3] + (rgba[-1] * self.alpha,)
-        ctx.set_source_rgba(* rgba)
+        _ctx.set_source_rgba(* rgba)
 
     def __exit__(self, type, value, traceback):
-        global ctx
-        ctx.set_source(self.source_old)
+        global _ctx
+        _ctx.set_source(self.source_old)
 
 
 def check_limits(some_function):
+    """Stop recursion if resolution is too low on number of components is too high """
+
     def wrapper(*args, **kwargs):
-        global state
-        state["cnt_elements"] += 1
-        state["depth"] += 1
-        m = ctx.get_matrix()
-        if abs(m[0]) > 0.5 and state["cnt_elements"] < MAX_ELEMENTS and state["depth"] < MAX_DEPTH:
+        """The body of the decorator """
+        global _state
+        _state["cnt_elements"] += 1
+        _state["depth"] += 1
+        matrix = _ctx.get_matrix()
+        if (abs(matrix[0]) > 0.5 and _state["cnt_elements"] < MAX_ELEMENTS and
+                _state["depth"] < MAX_DEPTH):
             some_function(*args, **kwargs)
-        state["depth"] -= 1
+        _state["depth"] -= 1
     return wrapper
 
 
 def report():
-    global state
-    print("cnt elements drawn:", state["cnt_elements"])
+    """Prints some stats on current state"""
+    global _state
+    print("cnt elements drawn:", _state["cnt_elements"])
 
 
-def line(x, y, w=0.1):
-    global ctx
-    ctx.move_to(0, 0)
-    ctx.line_to(x, y)
-    ctx.close_path()
-    # ctx.set_source_rgb (0.3, 0.2, 0.5)
-    ctx.set_line_width(w)
-    ctx.stroke()
+def line(x, y, width=0.1):
+    """Draw a line"""
+    global _ctx
+    _ctx.move_to(0, 0)
+    _ctx.line_to(x, y)
+    _ctx.close_path()
+    # _ctx.set_source_rgb (0.3, 0.2, 0.5)
+    _ctx.set_line_width(width)
+    _ctx.stroke()
 
 
 def circle(rad):
-    global ctx
-    ctx.arc(0, 0, rad, 0, 2 * math.pi)
-    # ctx.stroke_preserve()
-    # ctx.set_source_rgb(0.3, 0.4, 0.6)
-    ctx.fill()
+    """Draw a circle"""
+    global _ctx
+    _ctx.arc(0, 0, rad, 0, 2 * math.pi)
+    # _ctx.stroke_preserve()
+    # _ctx.set_source_rgb(0.3, 0.4, 0.6)
+    _ctx.fill()
 
 
 def triangle(side):
-    global ctx
-    h = math.sqrt(3) * side / 2
-    ctx.move_to(0, 0)
-    ctx.line_to(-side / 2, 0)
-    ctx.line_to(0, h)
-    ctx.line_to(side / 2, 0)
-    ctx.close_path()
-    ctx.fill()
+    """Draw a triangle"""
+    global _ctx
+    height = math.sqrt(3) * side / 2
+    _ctx.move_to(0, 0)
+    _ctx.line_to(-side / 2, 0)
+    _ctx.line_to(0, height)
+    _ctx.line_to(side / 2, 0)
+    _ctx.close_path()
+    _ctx.fill()
 
 
 def box(side):
-    global ctx
-    h = side / 2
-    ctx.rectangle(-h, -h, side, side)
-    ctx.fill()
+    """Draw a box"""
+    global _ctx
+    half_side = side / 2
+    _ctx.rectangle(-half_side, -half_side, side, side)
+    _ctx.fill()
 
 
 def init(canvas_size=(512, 512), max_depth=10, face_color=None, background_color=None):
+    """Initializes global state"""
     global surface
-    global ctx
+    global _ctx
     global cnt_elements
-    global depth
+    # global depth
     global MAX_DEPTH
     global WIDTH
     global HEIGHT
-    _init_state()
+    _init__state()
     MAX_DEPTH = max_depth
     WIDTH, HEIGHT = canvas_size
     surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, WIDTH, HEIGHT)
-    ctx = cairo.Context(surface)
-    ctx.translate(WIDTH / 2, HEIGHT / 2)
+    _ctx = cairo.Context(surface)
+    _ctx.translate(WIDTH / 2, HEIGHT / 2)
     scale = min(WIDTH, HEIGHT)
-    ctx.scale(scale, -scale)  # Normalizing the canvas
-    # ctx.rotate(math.pi)
+    _ctx.scale(scale, -scale)  # Normalizing the canvas
+    # _ctx.rotate(math.pi)
 
     if background_color is not None:
-        source = ctx.get_source()
+        source = _ctx.get_source()
         pat = cairo.SolidPattern(* htmlcolor_to_rgb(background_color))
-        ctx.rectangle(-1, -1, 2, 2)  # Rectangle(x0, y0, x1, y1)
-        ctx.set_source(pat)
-        ctx.fill()
-        ctx.set_source(source)
+        _ctx.rectangle(-1, -1, 2, 2)  # Rectangle(x0, y0, x1, y1)
+        _ctx.set_source(pat)
+        _ctx.fill()
+        _ctx.set_source(source)
     if face_color is not None:
-        ctx.set_source_rgb(* htmlcolor_to_rgb(face_color))
+        _ctx.set_source_rgb(* htmlcolor_to_rgb(face_color))
 
 
 def display_ipython():
