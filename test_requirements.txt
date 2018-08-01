@@ -5,7 +5,6 @@ pygments
 wheel
 fabric3
 progressbar2
-sklearn
 pyyaml
 coveralls
 coverage
