@@ -12,16 +12,15 @@ os:
 - linux
 
 install:
-  - pip install -U coveralls
-  - pip install -U coverage
-  - pip install -U pylint
-  - pip install -U -r test_requirements.txt
+  - pip install coveralls
+  - pip install coverage
+  - pip install pylint
+  - pip install -r test_requirements.txt
 
 script:
   - python -m unittest discover
   - python -m coverage run --branch --source . -m unittest discover --verbose
 
 after_success:
-  - python -m pylint --load-plugins=pylint.extensions.mccabe --docstring-min-length 5 --no-docstring-rgx "^(test)?_|.*Tests$" --unsafe-load-any-extension y --output-format colorized  --reports y $(find . -name "*.py")
   - python -m coverage report --show-missing
   - coveralls
