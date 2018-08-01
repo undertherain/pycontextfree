@@ -15,3 +15,5 @@ class Tests(unittest.TestCase):
         self.assertLess(res, 1.01)
         res = coinflip(2)
         self.assertIn(res, [True, False])
+        res = coinflip(1)
+        self.assertEqual(res, False)

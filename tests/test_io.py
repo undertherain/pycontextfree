@@ -1,6 +1,6 @@
 import unittest
 from contextfree.contextfree import circle
-from contextfree.contextfree import init, display_ipython
+from contextfree.contextfree import init, display_ipython, htmlcolor_to_rgb
 
 
 class Tests(unittest.TestCase):
@@ -13,3 +13,7 @@ class Tests(unittest.TestCase):
         # print(a.shape)
         # report()
         # write_to_png("/tmp/test.png")
+
+    def test_color(self):
+        with self.assertRaises(ValueError):
+            htmlcolor_to_rgb("bad forman")
