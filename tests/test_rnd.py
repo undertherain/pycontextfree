@@ -1,3 +1,4 @@
+import random
 import unittest
 from contextfree.contextfree import circle
 from contextfree.contextfree import init
@@ -13,6 +14,7 @@ class Tests(unittest.TestCase):
         self.assertLess(res, 1.01)
         res = prnd(1)
         self.assertLess(res, 1.01)
+        random.seed(5)
         res = coinflip(2)
         self.assertIn(res, [True, False])
         res = coinflip(1)
