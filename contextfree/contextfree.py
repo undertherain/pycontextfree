@@ -23,7 +23,7 @@ def _init__state():
 
 
 def surface_to_image(surface):
-    """Renders current buffer surface to PIL image"""
+    """Renders current buffer surface to IPython image"""
     from IPython.display import Image
     buf = BytesIO()
     surface.write_to_png(buf)
@@ -90,9 +90,6 @@ class scale:
 
 class flip_y:
     """Defines scope of a view being reflected along the y axis"""
-    def __init__(self):
-        pass
-
     def __enter__(self):
         global _ctx
         self.matrix_old = _ctx.get_matrix()
