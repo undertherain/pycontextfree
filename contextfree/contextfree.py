@@ -55,14 +55,14 @@ class rotate:
 
 class translate:
     """Defines a scope of linear translation"""
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
+    def __init__(self, offset_x, offset_y):
+        self.offset_x = offset_x
+        self.offset_y = offset_y
 
     def __enter__(self):
         global _ctx
         self.matrix_old = _ctx.get_matrix()
-        _ctx.translate(self.x, self.y)
+        _ctx.translate(self.offset_x, self.offset_y)
 
     def __exit__(self, type, value, traceback):
         global _ctx
