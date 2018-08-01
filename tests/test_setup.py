@@ -121,7 +121,7 @@ ALL_CLASSIFIERS_VARIANTS = [
     for various in CLASSIFIERS_VARIOUS_COMBINATIONS]
 
 LINK_EXAMPLES = [
-    (None, 'setup.py', True), ('this file', 'setup.py', True), (None, 'test/test_setup.py', True),
+    (None, 'setup.py', True), ('this file', 'setup.py', True), (None, 'tests/test_setup.py', True),
     (None, 'http://site.com', False), (None, '../something/else', False), (None, 'no.thing', False),
     (None, '/my/abs/path', False)]
 
@@ -131,7 +131,7 @@ def get_package_folder_name():
     cwd = pathlib.Path.cwd()
     directories = [
         path for path in cwd.iterdir() if pathlib.Path(cwd, path).is_dir() and
-        pathlib.Path(cwd, path, '__init__.py').is_file() and path.name != 'test']
+        pathlib.Path(cwd, path, '__init__.py').is_file() and path.name != 'tests']
     assert len(directories) == 1, directories
     return directories[0].name
 
