@@ -151,7 +151,7 @@ def line(x, y, width=0.1):
     _ctx.stroke()
 
 
-def circle(rad):
+def circle(rad=0.5):
     """Draw a circle"""
     global _ctx
     _ctx.arc(0, 0, rad, 0, 2 * math.pi)
@@ -160,19 +160,21 @@ def circle(rad):
     _ctx.fill()
 
 
-def triangle(side):
+def triangle(rad=0.5):
     """Draw a triangle"""
     global _ctx
-    height = math.sqrt(3) * side / 2
-    _ctx.move_to(0, 0)
-    _ctx.line_to(-side / 2, 0)
-    _ctx.line_to(0, height)
-    _ctx.line_to(side / 2, 0)
+    #half_height = math.sqrt(3) * side / 6
+    # half_height = side / 2
+    side = 3 * rad / math.sqrt(3)
+    _ctx.move_to(0, -rad / 2)
+    _ctx.line_to(-side / 2, -rad / 2)
+    _ctx.line_to(0, rad)
+    _ctx.line_to(side / 2, -rad / 2)
     _ctx.close_path()
     _ctx.fill()
 
 
-def box(side):
+def box(side=1):
     """Draw a box"""
     global _ctx
     half_side = side / 2
