@@ -90,6 +90,7 @@ class scale:
 
 class flip_y:
     """Defines scope of a view being reflected along the y axis"""
+
     def __enter__(self):
         global _ctx
         self.matrix_old = _ctx.get_matrix()
@@ -102,7 +103,8 @@ class flip_y:
 
 class color:
     """defines scope of changed color"""
-    def __init__(self, alpha=1):
+
+    def __init__(self, alpha=1, hue=0):
         self.alpha = alpha
         self.source_old = None
 
