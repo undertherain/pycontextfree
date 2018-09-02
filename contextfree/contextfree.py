@@ -122,7 +122,7 @@ class color:
         hue, lightness, saturation = colorsys.rgb_to_hls(r / 255, g / 255, b / 255)
         hue = math.modf(hue + self.hue)[0]
         lightness = math.modf(lightness * self.lightness)[0]
-        saturation = math.modf(saturation + self.saturation)[0]
+        saturation = math.modf(saturation * self.saturation)[0]
         r, g, b = colorsys.hls_to_rgb(hue, lightness, saturation)
         a = min((a * self.alpha), 255)
         rgba = [r * 255, g * 255, b * 255, a]
