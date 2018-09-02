@@ -277,7 +277,7 @@ def htmlcolor_to_rgb(str_color):
         s: Color in HTML format
 
     Returns:
-        list of three RGB color coponents
+        list of three RGB color components
     """
     if not (str_color.startswith('#') and len(str_color) == 7):
         raise ValueError("Bad html color format. Expected: '#RRGGBB' ")
