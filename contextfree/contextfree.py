@@ -3,6 +3,7 @@
 from io import BytesIO
 import random
 import math
+import colorsys
 import numpy as np
 import cairocffi as cairo
 
@@ -102,17 +103,24 @@ class flip_y:
 
 
 class color:
-    """defines scope of changed color"""
+    """
+        defines scope of changed color
+        TODO: describe which one is additive and which one is multiplicative
+    """
 
     def __init__(self, alpha=1, hue=0):
         self.alpha = alpha
+        self.hue = hue
         self.source_old = None
 
     def __enter__(self):
         global _ctx
         self.source_old = _ctx.get_source()
-        rgba = self.source_old.get_rgba()
-        rgba = rgba[:3] + (rgba[-1] * self.alpha,)
+        r, g, b, a = self.source_old.get_rgba()
+        hue, lightness, saturation = colorsys.rgb_to_hls(r / 255, g / 255, b / 255)
+        hue = math.modf(hue + self.hue)[0]
+        r, g, b = colorsys.hls_to_rgb(hue, lightness, saturation)
+        rgba = [r * 255, g * 255, b * 255, a * self.alpha]
         _ctx.set_source_rgba(* rgba)
 
     def __exit__(self, type, value, traceback):

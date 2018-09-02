@@ -25,11 +25,17 @@ class Tests(unittest.TestCase):
         write_to_png("/tmp/primitives.png")
 
     def test_color(self):
-        init()
-        circle(0.5)
-        with translate(0.5, 0.5):
-            with color(alpha=0.7):
-                circle(0.5)
+        init(face_color="#123456", background_color="#aaaaaa")
+        with scale(0.7):
+            circle(0.5)
+            with translate(0.5, 0.5):
+                with color(alpha=1, hue=0.2):
+                    circle(0.5)
+            with translate(0.5, -0.5):
+                with scale(0.6):
+                    with color(alpha=0.7, hue=0):
+                        circle(0.5)
+
         write_to_png("/tmp/color.png")
 
     def test_rotate(self):
