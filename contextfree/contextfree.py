@@ -108,9 +108,11 @@ class color:
         TODO: describe which one is additive and which one is multiplicative
     """
 
-    def __init__(self, alpha=1, hue=0):
-        self.alpha = alpha
+    def __init__(self, hue=0, lightness=1, saturation=1, alpha=1):
         self.hue = hue
+        self.lightness = lightness
+        self.saturation = saturation
+        self.alpha = alpha
         self.source_old = None
 
     def __enter__(self):
@@ -119,8 +121,11 @@ class color:
         r, g, b, a = self.source_old.get_rgba()
         hue, lightness, saturation = colorsys.rgb_to_hls(r / 255, g / 255, b / 255)
         hue = math.modf(hue + self.hue)[0]
+        lightness = math.modf(lightness * self.lightness)[0]
+        saturation = math.modf(saturation + self.saturation)[0]
         r, g, b = colorsys.hls_to_rgb(hue, lightness, saturation)
-        rgba = [r * 255, g * 255, b * 255, a * self.alpha]
+        a = min((a * self.alpha), 255)
+        rgba = [r * 255, g * 255, b * 255, a]
         _ctx.set_source_rgba(* rgba)
 
     def __exit__(self, type, value, traceback):
@@ -173,7 +178,7 @@ def circle(rad=0.5):
 def triangle(rad=0.5):
     """Draw a triangle"""
     global _ctx
-    #half_height = math.sqrt(3) * side / 6
+    # half_height = math.sqrt(3) * side / 6
     # half_height = side / 2
     side = 3 * rad / math.sqrt(3)
     _ctx.move_to(0, -rad / 2)
