@@ -253,7 +253,7 @@ def get_npimage(transparent=False, y_origin="top"):
 
 
 def rnd(diap):
-    """returns random number in diapasone from -diap  to diap"""
+    """returns random number in diapason from -diap  to diap"""
     return (random.random() - 0.5) * 2 * diap
 
 
