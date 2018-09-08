@@ -35,7 +35,13 @@ def surface_to_image(surface):
 
 def write_to_png(*args, **kwargs):
     """Saves current buffer surface to png file"""
-    return surface.write_to_png(*args, **kwargs)
+    print(surface.ink_extents())
+    #image_surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, 1000, 100)
+    image_surface = cairo.SVGSurface(None, HEIGHT, WIDTH)
+    context = cairo.Context(image_surface)
+    context.set_source_surface(surface, 0, 0)
+    context.paint()
+    return image_surface.write_to_png(*args, **kwargs)
 
 
 class rotate:
@@ -209,7 +215,8 @@ def init(canvas_size=(512, 512), max_depth=10, face_color=None, background_color
     _init__state()
     MAX_DEPTH = max_depth
     WIDTH, HEIGHT = canvas_size
-    surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, WIDTH, HEIGHT)
+    #   surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, WIDTH, HEIGHT)
+    surface = cairo.RecordingSurface(cairo.CONTENT_COLOR_ALPHA, None)
     _ctx = cairo.Context(surface)
     _ctx.translate(WIDTH / 2, HEIGHT / 2)
     scale = min(WIDTH, HEIGHT)
