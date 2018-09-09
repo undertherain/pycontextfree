@@ -50,9 +50,11 @@ def ancient_map():
     call_rule("wall")
 
 
-init(canvas_size=(600, 600), background_color="#e5d5ac", max_depth=100)
+init(canvas_size=(600, 600), background_color="#e5d5ac", max_depth=120)
 
 ancient_map()
+with rotate(math.pi / 2):
+    ancient_map()
 
 
 write_to_png("/tmp/map.png")
