@@ -59,9 +59,17 @@ def get_npimage(transparent=False, y_origin="top"):
 
 
 def render_record_surface():
-    #image_surface = cairo.SVGSurface(None, HEIGHT, WIDTH)
+    # image_surface = cairo.SVGSurface(None, HEIGHT, WIDTH)
+    x_start, y_start, width_actual, height_actual = surface.ink_extents()
+    print(x_start, y_start, width_actual, height_actual)
+    # shrink and translate to match specified width and height
     image_surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, WIDTH, HEIGHT)
     context = cairo.Context(image_surface)
+    scale = min(WIDTH / width_actual, HEIGHT / height_actual)
+    context.translate(WIDTH / 2, HEIGHT / 2)
+    context.scale(scale, scale)  # Normalizing the canvas
+    context.translate(-x_start - width_actual / 2, -y_start - height_actual / 2)
+    # context.translate(-x_start, -y_start)
     context.set_source_surface(surface, 0, 0)
     context.paint()
     return image_surface
@@ -110,9 +118,9 @@ def init(canvas_size=(512, 512), max_depth=10, face_color=None, background_color
     #   surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, WIDTH, HEIGHT)
     surface = cairo.RecordingSurface(cairo.CONTENT_COLOR_ALPHA, None)
     _ctx = cairo.Context(surface)
-    _ctx.translate(WIDTH / 2, HEIGHT / 2)
-    scale = min(WIDTH, HEIGHT)
-    _ctx.scale(scale, -scale)  # Normalizing the canvas
+    # _ctx.translate(WIDTH / 2, HEIGHT / 2)
+    # scale = min(WIDTH, HEIGHT)
+    # _ctx.scale(scale, -scale)  # Normalizing the canvas
     # _ctx.rotate(math.pi)
 
     if background_color is not None:
@@ -224,6 +232,8 @@ class color:
     def __exit__(self, type, value, traceback):
         global _ctx
         _ctx.set_source(self.source_old)
+
+# ----------------- primitives ----------------------
 
 
 def line(x, y, width=0.1):
