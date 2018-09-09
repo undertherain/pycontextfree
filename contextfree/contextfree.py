@@ -19,6 +19,7 @@ SIZE_MIN_FEATURE = 0.5
 _state = {}
 _ctx = None
 _background_color = None
+_rules = {}
 
 
 def _init__state():
@@ -91,6 +92,31 @@ def write_to_png(*args, **kwargs):
     """Saves current buffer surface to png file"""
     image_surface = render_record_surface()
     return image_surface.write_to_png(*args, **kwargs)
+
+
+def register_rule(name, proba):
+    def real_decorator(function):
+        def wrapper(*args, **kwargs):
+            raise RuntimeError("This function had been registered as a rule and can not be called directly")
+        logger.info("registering rule " + name)
+        if name not in _rules:
+            _rules[name] = []
+            last_proba = 0
+        else:
+            last_proba = _rules[name][-1][0]
+        _rules[name].append((last_proba + proba, function))
+        return wrapper
+
+    return real_decorator
+
+
+def call_rule(name):
+    rules = _rules[name]
+    die_roll = prnd(rules[-1][0])
+    for i in range(len(rules)):
+        if die_roll < rules[i][0]:
+            rules[i][1]()
+            break
 
 
 def check_limits(some_function):
