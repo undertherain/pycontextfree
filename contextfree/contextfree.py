@@ -14,6 +14,7 @@ HEIGHT = 100
 WIDTH = 100
 _state = {}
 _ctx = None
+_background_color = None
 
 
 def _init__state():
@@ -66,10 +67,17 @@ def render_record_surface():
     image_surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, WIDTH, HEIGHT)
     context = cairo.Context(image_surface)
     scale = min(WIDTH / width_actual, HEIGHT / height_actual)
+    if _background_color is not None:
+        print("filling background_color")
+        source = context.get_source()
+        pat = cairo.SolidPattern(* htmlcolor_to_rgb(_background_color))
+        context.rectangle(0, 0, WIDTH, HEIGHT)  # Rectangle(x0, y0, x1, y1)
+        context.set_source(pat)
+        context.fill()
+        context.set_source(source)
     context.translate(WIDTH / 2, HEIGHT / 2)
     context.scale(scale, scale)  # Normalizing the canvas
     context.translate(-x_start - width_actual / 2, -y_start - height_actual / 2)
-    # context.translate(-x_start, -y_start)
     context.set_source_surface(surface, 0, 0)
     context.paint()
     return image_surface
@@ -105,6 +113,8 @@ def report():
 
 def init(canvas_size=(512, 512), max_depth=10, face_color=None, background_color=None):
     """Initializes global state"""
+    global _background_color
+    _background_color = background_color
     global surface
     global _ctx
     global cnt_elements
@@ -123,13 +133,6 @@ def init(canvas_size=(512, 512), max_depth=10, face_color=None, background_color
     # _ctx.scale(scale, -scale)  # Normalizing the canvas
     # _ctx.rotate(math.pi)
 
-    if background_color is not None:
-        source = _ctx.get_source()
-        pat = cairo.SolidPattern(* htmlcolor_to_rgb(background_color))
-        _ctx.rectangle(-1, -1, 2, 2)  # Rectangle(x0, y0, x1, y1)
-        _ctx.set_source(pat)
-        _ctx.fill()
-        _ctx.set_source(source)
     if face_color is not None:
         _ctx.set_source_rgb(* htmlcolor_to_rgb(face_color))
 
