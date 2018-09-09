@@ -76,7 +76,7 @@ def render_record_surface():
         context.fill()
         context.set_source(source)
     context.translate(WIDTH / 2, HEIGHT / 2)
-    context.scale(scale, scale)  # Normalizing the canvas
+    context.scale(scale, -scale)  # Normalizing the canvas
     context.translate(-x_start - width_actual / 2, -y_start - height_actual / 2)
     context.set_source_surface(surface, 0, 0)
     context.paint()
