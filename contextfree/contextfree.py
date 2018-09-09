@@ -4,14 +4,18 @@ from io import BytesIO
 import random
 import math
 import colorsys
+import logging
 import numpy as np
 import cairocffi as cairo
 
+
+logger = logging.getLogger(__name__)
 
 MAX_ELEMENTS = 200000
 MAX_DEPTH = 8
 HEIGHT = 100
 WIDTH = 100
+SIZE_MIN_FEATURE = 0.5
 _state = {}
 _ctx = None
 _background_color = None
@@ -98,9 +102,16 @@ def check_limits(some_function):
         _state["cnt_elements"] += 1
         _state["depth"] += 1
         matrix = _ctx.get_matrix()
-        if (abs(matrix[0]) > 0.5 and _state["cnt_elements"] < MAX_ELEMENTS and
-                _state["depth"] < MAX_DEPTH):
-            some_function(*args, **kwargs)
+        if _state["depth"] >= MAX_DEPTH:
+            logger.info("stop recursion by reaching max depth")
+        else:
+            if _state["cnt_elements"] > MAX_ELEMENTS:
+                logger.info("stop recursion by reaching max elements")
+            else:
+                if (abs(matrix[0]) < SIZE_MIN_FEATURE / min(WIDTH, HEIGHT)):
+                    logger.info("stop recursion by reaching min feature size")
+                else:
+                    some_function(*args, **kwargs)
         _state["depth"] -= 1
     return wrapper
 
@@ -135,6 +146,7 @@ def init(canvas_size=(512, 512), max_depth=10, face_color=None, background_color
 
     if face_color is not None:
         _ctx.set_source_rgb(* htmlcolor_to_rgb(face_color))
+    logger.debug("Init done")
 
 
 # -------------------transformations------------------
