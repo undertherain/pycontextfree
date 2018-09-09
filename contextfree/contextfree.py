@@ -66,13 +66,13 @@ def get_npimage(transparent=False, y_origin="top"):
 def render_record_surface():
     # image_surface = cairo.SVGSurface(None, HEIGHT, WIDTH)
     x_start, y_start, width_actual, height_actual = surface.ink_extents()
-    print(x_start, y_start, width_actual, height_actual)
+    # print(x_start, y_start, width_actual, height_actual)
     # shrink and translate to match specified width and height
     image_surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, WIDTH, HEIGHT)
     context = cairo.Context(image_surface)
     scale = min(WIDTH / width_actual, HEIGHT / height_actual)
     if _background_color is not None:
-        print("filling background_color")
+        logger.info("filling background_color")
         source = context.get_source()
         pat = cairo.SolidPattern(* htmlcolor_to_rgb(_background_color))
         context.rectangle(0, 0, WIDTH, HEIGHT)  # Rectangle(x0, y0, x1, y1)
