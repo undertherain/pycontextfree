@@ -33,19 +33,104 @@ def surface_to_image(surface):
     return Image(data=data)
 
 
-def write_to_png(*args, **kwargs):
-    """Saves current buffer surface to png file"""
-    print(surface.ink_extents())
-    #image_surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, 1000, 100)
-    image_surface = cairo.SVGSurface(None, HEIGHT, WIDTH)
+def display_ipython():
+    """renders global surface to IPython notebook"""
+    image_surface = render_record_surface()
+    return surface_to_image(image_surface)
+
+
+def get_npimage(transparent=False, y_origin="top"):
+    """ Returns a WxHx[3-4] numpy array representing the RGB picture.
+
+    If `transparent` is True the image is WxHx4 and represents a RGBA picture,
+    i.e. array[i,j] is the [r,g,b,a] value of the pixel at position [i,j].
+    If `transparent` is false, a RGB array is returned.
+
+    Parameter y_origin ("top" or "bottom") decides whether point (0,0) lies in
+    the top-left or bottom-left corner of the screen.
+    """
+    image_surface = render_record_surface()
+    img = 0 + np.frombuffer(image_surface.get_data(), np.uint8)
+    img.shape = (HEIGHT, WIDTH, 4)
+    img = img[:, :, [2, 1, 0, 3]]
+    if y_origin == "bottom":
+        img = img[::-1]
+    return img if transparent else img[:, :, : 3]
+
+
+def render_record_surface():
+    #image_surface = cairo.SVGSurface(None, HEIGHT, WIDTH)
+    image_surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, WIDTH, HEIGHT)
     context = cairo.Context(image_surface)
     context.set_source_surface(surface, 0, 0)
     context.paint()
+    return image_surface
+
+
+def write_to_png(*args, **kwargs):
+    """Saves current buffer surface to png file"""
+    image_surface = render_record_surface()
     return image_surface.write_to_png(*args, **kwargs)
 
 
+def check_limits(some_function):
+    """Stop recursion if resolution is too low on number of components is too high """
+
+    def wrapper(*args, **kwargs):
+        """The body of the decorator """
+        global _state
+        _state["cnt_elements"] += 1
+        _state["depth"] += 1
+        matrix = _ctx.get_matrix()
+        if (abs(matrix[0]) > 0.5 and _state["cnt_elements"] < MAX_ELEMENTS and
+                _state["depth"] < MAX_DEPTH):
+            some_function(*args, **kwargs)
+        _state["depth"] -= 1
+    return wrapper
+
+
+def report():
+    """Prints some stats on current state"""
+    global _state
+    print("cnt elements drawn:", _state["cnt_elements"])
+
+
+def init(canvas_size=(512, 512), max_depth=10, face_color=None, background_color=None):
+    """Initializes global state"""
+    global surface
+    global _ctx
+    global cnt_elements
+    # global depth
+    global MAX_DEPTH
+    global WIDTH
+    global HEIGHT
+    _init__state()
+    MAX_DEPTH = max_depth
+    WIDTH, HEIGHT = canvas_size
+    #   surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, WIDTH, HEIGHT)
+    surface = cairo.RecordingSurface(cairo.CONTENT_COLOR_ALPHA, None)
+    _ctx = cairo.Context(surface)
+    _ctx.translate(WIDTH / 2, HEIGHT / 2)
+    scale = min(WIDTH, HEIGHT)
+    _ctx.scale(scale, -scale)  # Normalizing the canvas
+    # _ctx.rotate(math.pi)
+
+    if background_color is not None:
+        source = _ctx.get_source()
+        pat = cairo.SolidPattern(* htmlcolor_to_rgb(background_color))
+        _ctx.rectangle(-1, -1, 2, 2)  # Rectangle(x0, y0, x1, y1)
+        _ctx.set_source(pat)
+        _ctx.fill()
+        _ctx.set_source(source)
+    if face_color is not None:
+        _ctx.set_source_rgb(* htmlcolor_to_rgb(face_color))
+
+
+# -------------------transformations------------------
+
 class rotate:
     """Defines a scope of rotated view """
+
     def __init__(self, angle):
         self.angle = angle
         self.matrix_old = None
@@ -62,6 +147,7 @@ class rotate:
 
 class translate:
     """Defines a scope of linear translation"""
+
     def __init__(self, offset_x, offset_y):
         self.offset_x = offset_x
         self.offset_y = offset_y
@@ -78,6 +164,7 @@ class translate:
 
 class scale:
     """Defines scope of changed scale"""
+
     def __init__(self, scale_x, scale_y=None):
         self.scale_x = scale_x
         if scale_y is None:
@@ -139,28 +226,6 @@ class color:
         _ctx.set_source(self.source_old)
 
 
-def check_limits(some_function):
-    """Stop recursion if resolution is too low on number of components is too high """
-
-    def wrapper(*args, **kwargs):
-        """The body of the decorator """
-        global _state
-        _state["cnt_elements"] += 1
-        _state["depth"] += 1
-        matrix = _ctx.get_matrix()
-        if (abs(matrix[0]) > 0.5 and _state["cnt_elements"] < MAX_ELEMENTS and
-                _state["depth"] < MAX_DEPTH):
-            some_function(*args, **kwargs)
-        _state["depth"] -= 1
-    return wrapper
-
-
-def report():
-    """Prints some stats on current state"""
-    global _state
-    print("cnt elements drawn:", _state["cnt_elements"])
-
-
 def line(x, y, width=0.1):
     """Draw a line"""
     global _ctx
@@ -201,62 +266,6 @@ def box(side=1):
     half_side = side / 2
     _ctx.rectangle(-half_side, -half_side, side, side)
     _ctx.fill()
-
-
-def init(canvas_size=(512, 512), max_depth=10, face_color=None, background_color=None):
-    """Initializes global state"""
-    global surface
-    global _ctx
-    global cnt_elements
-    # global depth
-    global MAX_DEPTH
-    global WIDTH
-    global HEIGHT
-    _init__state()
-    MAX_DEPTH = max_depth
-    WIDTH, HEIGHT = canvas_size
-    #   surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, WIDTH, HEIGHT)
-    surface = cairo.RecordingSurface(cairo.CONTENT_COLOR_ALPHA, None)
-    _ctx = cairo.Context(surface)
-    _ctx.translate(WIDTH / 2, HEIGHT / 2)
-    scale = min(WIDTH, HEIGHT)
-    _ctx.scale(scale, -scale)  # Normalizing the canvas
-    # _ctx.rotate(math.pi)
-
-    if background_color is not None:
-        source = _ctx.get_source()
-        pat = cairo.SolidPattern(* htmlcolor_to_rgb(background_color))
-        _ctx.rectangle(-1, -1, 2, 2)  # Rectangle(x0, y0, x1, y1)
-        _ctx.set_source(pat)
-        _ctx.fill()
-        _ctx.set_source(source)
-    if face_color is not None:
-        _ctx.set_source_rgb(* htmlcolor_to_rgb(face_color))
-
-
-def display_ipython():
-    """renders global surface to IPython notebook"""
-    global surface
-    return surface_to_image(surface)
-
-
-def get_npimage(transparent=False, y_origin="top"):
-    """ Returns a WxHx[3-4] numpy array representing the RGB picture.
-
-    If `transparent` is True the image is WxHx4 and represents a RGBA picture,
-    i.e. array[i,j] is the [r,g,b,a] value of the pixel at position [i,j].
-    If `transparent` is false, a RGB array is returned.
-
-    Parameter y_origin ("top" or "bottom") decides whether point (0,0) lies in
-    the top-left or bottom-left corner of the screen.
-    """
-    global surface
-    img = 0 + np.frombuffer(surface.get_data(), np.uint8)
-    img.shape = (HEIGHT, WIDTH, 4)
-    img = img[:, :, [2, 1, 0, 3]]
-    if y_origin == "bottom":
-        img = img[::-1]
-    return img if transparent else img[:, :, : 3]
 
 
 def rnd(diap):
