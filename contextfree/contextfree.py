@@ -102,13 +102,16 @@ def check_limits(some_function):
         _state["cnt_elements"] += 1
         _state["depth"] += 1
         matrix = _ctx.get_matrix()
+        # print(matrix)
         if _state["depth"] >= MAX_DEPTH:
             logger.info("stop recursion by reaching max depth")
         else:
             if _state["cnt_elements"] > MAX_ELEMENTS:
                 logger.info("stop recursion by reaching max elements")
             else:
-                if (abs(matrix[0]) < SIZE_MIN_FEATURE / min(WIDTH, HEIGHT)):
+                min_size_scaled = SIZE_MIN_FEATURE / min(WIDTH, HEIGHT)
+                current_scale = max([abs(matrix[i]) for i in range(2)])
+                if (current_scale < min_size_scaled):
                     logger.info("stop recursion by reaching min feature size")
                 else:
                     some_function(*args, **kwargs)
