@@ -122,7 +122,7 @@ def report():
     print("cnt elements drawn:", _state["cnt_elements"])
 
 
-def init(canvas_size=(512, 512), max_depth=10, face_color=None, background_color=None):
+def init(canvas_size=(512, 512), max_depth=12, face_color=None, background_color=None):
     """Initializes global state"""
     global _background_color
     _background_color = background_color
