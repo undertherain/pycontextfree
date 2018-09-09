@@ -253,7 +253,7 @@ class color:
         TODO: describe which one is additive and which one is multiplicative
     """
 
-    def __init__(self, hue=0, lightness=1, saturation=1, alpha=1):
+    def __init__(self, hue=0, lightness=0, saturation=0, alpha=1):
         self.hue = hue
         self.lightness = lightness
         self.saturation = saturation
@@ -269,9 +269,13 @@ class color:
         lightness = lightness * self.lightness
         if lightness > 1:
             lightness = 1
-        saturation = saturation * self.saturation
+        if lightness < 0:
+            lightness = 0
+        saturation = saturation + self.saturation
         if saturation > 1:
             saturation = 1
+        if saturation < 0:
+            saturation = 0
         r, g, b = colorsys.hls_to_rgb(hue, lightness, saturation)
         a = min((a * self.alpha), 255)
         rgba = [r * 255, g * 255, b * 255, a]
