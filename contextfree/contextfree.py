@@ -5,6 +5,7 @@ import random
 import math
 import colorsys
 import logging
+import sys
 import numpy as np
 import cairocffi as cairo
 
@@ -163,6 +164,7 @@ def init(canvas_size=(512, 512), max_depth=12, face_color=None, background_color
     global WIDTH
     global HEIGHT
     _init__state()
+    sys.setrecursionlimit(20000)
     MAX_DEPTH = max_depth
     WIDTH, HEIGHT = canvas_size
     #   surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, WIDTH, HEIGHT)
@@ -264,9 +266,9 @@ class color:
         global _ctx
         self.source_old = _ctx.get_source()
         r, g, b, a = self.source_old.get_rgba()
-        hue, lightness, saturation = colorsys.rgb_to_hls(r / 255, g / 255, b / 255)
-        #print("rgb:", r, g, b)
-        #print (hue, lightness, saturation)
+        # print("rgb old:", r, g, b)
+        hue, lightness, saturation = colorsys.rgb_to_hls(r, g, b)
+        # print("hls old:", hue, lightness, saturation)
         hue = math.modf(hue + self.hue)[0]
         lightness = lightness + self.lightness
         if lightness > 1:
@@ -278,13 +280,13 @@ class color:
             saturation = 1
         if saturation < 0:
             saturation = 0
-        #print (hue, lightness, saturation)
         r, g, b = colorsys.hls_to_rgb(hue, lightness, saturation)
-        #print("rgb:", r, g, b)
+        # print("hls new:", hue, lightness, saturation)
+        # print("rgb new:", r, g, b)
         a = min((a * self.alpha), 255)
         # rgba = [int(r * 255), int(g * 255), int(b * 255), a]
         rgba = [r, g, b, a]
-        #print(rgba)
+        # print(rgba)
         _ctx.set_source_rgba(* rgba)
 
     def __exit__(self, type, value, traceback):
