@@ -3,6 +3,7 @@ import contextlib
 import io
 import unittest
 from .test_setup import run_program
+from .test_setup import run_module
 
 
 class Tests(unittest.TestCase):
@@ -13,6 +14,7 @@ class Tests(unittest.TestCase):
             print(d)
             sio = io.StringIO()
             with contextlib.redirect_stdout(sio):
-                run_program("python3", d)
+                #run_program("python3", d)
+                run_module(d)
 
         # run one by one
