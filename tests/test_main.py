@@ -26,15 +26,22 @@ class Tests(unittest.TestCase):
 
     def test_color(self):
         init(face_color="#123456", background_color="#aaaaaa")
-        with scale(0.7):
-            circle(0.5)
-            with translate(0.5, 0.5):
-                with color(alpha=1, hue=0.2):
+        circle(0.5)
+        with translate(1, 0):
+            with color(alpha=1, hue=0.2):
+                circle(0.5)
+        with translate(1, 1):
+            with scale(0.6):
+                with color(alpha=0.7, hue=0):
                     circle(0.5)
-            with translate(0.5, -0.5):
-                with scale(0.6):
-                    with color(alpha=0.7, hue=0):
-                        circle(0.5)
+        with translate(-1, 1):
+            with scale(0.6):
+                with color(alpha=0.7, hue=2, saturation=2, lightness=2):
+                    circle(0.5)
+        with translate(-1, -1):
+            with scale(0.6):
+                with color(alpha=0.7, hue=-2, saturation=-2, lightness=-2):
+                    circle(0.5)
 
         write_to_png("/tmp/color.png")
 
@@ -56,12 +63,10 @@ class Tests(unittest.TestCase):
     def test_scale_limit(self):
         @check_limits
         def element():
-            circle(0.1)
-            with translate(0.2, 0):
-                with scale(0.5, 0.4):
-                    with scale(0.5):
+            circle(1)
+            with translate(1, 0):
+                with scale(0.2, 0.2):
                         element()
-
         init()
         element()
         write_to_png("/tmp/scale.png")

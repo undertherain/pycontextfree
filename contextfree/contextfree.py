@@ -5,6 +5,7 @@ import random
 import math
 import colorsys
 import logging
+import sys
 import numpy as np
 import cairocffi as cairo
 
@@ -19,6 +20,7 @@ SIZE_MIN_FEATURE = 0.5
 _state = {}
 _ctx = None
 _background_color = None
+_rules = {}
 
 
 def _init__state():
@@ -93,6 +95,31 @@ def write_to_png(*args, **kwargs):
     return image_surface.write_to_png(*args, **kwargs)
 
 
+def register_rule(name, proba):
+    def real_decorator(function):
+        def wrapper(*args, **kwargs):
+            raise RuntimeError("This function had been registered as a rule and can not be called directly")
+        logger.info("registering rule " + name)
+        if name not in _rules:
+            _rules[name] = []
+            last_proba = 0
+        else:
+            last_proba = _rules[name][-1][0]
+        _rules[name].append((last_proba + proba, function))
+        return wrapper
+
+    return real_decorator
+
+
+def call_rule(name):
+    rules = _rules[name]
+    die_roll = prnd(rules[-1][0])
+    for i in range(len(rules)):
+        if die_roll < rules[i][0]:
+            rules[i][1]()
+            break
+
+
 def check_limits(some_function):
     """Stop recursion if resolution is too low on number of components is too high """
 
@@ -106,13 +133,14 @@ def check_limits(some_function):
         if _state["depth"] >= MAX_DEPTH:
             logger.info("stop recursion by reaching max depth")
         else:
-            if _state["cnt_elements"] > MAX_ELEMENTS:
-                logger.info("stop recursion by reaching max elements")
+            min_size_scaled = SIZE_MIN_FEATURE / min(WIDTH, HEIGHT)
+            current_scale = max([abs(matrix[i]) for i in range(2)])
+            if (current_scale < min_size_scaled):
+                logger.info("stop recursion by reaching min feature size")
             else:
-                min_size_scaled = SIZE_MIN_FEATURE / min(WIDTH, HEIGHT)
-                current_scale = max([abs(matrix[i]) for i in range(2)])
-                if (current_scale < min_size_scaled):
-                    logger.info("stop recursion by reaching min feature size")
+                if _state["cnt_elements"] > MAX_ELEMENTS:
+                    pass
+                    # logger.info("stop recursion by reaching max elements")
                 else:
                     some_function(*args, **kwargs)
         _state["depth"] -= 1
@@ -137,6 +165,7 @@ def init(canvas_size=(512, 512), max_depth=12, face_color=None, background_color
     global WIDTH
     global HEIGHT
     _init__state()
+    sys.setrecursionlimit(20000)
     MAX_DEPTH = max_depth
     WIDTH, HEIGHT = canvas_size
     #   surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, WIDTH, HEIGHT)
@@ -227,7 +256,7 @@ class color:
         TODO: describe which one is additive and which one is multiplicative
     """
 
-    def __init__(self, hue=0, lightness=1, saturation=1, alpha=1):
+    def __init__(self, hue=0, lightness=0, saturation=0, alpha=1):
         self.hue = hue
         self.lightness = lightness
         self.saturation = saturation
@@ -238,17 +267,27 @@ class color:
         global _ctx
         self.source_old = _ctx.get_source()
         r, g, b, a = self.source_old.get_rgba()
-        hue, lightness, saturation = colorsys.rgb_to_hls(r / 255, g / 255, b / 255)
+        # print("rgb old:", r, g, b)
+        hue, lightness, saturation = colorsys.rgb_to_hls(r, g, b)
+        # print("hls old:", hue, lightness, saturation)
         hue = math.modf(hue + self.hue)[0]
-        lightness = lightness * self.lightness
+        lightness = lightness + self.lightness
         if lightness > 1:
             lightness = 1
-        saturation = saturation * self.saturation
+        if lightness < 0:
+            lightness = 0
+        saturation = saturation + self.saturation
         if saturation > 1:
             saturation = 1
+        if saturation < 0:
+            saturation = 0
         r, g, b = colorsys.hls_to_rgb(hue, lightness, saturation)
+        # print("hls new:", hue, lightness, saturation)
+        # print("rgb new:", r, g, b)
         a = min((a * self.alpha), 255)
-        rgba = [r * 255, g * 255, b * 255, a]
+        # rgba = [int(r * 255), int(g * 255), int(b * 255), a]
+        rgba = [r, g, b, a]
+        # print(rgba)
         _ctx.set_source_rgba(* rgba)
 
     def __exit__(self, type, value, traceback):

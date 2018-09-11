@@ -24,6 +24,7 @@ before_script: # configure a headless display to test plot generation
 
 script:
   - python -m coverage run --source . -m unittest discover --verbose
+  - PYTHONPATH=./ python -m coverage run --append --source . ./examples/Ancient\ Map/map.py
 
 after_success:
   - python -m coverage report --show-missing
