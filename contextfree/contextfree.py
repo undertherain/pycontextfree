@@ -133,13 +133,14 @@ def check_limits(some_function):
         if _state["depth"] >= MAX_DEPTH:
             logger.info("stop recursion by reaching max depth")
         else:
-            if _state["cnt_elements"] > MAX_ELEMENTS:
-                logger.info("stop recursion by reaching max elements")
+            min_size_scaled = SIZE_MIN_FEATURE / min(WIDTH, HEIGHT)
+            current_scale = max([abs(matrix[i]) for i in range(2)])
+            if (current_scale < min_size_scaled):
+                logger.info("stop recursion by reaching min feature size")
             else:
-                min_size_scaled = SIZE_MIN_FEATURE / min(WIDTH, HEIGHT)
-                current_scale = max([abs(matrix[i]) for i in range(2)])
-                if (current_scale < min_size_scaled):
-                    logger.info("stop recursion by reaching min feature size")
+                if _state["cnt_elements"] > MAX_ELEMENTS:
+                    pass
+                    # logger.info("stop recursion by reaching max elements")
                 else:
                     some_function(*args, **kwargs)
         _state["depth"] -= 1
