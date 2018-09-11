@@ -56,13 +56,15 @@ def ancient_map():
         #            ancient_map()
 
 
-init(canvas_size=(600, 600), background_color="#e5d5ac", face_color="#0a0707", max_depth=120)
+def main():
+    init(canvas_size=(600, 600), background_color="#e5d5ac", face_color="#0a0707", max_depth=120)
 
-ancient_map()
-with rotate(math.pi / 2):
     ancient_map()
+    with rotate(math.pi / 2):
+        ancient_map()
+
+    write_to_png("/tmp/map.png")
 
 
-write_to_png("/tmp/map.png")
-
-# TODO: add proper main
+if __name__ == "__main__":
+    main()
