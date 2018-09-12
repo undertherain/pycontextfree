@@ -6,16 +6,18 @@ from contextfree.contextfree import *
 # logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG)
 
 
-@register_rule("wall", 1)
-def wall_1():
+# pylint: disable=E0102
+@register_rule(1)
+def wall():
     with translate(0.95, 0):
         with rotate(0.01):
             with scale(0.975):
                 ancient_map()
 
 
-@register_rule("wall", 1)
-def wall_2():
+# pylint: disable=E0102
+@register_rule(1)
+def wall():
     box()
     with translate(0.95, 0):
         with rotate(-0.0027):
@@ -24,8 +26,9 @@ def wall_2():
                     ancient_map()
 
 
-@register_rule("wall", 0.09)
-def wall_4():
+# pylint: disable=E0102
+@register_rule(0.09)
+def wall():
     box()
     with scale(0.975):
         with translate(0.95, 0):
@@ -35,8 +38,9 @@ def wall_4():
                 ancient_map()
 
 
-@register_rule("wall", 0.05)
-def wall_5():
+# pylint: disable=E0102
+@register_rule(0.05)
+def wall():
     with translate(0.97, 0):
         with scale(1.5):
             with rotate(math.pi / 2):
@@ -47,13 +51,7 @@ def wall_5():
 
 @check_limits
 def ancient_map():
-    call_rule("wall")
-    #box()
-    #with translate(1, 0):
-     #   with scale(0.97):
-      #      with rotate(0.01):
-       #         with color(hue=0.001, saturation=0.1, lightness=0.003):
-        #            ancient_map()
+    wall()
 
 
 def main():
