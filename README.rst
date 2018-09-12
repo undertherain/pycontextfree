@@ -26,20 +26,21 @@ Here is an example of simple code producing stochastic fractal tree:
 
 .. code:: python
 
-    from contextfree.contextfree import *
     @check_limits
     def branch():
-        line(0, 1)
-        with translate(0, 0.9):
-            with scale(0.7 + rnd(0.3)):
-                with rotate(-0.4 + rnd(0.5)):
-                    branch()
-                with rotate(0.4 + rnd(0.5)):
-                    branch()
-    init(canvas_size=(300, 300))
-    with translate(0, -1):
-        with scale(0.6):
-            branch()
+        line(0,1)
+        with translate(0,0.9):
+            with scale(0.7 + rnd(0.15)):
+                with color(alpha=0.95):
+                    with rotate(-0.3 + rnd(0.3)):
+                        branch()
+                    with rotate(0.3 + rnd(0.3)):
+                        branch()
+
+    init(canvas_size=(300,300), background_color="#FFFFFF")
+    with scale(3):
+        branch()
+        
     display_ipython()
 
 Here is the output:
