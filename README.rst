@@ -26,6 +26,8 @@ Here is an example of simple code producing stochastic fractal tree:
 
 .. code:: python
 
+    from contextfree.contextfree import *
+    
     @check_limits
     def branch():
         line(0,1)
