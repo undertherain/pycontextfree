@@ -146,9 +146,9 @@ class SimpleRefCounter(docutils.nodes.NodeVisitor):
 
     def visit_reference(self, node: docutils.nodes.reference) -> None:
         """Called for "reference" nodes."""
-        if len(node.children) != 1 or not isinstance(node.children[0], docutils.nodes.Text) \
-                or not all(_ in node.attributes for _ in ('name', 'refuri')):
-            return
+        # if len(node.children) != 1 or not isinstance(node.children[0], docutils.nodes.Text) \
+        #         or not all(_ in node.attributes for _ in ('name', 'refuri')):
+        #     return
         path = pathlib.Path(node.attributes['refuri'])
         try:
             if path.is_absolute():
@@ -156,8 +156,8 @@ class SimpleRefCounter(docutils.nodes.NodeVisitor):
             resolved_path = path.resolve()
         except FileNotFoundError:  # in resolve(), prior to Python 3.6
             return
-        except OSError:  # in is_absolute() and resolve(), on URLs in Windows
-            return
+        # except OSError:  # in is_absolute() and resolve(), on URLs in Windows
+        #     return
         try:
             resolved_path.relative_to(HERE)
         except ValueError:
