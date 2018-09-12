@@ -95,7 +95,7 @@ def write_to_png(*args, **kwargs):
     return image_surface.write_to_png(*args, **kwargs)
 
 
-def register_rule(proba):
+def rule(proba):
     def real_decorator(function):
         name = function.__name__
 
