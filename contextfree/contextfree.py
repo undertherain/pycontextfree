@@ -95,10 +95,15 @@ def write_to_png(*args, **kwargs):
     return image_surface.write_to_png(*args, **kwargs)
 
 
-def register_rule(name, proba):
+def register_rule(proba):
     def real_decorator(function):
+        name = function.__name__
+
         def wrapper(*args, **kwargs):
-            raise RuntimeError("This function had been registered as a rule and can not be called directly")
+            if args:
+                raise NotImplementedError("Parameters to rules not implemented yet")
+            call_rule(name)
+
         logger.info("registering rule " + name)
         if name not in _rules:
             _rules[name] = []
