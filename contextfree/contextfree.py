@@ -98,7 +98,8 @@ def write_to_png(*args, **kwargs):
 def register_rule(name, proba):
     def real_decorator(function):
         def wrapper(*args, **kwargs):
-            raise RuntimeError("This function had been registered as a rule and can not be called directly")
+            call_rule(name)
+            # raise RuntimeError("This function had been registered as a rule and can not be called directly")
         logger.info("registering rule " + name)
         if name not in _rules:
             _rules[name] = []
