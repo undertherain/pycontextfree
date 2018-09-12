@@ -1,8 +1,13 @@
+import logging
 import unittest
 import numpy as np
 from contextfree.contextfree import init, get_npimage, write_to_png, report, check_limits
 from contextfree.contextfree import circle, box, line, triangle
 from contextfree.contextfree import translate, color, scale, rotate, flip_y
+from contextfree.contextfree import MAX_ELEMENTS
+
+
+logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG)
 
 
 class Tests(unittest.TestCase):
@@ -67,6 +72,14 @@ class Tests(unittest.TestCase):
             with translate(1, 0):
                 with scale(0.2, 0.2):
                         element()
+
         init()
         element()
         write_to_png("/tmp/scale.png")
+
+        @check_limits
+        def element_non_recursive():
+            pass
+        init()
+        for i in range(MAX_ELEMENTS + 1):
+            element_non_recursive()

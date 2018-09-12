@@ -144,8 +144,7 @@ def check_limits(some_function):
                 logger.info("stop recursion by reaching min feature size")
             else:
                 if _state["cnt_elements"] > MAX_ELEMENTS:
-                    pass
-                    # logger.info("stop recursion by reaching max elements")
+                    logger.info("stop recursion by reaching max elements")
                 else:
                     some_function(*args, **kwargs)
         _state["depth"] -= 1
