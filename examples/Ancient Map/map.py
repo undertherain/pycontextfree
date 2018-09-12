@@ -3,7 +3,7 @@ import math
 from contextfree.contextfree import *
 
 
-# logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG)
+logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG)
 
 
 # pylint: disable=E0102
