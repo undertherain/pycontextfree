@@ -4,7 +4,7 @@ from contextfree.contextfree import *
 logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG)
 
 
-@register_rule(1)
+rule(1)
 def trunk():
     with scale(0.5):
         with color(hue=0.001):

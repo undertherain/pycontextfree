@@ -2,7 +2,8 @@
 
 import logging
 import unittest
-from contextfree.contextfree import init, rule, call_rule
+from contextfree.contextfree import init, translate, scale, circle
+from contextfree.contextfree import rule, call_rule
 
 
 logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG)
@@ -13,6 +14,14 @@ logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG)
 def wall():
     """example of one instance of a rule"""
     print("I am a rule 1")
+
+
+@rule(1)
+def mycircle():
+    circle()
+    with translate(1, 0):
+        with scale(0.5):
+            mycircle()
 
 
 # pylint: disable=E1121
@@ -26,3 +35,7 @@ class Tests(unittest.TestCase):
         wall()
         with self.assertRaises(NotImplementedError):
             wall("wrong")
+
+    def test_recursive(self):
+        init(max_depth=20)
+        mycircle()

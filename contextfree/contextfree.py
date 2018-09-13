@@ -95,6 +95,32 @@ def write_to_png(*args, **kwargs):
     return image_surface.write_to_png(*args, **kwargs)
 
 
+def check_limits(some_function):
+    """Stop recursion if resolution is too low on number of components is too high """
+
+    def wrapper(*args, **kwargs):
+        """The body of the decorator """
+        global _state
+        _state["cnt_elements"] += 1
+        _state["depth"] += 1
+        matrix = _ctx.get_matrix()
+        # print(matrix)
+        if _state["depth"] >= MAX_DEPTH:
+            logger.info("stop recursion by reaching max depth {}".format(MAX_DEPTH))
+        else:
+            min_size_scaled = SIZE_MIN_FEATURE / min(WIDTH, HEIGHT)
+            current_scale = max([abs(matrix[i]) for i in range(2)])
+            if (current_scale < min_size_scaled):
+                logger.info("stop recursion by reaching min feature size")
+            else:
+                if _state["cnt_elements"] > MAX_ELEMENTS:
+                    logger.info("stop recursion by reaching max elements")
+                else:
+                    some_function(*args, **kwargs)
+        _state["depth"] -= 1
+    return wrapper
+
+
 def rule(proba):
     def real_decorator(function):
         name = function.__name__
@@ -116,6 +142,7 @@ def rule(proba):
     return real_decorator
 
 
+@check_limits
 def call_rule(name):
     rules = _rules[name]
     die_roll = prnd(rules[-1][0])
@@ -123,32 +150,6 @@ def call_rule(name):
         if die_roll < rules[i][0]:
             rules[i][1]()
             break
-
-
-def check_limits(some_function):
-    """Stop recursion if resolution is too low on number of components is too high """
-
-    def wrapper(*args, **kwargs):
-        """The body of the decorator """
-        global _state
-        _state["cnt_elements"] += 1
-        _state["depth"] += 1
-        matrix = _ctx.get_matrix()
-        # print(matrix)
-        if _state["depth"] >= MAX_DEPTH:
-            logger.info("stop recursion by reaching max depth")
-        else:
-            min_size_scaled = SIZE_MIN_FEATURE / min(WIDTH, HEIGHT)
-            current_scale = max([abs(matrix[i]) for i in range(2)])
-            if (current_scale < min_size_scaled):
-                logger.info("stop recursion by reaching min feature size")
-            else:
-                if _state["cnt_elements"] > MAX_ELEMENTS:
-                    logger.info("stop recursion by reaching max elements")
-                else:
-                    some_function(*args, **kwargs)
-        _state["depth"] -= 1
-    return wrapper
 
 
 def report():
