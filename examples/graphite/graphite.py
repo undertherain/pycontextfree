@@ -58,14 +58,14 @@ def dot():
 
 
 # pylint: disable=E0102
-@rule(0.002)
+@rule(0.02)
 def dot():
     with rotate(math.pi / 2):
         line()  # {r 90 h 0 }  }
 
 
 # pylint: disable=E0102
-@rule(0.002)
+@rule(0.02)
 def dot():
     with rotate(math.pi / 2):
         with color(hue=0.01):
