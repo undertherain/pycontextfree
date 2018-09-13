@@ -12,7 +12,7 @@ logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG)
 
 
 # pylint: disable=E0102
-@register_rule(1)
+@rule(1)
 def wall():
     with translate(0.95, 0):
         with rotate(0.01):
@@ -21,7 +21,7 @@ def wall():
 
 
 # pylint: disable=E0102
-@register_rule(1)
+@rule(1)
 def wall():
     box()
     with translate(0.95, 0):
@@ -32,7 +32,7 @@ def wall():
 
 
 # pylint: disable=E0102
-@register_rule(0.09)
+@rule(0.09)
 def wall():
     box()
     with scale(0.975):
@@ -44,7 +44,7 @@ def wall():
 
 
 # pylint: disable=E0102
-@register_rule(0.05)
+@rule(0.05)
 def wall():
     with translate(0.97, 0):
         with scale(1.5):
