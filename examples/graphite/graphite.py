@@ -12,6 +12,7 @@ from contextfree.contextfree import init, rule, scale, color, box, rotate, trans
 logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG)
 
 
+# pylint: disable=E0102
 @rule(1)
 def trunk():
     with scale(0.5):
@@ -19,31 +20,36 @@ def trunk():
             branch()
 
 
+# pylint: disable=E0102
 @rule(1)
 def branch():
     with rotate(math.pi / 6):
         branch()
 
 
+# pylint: disable=E0102
 @rule(0.01)
 def branch():
     line()
 
 
+# pylint: disable=E0102
 @rule(1)
 def line():  # {300 * [r .1 x 2] dot {} }
     for i in range(300):
         with rotate(i * math.pi / 1800):
-           with translate(2 * i, 0):
+            with translate(2 * i, 0):
                 dot()
 
 
+# pylint: disable=E0102
 @rule(1)
 def dot():
     with translate(0, 0.1):
         dot()
 
 
+# pylint: disable=E0102
 @rule(1)
 def dot():
     with rotate(math.pi / 2):
@@ -51,12 +57,14 @@ def dot():
     trail()
 
 
+# pylint: disable=E0102
 @rule(0.002)
 def dot():
     with rotate(math.pi / 2):
         line()  # {r 90 h 0 }  }
 
 
+# pylint: disable=E0102
 @rule(0.002)
 def dot():
     with rotate(math.pi / 2):
@@ -64,6 +72,7 @@ def dot():
             branch()
 
 
+# pylint: disable=E0102
 @rule(1)
 def trail():  # { 200    * [y 2 a -0.02] grain {a -.1} }
     for i in range(200):
@@ -72,6 +81,7 @@ def trail():  # { 200    * [y 2 a -0.02] grain {a -.1} }
                 grain()
 
 
+# pylint: disable=E0102
 @rule(1)
 def grain():
     gr()
@@ -83,12 +93,14 @@ def gr():
         gr()
 
 
+# pylint: disable=E0102
 @rule(1)
 def gr():
     with translate(-1, 0):
         gr()
 
 
+# pylint: disable=E0102
 @rule(1)
 def gr():
     box()
