@@ -12,7 +12,7 @@ import cairocffi as cairo
 
 logger = logging.getLogger(__name__)
 
-MAX_ELEMENTS = 200000
+MAX_ELEMENTS = 1000000
 MAX_DEPTH = 8
 HEIGHT = 100
 WIDTH = 100

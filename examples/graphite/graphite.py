@@ -1,41 +1,102 @@
+"""
+Graphite demo
+based on CFDG demo by bluesky
+https://www.contextfreeart.org/gallery2/#design/561
+
+THIS DEMO IS NOT COMPLETE YET ><
+"""
 import logging
-from contextfree.contextfree import *
+import math
+from contextfree.contextfree import init, rule, scale, color, box, rotate, translate, write_to_png
 
 logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG)
 
 
-rule(1)
+@rule(1)
 def trunk():
     with scale(0.5):
         with color(hue=0.001):
             branch()
 
-# rule branch { branch {r 30  } }
-# rule branch 0.01 { line {} }
 
-# rule line {300 * [r .1 x 2] dot {} }
+@rule(1)
+def branch():
+    with rotate(math.pi / 6):
+        branch()
 
-# rule dot { dot {y .1  }  }
-# rule dot { 
-  # trail { r 90 } 
-  # trail{} }
-# rule dot 0.002 {line {r 90 h 0 }  }
-# rule dot 0.002 {branch {r 90 h 30}  }
 
-# rule trail { 200    * [y 2 a -0.02] grain {a -.1} }
+@rule(0.01)
+def branch():
+    line()
 
-# rule grain { gr {} }
 
-# rule gr { gr { y 0} }
-# rule gr { gr { x 1 } }
-# rule gr { gr { y -0} }
-# rule gr { gr { x -1}  } 
-# rule gr {SQUARE {}}
+@rule(1)
+def line():  # {300 * [r .1 x 2] dot {} }
+    for i in range(300):
+        with rotate(i * math.pi / 1800):
+           with translate(2 * i, 0):
+                dot()
+
+
+@rule(1)
+def dot():
+    with translate(0, 0.1):
+        dot()
+
+
+@rule(1)
+def dot():
+    with rotate(math.pi / 2):
+        trail()
+    trail()
+
+
+@rule(0.002)
+def dot():
+    with rotate(math.pi / 2):
+        line()  # {r 90 h 0 }  }
+
+
+@rule(0.002)
+def dot():
+    with rotate(math.pi / 2):
+        with color(hue=0.01):
+            branch()
+
+
+@rule(1)
+def trail():  # { 200    * [y 2 a -0.02] grain {a -.1} }
+    for i in range(200):
+        with translate(0, 2 * i):
+            with color(alpha=0.95 ** i):
+                grain()
+
+
+@rule(1)
+def grain():
+    gr()
+
+
+@rule
+def gr():
+    with translate(1, 0):
+        gr()
+
+@rule
+def gr():
+    with translate(-1, 0):
+        gr()
+
+
+@rule(1)
+def gr():
+    box()
+
 
 def main():
-    init(canvas_size=(600, 600), background_color="#e5d5ac", face_color="#0a0707", max_depth=120)
+    init(canvas_size=(600, 600), background_color="#ffffff", face_color="#0a0707", max_depth=420)
     trunk()
-    write_to_png("/tmp/trunk.png")
+    write_to_png("/tmp/graphite.png")
 
 
 if __name__ == "__main__":
