@@ -77,12 +77,13 @@ def grain():
     gr()
 
 
-@rule
+@rule(1)
 def gr():
     with translate(1, 0):
         gr()
 
-@rule
+
+@rule(1)
 def gr():
     with translate(-1, 0):
         gr()
