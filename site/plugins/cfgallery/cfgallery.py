@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 
-import json
 import os
 import sys
 from nikola.plugin_categories import RestExtension
 #from nikola.utils import get_logger, STDERR_HANDLER
-from nikola.utils import LOGGER
+from nikola.utils import LOGGER, copy_file
 
 from docutils import nodes
 from docutils.parsers.rst import Directive, directives
@@ -27,13 +26,6 @@ def filter_entry(metadata):
         else:
             filtered[key] = ""
     filtered["meta"] = metadata
-    if "cite" in metadata:
-        str_bibtex = ["\n" + entry["contribution"] + "\n\n" + bibjson_to_bibtex(entry["bibtex"]) for entry in metadata["cite"]]
-        str_bibtex = "\n".join(str_bibtex)
-        filtered["bibtex"] = str_bibtex
-        # todo: show all metadata entries
-    else:
-        filtered["bibtex"] = ""
     return filtered
 
 
@@ -51,20 +43,24 @@ class SampleProcessor():
         for fname in get_entries(os.path.join(base_path, "../examples")):
             LOGGER.info("processing " + fname)
             try:
-                #data = load_json(fname)
-                data = fname
-                #data = filter_entry(data)
-                #data["id"] = cnt
-                #cnt += 1
+                # data = load_json(fname)
+                data = {}
+                data["path"] = fname
+                data["name"] = os.path.basename(os.path.dirname(fname))
+                data["id"] = cnt
+                # copy image to output 
+                output_folder = os.path.join(plugin_path, "../../output/gallery")
+                copy_file(fname[:-3] + ".png", output_folder)
+                data["image"] = "/gallery/" + os.path.basename(fname)[:-3] + ".png"
+                cnt += 1
                 self.rows.append(data)
             except Exception as e:
-                LOGGER.warning("error processing " + fname  + str(e))
+                LOGGER.warning("error processing " + fname + str(e))
 
     def render(self):
         self.read_files()
-        #mytemplate = Template(filename=os.path.join(plugin_path,'data.tmpl'))
-        #result = mytemplate.render(rows=self.rows)
-        result = "<div> gallery </div>"
+        mytemplate = Template(filename=os.path.join(plugin_path, 'gallery.tmpl'))
+        result = mytemplate.render(rows=self.rows)
         return result
 
 
@@ -99,4 +95,4 @@ def main():  # for developing
 if __name__ == "__main__":
     main()
     mp = SampleProcessor()
-    mp.render()
+    print(mp.render())
