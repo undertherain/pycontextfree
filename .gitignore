@@ -1,0 +1,8 @@
+site/.doit.db
+
+/.project
+/.pydevproject
+/.settings
+logs
+
+__pycache__
