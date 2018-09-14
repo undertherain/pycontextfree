@@ -1,0 +1,13 @@
+[Core]
+Name = cfgallery
+Module = cfgallery
+
+[Nikola]
+PluginCategory = CompilerExtension
+Compiler = rest
+
+[Documentation]
+Author = Aleksandr Drozd
+Version = 0.3
+Website = https://blackbird.pw
+Description = Generate gallery from pycontextfree examples
