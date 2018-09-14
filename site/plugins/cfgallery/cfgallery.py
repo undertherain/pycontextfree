@@ -40,20 +40,22 @@ def filter_entry(metadata):
 def get_entries(path):
     for dirName, subdirList, fileList in os.walk(path, topdown=False):
         for fname in fileList:
-            yield(os.path.join(dirName, fname))
+            if fname.endswith(".py"):
+                yield(os.path.join(dirName, fname))
 
 
 class SampleProcessor():
     def read_files(self):
         self.rows = []
         cnt = 0
-        for fname in get_entries(os.path.join(base_path, "aux/resources/vecto-resources/resources")):
+        for fname in get_entries(os.path.join(base_path, "../examples")):
             LOGGER.info("processing " + fname)
             try:
-                data = load_json(fname)
-                data = filter_entry(data)
-                data["id"] = cnt
-                cnt += 1
+                #data = load_json(fname)
+                data = fname
+                #data = filter_entry(data)
+                #data["id"] = cnt
+                #cnt += 1
                 self.rows.append(data)
             except Exception as e:
                 LOGGER.warning("error processing " + fname  + str(e))
