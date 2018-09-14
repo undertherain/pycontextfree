@@ -28,5 +28,9 @@ function renderGallery(jsonContent, thumbnailSize) {
         div.appendChild(link);
         container.appendChild(div);
     }
+    baguetteBox.run('#gallery_container', {
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
 }
 

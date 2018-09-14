@@ -9,9 +9,6 @@
 .. author: Aleksandr Drozd
 -->
 
-=======
-Gallery
-=======
 
 .. cfgallery::
 
