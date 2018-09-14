@@ -1,3 +1,5 @@
+<h1 class="text-center">Gallery</h1>
+<br />
 <%!
     import json
 %>
@@ -75,8 +77,11 @@ ${"<a href="+row["url"]+"><i class=\"fa fa-download\"></i></a>&nbsp;" if len(row
 </%def>
 
 <%def name="makerow(row)">
-    <div>
-        <h2> ${row["name"]} </h2>
+    <div class="w100 text-center">
+        <h2> ${row["name"]}
+        <a href="${row['url']}"> 
+        <i class="far fa-file-code"></i> </a>
+        </h2>
         <img src=${row["image"]} />
     </div>
     <hr />

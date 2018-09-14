@@ -47,8 +47,8 @@ class SampleProcessor():
                 data = {}
                 data["path"] = fname
                 data["name"] = os.path.basename(os.path.dirname(fname))
+                data["url"] = "https://github.com/undertherain/pycontextfree/blob/master/examples/" + data["name"] + "/" + os.path.basename(fname)
                 data["id"] = cnt
-                # copy image to output 
                 output_folder = os.path.join(plugin_path, "../../output/gallery")
                 copy_file(fname[:-3] + ".png", output_folder)
                 data["image"] = "/gallery/" + os.path.basename(fname)[:-3] + ".png"
