@@ -79,7 +79,7 @@ NAVIGATION_LINKS = {
     (
         ("/", "About"),
         ("/gallery", "Gallery"),
-        ("/about/", "API referece"),
+        ("/", "API referece"),
     )
 }
 #        ("/", "Projects"),
