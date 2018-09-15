@@ -78,7 +78,8 @@ ${"<a href="+row["url"]+"><i class=\"fa fa-download\"></i></a>&nbsp;" if len(row
 
 <%def name="makerow(row)">
     <div class="w100 text-center">
-        <h2> ${row["name"]}
+        <h2>
+        ${row["name"]}
         <a href="${row['url']}"> 
         <i class="far fa-file-code"></i> </a>
         </h2>

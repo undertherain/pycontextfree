@@ -2,6 +2,8 @@
 
 import os
 import sys
+import shutil
+import html
 from nikola.plugin_categories import RestExtension
 #from nikola.utils import get_logger, STDERR_HANDLER
 from nikola.utils import LOGGER, copy_file
@@ -38,7 +40,7 @@ def get_entries(path):
 
 class Plugin(RestExtension):
 
-    name = "cfgallery"
+    name = "fgallery"
 
     def set_site(self, site):
         self.site = site
@@ -66,10 +68,14 @@ class CFGallery(Directive):
                 data["name"] = os.path.basename(os.path.dirname(fname))
                 data["url"] = "https://github.com/undertherain/pycontextfree/blob/master/examples/" + data["name"] + "/" + os.path.basename(fname)
                 data["id"] = cnt
-                output_folder = os.path.join(plugin_path, "../../output/gallery")
-                # self.site.
-                copy_file(fname[:-3] + ".png", output_folder)
-                data["image"] = "/gallery/" + os.path.basename(fname)[:-3] + ".png"
+                output_folder = os.path.join(base_path, self.site.config['OUTPUT_FOLDER'], "gallery")
+                os.makedirs(output_folder, exist_ok=True)
+                # data["name"] = html.escape(output_folder)
+                print("AAAAAAAAAAAAAAAAAAAAAAAAa")
+                name_image = os.path.basename(fname)[:-3] + ".png"
+                # copy_file(fname[:-3] + ".png", os.path.join(output_folder, name_image))
+                shutil.copy(fname[:-3] + ".png", os.path.join(output_folder, name_image))
+                data["image"] = "/gallery/" + name_image
                 cnt += 1
                 self.rows.append(data)
             except Exception as e:
