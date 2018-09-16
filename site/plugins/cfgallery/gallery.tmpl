@@ -1,85 +1,15 @@
 <h1 class="text-center">Gallery</h1>
 <br />
-<%!
-    import json
-%>
+
 % for row in rows:
     ${makerow(row)}
 % endfor
 
 
-<%def name="make_bib_btn(row)">
-% if len(row["bibtex"])>0:
-        <a href="javascript:void(0)" onclick="
-        (function(target, id) {
-          if ($('#' + id).css('display') == 'block')
-             {
-               $('#' + id).hide('fast');
-               $(target).text('bibtex&#x25BC;')
-             }
-          else
-             {
-               $('#' + id).show('fast');
-               $(target).text('bibtex&#x25B2;')
-             }
-          }
-        )(this, 'bibtex-${row["id"]}');">
-        bibtex&#x25BC;
-        </a>&nbsp;
-% endif
-</%def>
-
-<%def name="make_bib_div(row)">
-% if len(row["bibtex"])>0:
-<div id="bibtex-${row['id']}" style="display:none">
-<pre>
-${row["bibtex"]}
-</pre>
-</div>
-% endif
-</%def>
-
-
-<%def name="make_meta_btn(row)">
-        <a href="javascript:void(0)" onclick="
-        (function(target, id) {
-          if ($('#' + id).css('display') == 'block')
-             {
-               $('#' + id).hide('fast');
-               $(target).text('metadata&#x25BC;')
-             }
-          else
-             {
-               $('#' + id).show('fast');
-               $(target).text('metadata&#x25B2;')
-             }
-          }
-        )(this, 'meta-${row["id"]}');">
-        metadata&#x25BC;
-        </a>
-</%def>
-
-
-<%def name="make_meta_div(row)">
-<div id="meta-${row['id']}" style="display:none">
-<pre>
-${json.dumps(row["meta"], sort_keys=False, indent=4)}
-</pre>
-</div>
-</%def>
-
-<%def name="make_download_btn(row)">
-${"<a href="+row["url"]+"><i class=\"fa fa-download\"></i></a>&nbsp;" if len(row["url"])>1 else ""}
-</%def>
-
-<%def name="make_home_btn(row)">
-          ${"<a href="+row["project_page"]+"><i class=\"fa fa-home\"></i></a>&nbsp;" if len(row["project_page"])>1 else ""}
-</%def>
-
 <%def name="makerow(row)">
     <div class="w100 text-center">
         <h2>
-        ${row["name"]}
+        ${row["name"] |h}
         <a href="${row['url']}"> 
         <i class="far fa-file-code"></i> </a>
         </h2>

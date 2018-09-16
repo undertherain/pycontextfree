@@ -80,6 +80,7 @@ NAVIGATION_LINKS = {
         ("/", "About"),
         ("/gallery", "Gallery"),
         ("/", "API referece"),
+        ("https://github.com/undertherain/pycontextfree", "Github repo"),
     )
 }
 #        ("/", "Projects"),
