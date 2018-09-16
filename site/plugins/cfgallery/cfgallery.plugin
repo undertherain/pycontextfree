@@ -3,11 +3,11 @@ Name = cfgallery
 Module = cfgallery
 
 [Nikola]
-PluginCategory = CompilerExtension
-Compiler = rest
+PluginCategory = ShortCode
+
 
 [Documentation]
 Author = Aleksandr Drozd
-Version = 0.3
+Version = 0.1
 Website = https://blackbird.pw
-Description = Generate gallery from pycontextfree examples
+Description = Help to generate control
