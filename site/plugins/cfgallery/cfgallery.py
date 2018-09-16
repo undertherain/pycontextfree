@@ -8,7 +8,7 @@ base_path = plugin_path.split("plugins")[0]
 
 
 def get_entries(path):
-    for dirName, subdirList, fileList in os.walk(path, topdown=False):
+    for dirName, _, fileList in os.walk(path, topdown=False):
         for fname in fileList:
             if fname.endswith(".py"):
                 yield(os.path.join(dirName, fname))
