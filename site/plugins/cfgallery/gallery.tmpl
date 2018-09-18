@@ -10,7 +10,7 @@
     <div class="w100 text-center">
         <h2>
         ${row["name"] |h}
-        <a href="${row['url']}"> 
+        <a href="${row['url'] |u}"> 
         <i class="far fa-file-code"></i> </a>
         </h2>
         <img src=${row["image"]} />
