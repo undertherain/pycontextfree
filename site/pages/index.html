@@ -1,0 +1,50 @@
+<!--
+.. title: Home
+.. slug: index
+.. date: 2018-09-01 09:39:34 UTC
+.. tags:
+.. category:
+.. link:
+.. type: text
+.. hidetitle: True
+.. author: Aleksandr Drozd
+-->
+
+
+<section>
+          <div class="text-center">
+            <h1>pycontextfree</h1>
+            <hr class="light my-4">
+          </div>
+
+</section>
+
+<section>
+      <div class="container">
+        <p>
+            Pycontextfree is a library for creating images with Python by defining a set of generative rules. This approach is inspired by <a href="https://www.contextfreeart.org/">CFDG tool</a>, yet unlike CFDG where special language is used, with pycontextfree rules are written in pure Python. This gives you extra flexibility by allowing to combine probabilistic rules with pythonic control flow and, additionally, by exposing cairo-cffi backend. In essence pycontextfree provides a set of drawing primitives, nested scopes of transformed geometry and photometry, and a mechanism to use Python functions as probabilistic rules. So that you can write something like this (on the left) and get something like that (on the right):
+        </p>
+      </div>
+
+
+      <div class="container">
+        <div class="row align-items-center h-100">
+          <div class="col-6 mx-auto text-center">
+            {{% listing cf.py python linenumbers=False %}}
+          </div>
+          <div class="col-6 mx-auto text-center">
+            <a href="https://github.com/undertherain/pycontextfree/">
+              <img src="https://user-images.githubusercontent.com/1635907/30413703-9e585f54-995a-11e7-8566-bdded386be8d.png" alt="pycontextfree sample"/>
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+<section>
+    You can install pycontextfree by typing  <code> pip3 install pycontextfree</code>. 
+    For mode details, take a look at the <a href="/"> tutorial </a>, 
+    <a href="/">API refence</a>
+    and <a href="/gallery/">examples in the gallery</a>.
+</section>

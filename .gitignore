@@ -1,0 +1,13 @@
+site/.doit.db
+cache
+output
+.doit.db
+.doit.db.db
+.venv
+
+/.project
+/.pydevproject
+/.settings
+logs
+
+__pycache__

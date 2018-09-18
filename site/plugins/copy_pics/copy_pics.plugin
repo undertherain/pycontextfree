@@ -1,0 +1,13 @@
+[Core]
+name = copy_pics
+module = copy_pics
+
+[Documentation]
+author = 1
+version = 1.0
+website = https://getnikola.com/
+description = Cope
+
+[Nikola]
+PluginCategory = Task
+

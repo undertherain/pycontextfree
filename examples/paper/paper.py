@@ -22,7 +22,7 @@ def pyramid():
 
 
 def main():
-    init(canvas_size=(400, 400), face_color="#48d341", max_depth=10000)
+    init(canvas_size=(600, 600), face_color="#48d341", max_depth=10000)
     with scale(3):
         pyramid()
     write_to_png("/tmp/paper.png")

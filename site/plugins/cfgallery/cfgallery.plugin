@@ -1,0 +1,13 @@
+[Core]
+Name = cfgallery
+Module = cfgallery
+
+[Nikola]
+PluginCategory = ShortCode
+
+
+[Documentation]
+Author = Aleksandr Drozd
+Version = 0.1
+Website = https://blackbird.pw
+Description = Help to generate control

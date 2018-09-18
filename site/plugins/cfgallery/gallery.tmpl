@@ -1,0 +1,19 @@
+<h1 class="text-center">Gallery</h1>
+<br />
+
+% for row in rows:
+    ${makerow(row)}
+% endfor
+
+
+<%def name="makerow(row)">
+    <div class="w100 text-center">
+        <h2>
+        ${row["name"] |h}
+        <a href="${row['url']} "> 
+        <i class="far fa-file-code"></i> </a>
+        </h2>
+        <img src=${row["image"]} />
+    </div>
+    <hr />
+</%def>
