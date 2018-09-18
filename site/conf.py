@@ -17,7 +17,7 @@ import time
 
 # Data about this site
 BLOG_AUTHOR = "Aleksandr Drozd"  # (translatable)
-BLOG_TITLE = "pycontextfree"  # (translatable)
+BLOG_TITLE = "About pycontextfree"  # (translatable)
 # This is the main URL for your site. It will be used
 # in a prominent link. Don't forget the protocol (http/https)!
 SITE_URL = "http://pycontextfree.blackbird.pw/"
@@ -77,9 +77,8 @@ TRANSLATIONS_PATTERN = '{path}.{lang}.{ext}'
 NAVIGATION_LINKS = {
     DEFAULT_LANG:
     (
-        ("/", "About"),
-        ("/gallery", "Gallery"),
-        ("/", "API referece"),
+        ("/gallery/", "Gallery"),
+        ("/", "API reference"),
         ("https://github.com/undertherain/pycontextfree", "Github repo"),
     )
 }
