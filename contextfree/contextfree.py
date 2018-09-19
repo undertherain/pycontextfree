@@ -23,7 +23,7 @@ _background_color = None
 _rules = {}
 
 
-def _init__state():
+def _init_state():
     global _state
     _state = {}
     _state["depth"] = 0
@@ -68,6 +68,7 @@ def get_npimage(transparent=False, y_origin="top"):
 def render_record_surface():
     # image_surface = cairo.SVGSurface(None, HEIGHT, WIDTH)
     x_start, y_start, width_actual, height_actual = surface.ink_extents()
+    logger.debug(f"x start={x_start}, y start={y_start}, width actual={width_actual}, height_actual={height_actual}")
     # print(x_start, y_start, width_actual, height_actual)
     # shrink and translate to match specified width and height
     image_surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, WIDTH, HEIGHT)
@@ -169,7 +170,7 @@ def init(canvas_size=(512, 512), max_depth=12, face_color=None, background_color
     global MAX_DEPTH
     global WIDTH
     global HEIGHT
-    _init__state()
+    _init_state()
     sys.setrecursionlimit(20000)
     MAX_DEPTH = max_depth
     WIDTH, HEIGHT = canvas_size

@@ -3,12 +3,10 @@ Ancient Map demo
 based on CFDG demo by the same name
 https://www.contextfreeart.org/gallery2/#design/185
 """
-import logging
 import math
 from contextfree.contextfree import *
 
 
-logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG)
 
 
 # pylint: disable=E0102
