@@ -78,7 +78,7 @@ NAVIGATION_LINKS = {
     DEFAULT_LANG:
     (
         ("/gallery/", "Gallery"),
-        ("/", "Tutorial"),
+        ("https://github.com/undertherain/pycontextfree/blob/master/examples/tutorial.ipynb", "Tutorial"),
         ("/", "API reference"),
         ("https://github.com/undertherain/pycontextfree", "Github repo"),
     )
