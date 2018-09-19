@@ -5,11 +5,8 @@ https://www.contextfreeart.org/gallery2/#design/561
 
 THIS DEMO IS NOT COMPLETE YET ><
 """
-import logging
 import math
 from contextfree.contextfree import init, rule, scale, color, box, rotate, translate, write_to_png
-
-logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG)
 
 
 # pylint: disable=E0102
