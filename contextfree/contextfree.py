@@ -25,11 +25,14 @@ _rules = {}
 
 def _init_state():
     global _state
-    global _rules
     _state = {}
     _state["depth"] = 0
     _state["cnt_elements"] = 0
-    _rules = {}
+
+
+# def _rest_rules():
+#     global _rules
+#     _rules = {}
 
 
 def surface_to_image(surface):
