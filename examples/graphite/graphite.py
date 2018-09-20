@@ -6,7 +6,7 @@ https://www.contextfreeart.org/gallery2/#design/561
 THIS DEMO IS NOT COMPLETE YET ><
 """
 import math
-from contextfree.contextfree import init, rule, scale, color, box, rotate, translate, write_to_png
+from contextfree import init, rule, scale, color, box, rotate, translate, write_to_png
 
 
 # pylint: disable=E0102

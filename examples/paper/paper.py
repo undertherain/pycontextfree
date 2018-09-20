@@ -1,4 +1,4 @@
-from contextfree.contextfree import *
+from contextfree import *
 
 
 def sheet():
