@@ -2,8 +2,8 @@
 
 import logging
 import unittest
-from contextfree.contextfree import init, translate, scale, circle
-from contextfree.contextfree import rule, call_rule
+from contextfree import init, translate, scale, circle
+from contextfree import rule, call_rule
 
 
 logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG)

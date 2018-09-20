@@ -1,4 +1,4 @@
-from contextfree.contextfree import *
+from contextfree import *
 from math import sqrt, pi
 
 side = 3 / sqrt(3)

@@ -4,8 +4,10 @@ based on CFDG demo by the same name
 https://www.contextfreeart.org/gallery2/#design/185
 """
 import math
-from contextfree.contextfree import *
+# import logging
+from contextfree import *
 
+# logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG)
 
 
 

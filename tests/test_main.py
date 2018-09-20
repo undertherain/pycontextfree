@@ -1,10 +1,10 @@
 import logging
 import unittest
 import numpy as np
-from contextfree.contextfree import init, get_npimage, write_to_png, report, check_limits
-from contextfree.contextfree import circle, box, line, triangle
-from contextfree.contextfree import translate, color, scale, rotate, flip_y
-from contextfree.contextfree import MAX_ELEMENTS
+from contextfree import init, get_npimage, write_to_png, report, check_limits
+from contextfree import circle, box, line, triangle
+from contextfree import translate, color, scale, rotate, flip_y
+from contextfree import MAX_ELEMENTS
 
 
 logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG)

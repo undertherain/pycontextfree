@@ -1,6 +1,6 @@
 import unittest
-from contextfree.contextfree import circle
-from contextfree.contextfree import init, display_ipython, htmlcolor_to_rgb
+from contextfree import circle
+from contextfree import init, display_ipython, htmlcolor_to_rgb
 
 
 class Tests(unittest.TestCase):

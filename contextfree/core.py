@@ -8,7 +8,7 @@ import logging
 import sys
 import numpy as np
 import cairocffi as cairo
-
+import contextfree
 
 logger = logging.getLogger(__name__)
 
@@ -18,14 +18,16 @@ HEIGHT = 100
 WIDTH = 100
 SIZE_MIN_FEATURE = 0.5
 _state = {}
-_ctx = None
 _background_color = None
 _rules = {}
-
+surface = None
 
 def _init_state():
-    global _state
-    _state = {}
+    # global _state
+    # _state = {}
+    global surface
+    surface = cairo.RecordingSurface(cairo.CONTENT_COLOR_ALPHA, None)
+    _state["ctx"] = cairo.Context(surface)
     _state["depth"] = 0
     _state["cnt_elements"] = 0
 
@@ -109,7 +111,7 @@ def check_limits(some_function):
         global _state
         _state["cnt_elements"] += 1
         _state["depth"] += 1
-        matrix = _ctx.get_matrix()
+        matrix = _state["ctx"].get_matrix()
         # print(matrix)
         if _state["depth"] >= MAX_DEPTH:
             logger.info("stop recursion by reaching max depth {}".format(MAX_DEPTH))
@@ -168,27 +170,26 @@ def init(canvas_size=(512, 512), max_depth=12, face_color=None, background_color
     """Initializes global state"""
     global _background_color
     _background_color = background_color
-    global surface
     global _ctx
     global cnt_elements
     # global depth
     global MAX_DEPTH
     global WIDTH
     global HEIGHT
+
     _init_state()
+    _state["a"] = 5
     sys.setrecursionlimit(20000)
     MAX_DEPTH = max_depth
     WIDTH, HEIGHT = canvas_size
     #   surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, WIDTH, HEIGHT)
-    surface = cairo.RecordingSurface(cairo.CONTENT_COLOR_ALPHA, None)
-    _ctx = cairo.Context(surface)
     # _ctx.translate(WIDTH / 2, HEIGHT / 2)
     # scale = min(WIDTH, HEIGHT)
     # _ctx.scale(scale, -scale)  # Normalizing the canvas
     # _ctx.rotate(math.pi)
 
     if face_color is not None:
-        _ctx.set_source_rgb(* htmlcolor_to_rgb(face_color))
+        _state["ctx"].set_source_rgb(* htmlcolor_to_rgb(face_color))
     logger.debug("Init done")
 
 
@@ -202,13 +203,11 @@ class rotate:
         self.matrix_old = None
 
     def __enter__(self):
-        global _ctx
-        self.matrix_old = _ctx.get_matrix()
-        _ctx.rotate(self.angle)
+        self.matrix_old = _state["ctx"].get_matrix()
+        _state["ctx"].rotate(self.angle)
 
     def __exit__(self, type, value, traceback):
-        global _ctx
-        _ctx.set_matrix(self.matrix_old)
+        _state["ctx"].set_matrix(self.matrix_old)
 
 
 class translate:
@@ -219,13 +218,11 @@ class translate:
         self.offset_y = offset_y
 
     def __enter__(self):
-        global _ctx
-        self.matrix_old = _ctx.get_matrix()
-        _ctx.translate(self.offset_x, self.offset_y)
+        self.matrix_old = _state["ctx"].get_matrix()
+        _state["ctx"].translate(self.offset_x, self.offset_y)
 
     def __exit__(self, type, value, traceback):
-        global _ctx
-        _ctx.set_matrix(self.matrix_old)
+        _state["ctx"].set_matrix(self.matrix_old)
 
 
 class scale:
@@ -239,26 +236,22 @@ class scale:
             self.scale_y = scale_y
 
     def __enter__(self):
-        global _ctx
-        self.matrix_old = _ctx.get_matrix()
-        _ctx.scale(self.scale_x, self.scale_y)
+        self.matrix_old = _state["ctx"].get_matrix()
+        _state["ctx"].scale(self.scale_x, self.scale_y)
 
     def __exit__(self, type, value, traceback):
-        global _ctx
-        _ctx.set_matrix(self.matrix_old)
+        _state["ctx"].set_matrix(self.matrix_old)
 
 
 class flip_y:
     """Defines scope of a view being reflected along the y axis"""
 
     def __enter__(self):
-        global _ctx
-        self.matrix_old = _ctx.get_matrix()
-        _ctx.scale(-1, 1)
+        self.matrix_old = _state["ctx"].get_matrix()
+        _state["ctx"].scale(-1, 1)
 
     def __exit__(self, type, value, traceback):
-        global _ctx
-        _ctx.set_matrix(self.matrix_old)
+        _state["ctx"].set_matrix(self.matrix_old)
 
 
 class color:
@@ -275,8 +268,7 @@ class color:
         self.source_old = None
 
     def __enter__(self):
-        global _ctx
-        self.source_old = _ctx.get_source()
+        self.source_old = _state["ctx"].get_source()
         r, g, b, a = self.source_old.get_rgba()
         # print("rgb old:", r, g, b)
         hue, lightness, saturation = colorsys.rgb_to_hls(r, g, b)
@@ -299,55 +291,11 @@ class color:
         # rgba = [int(r * 255), int(g * 255), int(b * 255), a]
         rgba = [r, g, b, a]
         # print(rgba)
-        _ctx.set_source_rgba(* rgba)
+        _state["ctx"].set_source_rgba(* rgba)
 
     def __exit__(self, type, value, traceback):
-        global _ctx
-        _ctx.set_source(self.source_old)
+        _state["ctx"].set_source(self.source_old)
 
-# ----------------- primitives ----------------------
-
-
-def line(x, y, width=0.1):
-    """Draw a line"""
-    global _ctx
-    _ctx.move_to(0, 0)
-    _ctx.line_to(x, y)
-    _ctx.close_path()
-    # _ctx.set_source_rgb (0.3, 0.2, 0.5)
-    _ctx.set_line_width(width)
-    _ctx.stroke()
-
-
-def circle(rad=0.5):
-    """Draw a circle"""
-    global _ctx
-    _ctx.arc(0, 0, rad, 0, 2 * math.pi)
-    # _ctx.stroke_preserve()
-    # _ctx.set_source_rgb(0.3, 0.4, 0.6)
-    _ctx.fill()
-
-
-def triangle(rad=0.5):
-    """Draw a triangle"""
-    global _ctx
-    # half_height = math.sqrt(3) * side / 6
-    # half_height = side / 2
-    side = 3 * rad / math.sqrt(3)
-    _ctx.move_to(0, -rad / 2)
-    _ctx.line_to(-side / 2, -rad / 2)
-    _ctx.line_to(0, rad)
-    _ctx.line_to(side / 2, -rad / 2)
-    _ctx.close_path()
-    _ctx.fill()
-
-
-def box(side=1):
-    """Draw a box"""
-    global _ctx
-    half_side = side / 2
-    _ctx.rectangle(-half_side, -half_side, side, side)
-    _ctx.fill()
 
 
 def rnd(diap):

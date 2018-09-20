@@ -1,8 +1,8 @@
 import random
 import unittest
-from contextfree.contextfree import circle
-from contextfree.contextfree import init
-from contextfree.contextfree import rnd, prnd, coinflip
+from contextfree import circle
+from contextfree import init
+from contextfree import rnd, prnd, coinflip
 
 
 class Tests(unittest.TestCase):
