@@ -8,6 +8,7 @@ def circle(rad=0.5):
     """Draw a circle"""
     _ctx = _state["ctx"]
     _ctx.arc(0, 0, rad, 0, 2 * math.pi)
+    _ctx.set_line_width(0)
     _ctx.stroke_preserve()
     # _ctx.set_source_rgb(0.3, 0.4, 0.6)
     _ctx.fill()
