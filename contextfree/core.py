@@ -32,11 +32,6 @@ def _init_state():
     _state["cnt_elements"] = 0
 
 
-# def _rest_rules():
-#     global _rules
-#     _rules = {}
-
-
 def surface_to_image(surface):
     """Renders current buffer surface to IPython image"""
     from IPython.display import Image
@@ -295,7 +290,6 @@ class color:
 
     def __exit__(self, type, value, traceback):
         _state["ctx"].set_source(self.source_old)
-
 
 
 def htmlcolor_to_rgb(str_color):
