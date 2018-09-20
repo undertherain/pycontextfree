@@ -8,7 +8,6 @@ import logging
 import sys
 import numpy as np
 import cairocffi as cairo
-import contextfree
 
 logger = logging.getLogger(__name__)
 
