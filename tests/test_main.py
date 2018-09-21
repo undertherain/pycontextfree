@@ -3,7 +3,7 @@ import unittest
 import numpy as np
 from contextfree import init, get_npimage, write_to_png, report, check_limits
 from contextfree import circle, box, line, triangle
-from contextfree import translate, color, scale, rotate, flip_y
+from contextfree import transform, translate, color, scale, rotate, flip_y
 from contextfree import MAX_ELEMENTS
 
 
@@ -57,6 +57,14 @@ class Tests(unittest.TestCase):
         write_to_png("/tmp/rotate.png")
         a = get_npimage()
         self.assertIsInstance(a, np.ndarray)
+
+    def test_loop(self):
+        init()
+        with transform(offset_x=1, alpha=0.9) as t:
+            for i in range(10):
+                box(0.5)
+                t()
+        write_to_png("/tmp/loop.png")
 
     def test_flip(self):
         init()

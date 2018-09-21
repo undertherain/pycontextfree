@@ -193,7 +193,7 @@ def init(canvas_size=(512, 512), max_depth=12, face_color=None, background_color
 class transform:
     """Defines a scope of transformed geometry and photometry"""
 
-    def __init__(self, offset_x=0, offset_y=0, angle=None, scale_x=1, scale_y=1):
+    def __init__(self, offset_x=0, offset_y=0, angle=None, scale_x=1, scale_y=1, hue=0, lightness=0, saturation=0, alpha=1):
         self.offset_x = offset_x
         self.offset_y = offset_y
         self.angle = angle
@@ -209,10 +209,13 @@ class transform:
 
     def __enter__(self):
         self.matrix_old = _state["ctx"].get_matrix()
+        self.source_old = _state["ctx"].get_source()
         self()
+        return self
 
     def __exit__(self, type, value, traceback):
         _state["ctx"].set_matrix(self.matrix_old)
+        _state["ctx"].set_source(self.source_old)
 
 
 class rotate(transform):
