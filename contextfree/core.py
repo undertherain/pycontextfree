@@ -190,52 +190,53 @@ def init(canvas_size=(512, 512), max_depth=12, face_color=None, background_color
 
 # -------------------transformations------------------
 
-class rotate:
+class transform:
+    """Defines a scope of transformed geometry and photometry"""
+
+    def __init__(self, offset_x=0, offset_y=0, angle=None, scale_x=1, scale_y=1):
+        self.offset_x = offset_x
+        self.offset_y = offset_y
+        self.angle = angle
+        self.scale_x = scale_x
+        self.scale_y = scale_y
+
+    def __call__(self):
+        ctx = _state["ctx"]
+        if self.angle is not None:
+            ctx.rotate(self.angle)
+        ctx.translate(self.offset_x, self.offset_y)
+        ctx.scale(self.scale_x, self.scale_y)
+
+    def __enter__(self):
+        self.matrix_old = _state["ctx"].get_matrix()
+        self()
+
+    def __exit__(self, type, value, traceback):
+        _state["ctx"].set_matrix(self.matrix_old)
+
+
+class rotate(transform):
     """Defines a scope of rotated view """
 
     def __init__(self, angle):
-        self.angle = angle
-        self.matrix_old = None
-
-    def __enter__(self):
-        self.matrix_old = _state["ctx"].get_matrix()
-        _state["ctx"].rotate(self.angle)
-
-    def __exit__(self, type, value, traceback):
-        _state["ctx"].set_matrix(self.matrix_old)
+        super().__init__(angle=angle)
 
 
-class translate:
+class translate(transform):
     """Defines a scope of linear translation"""
 
     def __init__(self, offset_x, offset_y):
-        self.offset_x = offset_x
-        self.offset_y = offset_y
-
-    def __enter__(self):
-        self.matrix_old = _state["ctx"].get_matrix()
-        _state["ctx"].translate(self.offset_x, self.offset_y)
-
-    def __exit__(self, type, value, traceback):
-        _state["ctx"].set_matrix(self.matrix_old)
+        super().__init__(offset_x=offset_x, offset_y=offset_y)
 
 
-class scale:
+class scale(transform):
     """Defines scope of changed scale"""
 
     def __init__(self, scale_x, scale_y=None):
-        self.scale_x = scale_x
         if scale_y is None:
-            self.scale_y = scale_x
+            super().__init__(scale_x=scale_x, scale_y=scale_x)
         else:
-            self.scale_y = scale_y
-
-    def __enter__(self):
-        self.matrix_old = _state["ctx"].get_matrix()
-        _state["ctx"].scale(self.scale_x, self.scale_y)
-
-    def __exit__(self, type, value, traceback):
-        _state["ctx"].set_matrix(self.matrix_old)
+            super().__init__(scale_x=scale_x, scale_y=scale_y)
 
 
 class flip_y:
