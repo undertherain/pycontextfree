@@ -59,10 +59,10 @@ class Tests(unittest.TestCase):
         self.assertIsInstance(a, np.ndarray)
 
     def test_loop(self):
-        init()
-        with transform(offset_x=1, alpha=0.9) as t:
-            for i in range(10):
-                box(0.5)
+        init(background_color="#000000", face_color="#880000")
+        with transform(x=1.2, saturation=0.1, lightness=0.2) as t:
+            for i in range(12):
+                box()
                 t()
         write_to_png("/tmp/loop.png")
 
