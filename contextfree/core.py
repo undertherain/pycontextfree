@@ -201,28 +201,34 @@ class transform:
         self.alpha = alpha
 
     def __call__(self):
+        def adjust(value, step):
+            if step < 0:
+                dst = 0.0
+            else:
+                dst = 1.0
+            distance = abs(dst - value)
+            actual_step = distance * step
+            result = value + actual_step
+            if result > 1:
+                result = 1.0
+            if result < 0:
+                result = 0.0
+            return result
         ctx = _state["ctx"]
         if self.angle is not None:
             ctx.rotate(self.angle)
         ctx.translate(self.offset_x, self.offset_y)
         ctx.scale(self.scale_x, self.scale_y)
-        r, g, b, a = ctx.get_source().get_rgba()
+        r, g, b, alpha = ctx.get_source().get_rgba()
         # hue, lightness, saturation = colorsys.rgb_to_hls(r, g, b)
         hue, saturation, brightness = colorsys.rgb_to_hsv(r, g, b)
         hue = math.modf(hue + self.hue)[0]
-        brightness = brightness + self.brightness
-        if brightness > 1:
-            brightness = 1
-        if brightness < 0:
-            brightness = 0
-        saturation = saturation + self.saturation
-        if saturation > 1:
-            saturation = 1
-        if saturation < 0:
-            saturation = 0
+        brightness = adjust(brightness, self.brightness)
+        saturation = adjust(saturation, self.saturation)
         r, g, b = colorsys.hsv_to_rgb(hue, saturation, brightness)
-        a = min((a * self.alpha), 255)
-        rgba = [r, g, b, a]
+        alpha = adjust(alpha, self.alpha)
+        # alpha = min((alpha * self.alpha), 255)
+        rgba = [r, g, b, alpha]
         ctx.set_source_rgba(* rgba)
 
     def __enter__(self):

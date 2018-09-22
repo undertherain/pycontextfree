@@ -33,19 +33,19 @@ class Tests(unittest.TestCase):
         init(face_color="#123456", background_color="#aaaaaa")
         circle(0.5)
         with translate(1, 0):
-            with color(alpha=1, hue=0.2):
+            with color(alpha=1, hue=10):
                 circle(0.5)
         with translate(1, 1):
             with scale(0.6):
-                with color(alpha=0.7, hue=0):
+                with color(alpha=-0.3, hue=0):
                     circle(0.5)
         with translate(-1, 1):
             with scale(0.6):
-                with color(alpha=0.7, hue=10, saturation=2, lightness=2):
+                with color(alpha=0.7, hue=10, saturation=-1, lightness=1):
                     circle(0.5)
         with translate(-1, -1):
             with scale(0.6):
-                with color(alpha=0.7, hue=-10, saturation=-2, lightness=-2):
+                with color(alpha=0.7, hue=-10, saturation=-1, lightness=-1):
                     circle(0.5)
 
         write_to_png("/tmp/color.png")
