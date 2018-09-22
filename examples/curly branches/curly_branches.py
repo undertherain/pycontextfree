@@ -5,7 +5,7 @@ from contextfree import *
 def branch():
     circle(1)
     with translate(0, 1.6):
-        with color(alpha=0.998):
+        with color(alpha=-0.1):
             with rotate(0.025):
                 with scale(0.998):
                     if coinflip(50):
