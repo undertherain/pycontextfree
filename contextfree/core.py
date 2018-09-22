@@ -124,7 +124,7 @@ def check_limits(some_function):
     return wrapper
 
 
-def rule(proba):
+def rule(proba=1):
     def real_decorator(function):
         name = function.__name__
 
