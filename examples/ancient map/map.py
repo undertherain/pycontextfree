@@ -27,7 +27,7 @@ def wall():
     with translate(0.95, 0):
         with rotate(-0.0027):
             with scale(0.975):
-                with color(hue=0.001, saturation=0.1, lightness=0.003):
+                with color(hue=0.001, saturation=0.01, lightness=0.003):
                     ancient_map()
 
 
