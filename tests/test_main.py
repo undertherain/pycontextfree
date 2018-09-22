@@ -41,11 +41,11 @@ class Tests(unittest.TestCase):
                     circle(0.5)
         with translate(-1, 1):
             with scale(0.6):
-                with color(alpha=0.7, hue=2, saturation=2, lightness=2):
+                with color(alpha=0.7, hue=10, saturation=2, lightness=2):
                     circle(0.5)
         with translate(-1, -1):
             with scale(0.6):
-                with color(alpha=0.7, hue=-2, saturation=-2, lightness=-2):
+                with color(alpha=0.7, hue=-10, saturation=-2, lightness=-2):
                     circle(0.5)
 
         write_to_png("/tmp/color.png")
@@ -60,7 +60,7 @@ class Tests(unittest.TestCase):
 
     def test_loop(self):
         init(background_color="#000000", face_color="#880000")
-        with transform(x=1.2, saturation=0.1, lightness=0.2) as t:
+        with transform(x=1.2, saturation=0.1, lightness=-0.2) as t:
             for i in range(12):
                 box()
                 t()

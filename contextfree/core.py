@@ -196,7 +196,7 @@ class transform:
         self.scale_x = scale_x
         self.scale_y = scale_y
         self.hue = hue / 360
-        self.lightness = lightness
+        self.brightness = lightness
         self.saturation = saturation
         self.alpha = alpha
 
@@ -208,19 +208,19 @@ class transform:
         ctx.scale(self.scale_x, self.scale_y)
         r, g, b, a = ctx.get_source().get_rgba()
         # hue, lightness, saturation = colorsys.rgb_to_hls(r, g, b)
-        hue, lightness, saturation = colorsys.rgb_to_hsv(r, g, b)
+        hue, saturation, brightness = colorsys.rgb_to_hsv(r, g, b)
         hue = math.modf(hue + self.hue)[0]
-        lightness = lightness + self.lightness
-        if lightness > 1:
-            lightness = 1
-        if lightness < 0:
-            lightness = 0
+        brightness = brightness + self.brightness
+        if brightness > 1:
+            brightness = 1
+        if brightness < 0:
+            brightness = 0
         saturation = saturation + self.saturation
         if saturation > 1:
             saturation = 1
         if saturation < 0:
             saturation = 0
-        r, g, b = colorsys.hsv_to_rgb(hue, lightness, saturation)
+        r, g, b = colorsys.hsv_to_rgb(hue, saturation, brightness)
         a = min((a * self.alpha), 255)
         rgba = [r, g, b, a]
         ctx.set_source_rgba(* rgba)
