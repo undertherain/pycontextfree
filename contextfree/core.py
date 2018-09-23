@@ -189,7 +189,7 @@ def init(canvas_size=(512, 512), max_depth=12, face_color=None, background_color
 class transform:
     """Defines a scope of transformed geometry and photometry"""
 
-    def __init__(self, x=0, y=0, angle=None, scale_x=1, scale_y=None, hue=0, lightness=0, saturation=0, alpha=1):
+    def __init__(self, x=0, y=0, angle=None, scale_x=1, scale_y=None, hue=0, lightness=0, saturation=0, alpha=0):
         self.offset_x = x
         self.offset_y = y
         self.angle = angle
@@ -283,7 +283,7 @@ class color(transform):
         TODO: describe which one is additive and which one is multiplicative
     """
 
-    def __init__(self, hue=0, lightness=0, saturation=0, alpha=1):
+    def __init__(self, hue=0, lightness=0, saturation=0, alpha=0):
         super().__init__(hue=hue, lightness=lightness, saturation=saturation, alpha=alpha)
 
 
