@@ -189,12 +189,15 @@ def init(canvas_size=(512, 512), max_depth=12, face_color=None, background_color
 class transform:
     """Defines a scope of transformed geometry and photometry"""
 
-    def __init__(self, x=0, y=0, angle=None, scale_x=1, scale_y=1, hue=0, lightness=0, saturation=0, alpha=1):
+    def __init__(self, x=0, y=0, angle=None, scale_x=1, scale_y=None, hue=0, lightness=0, saturation=0, alpha=1):
         self.offset_x = x
         self.offset_y = y
         self.angle = angle
         self.scale_x = scale_x
-        self.scale_y = scale_y
+        if scale_y is None:
+            self.scale_y = scale_x
+        else:
+            self.scale_y = scale_y
         self.hue = hue / 360
         self.brightness = lightness
         self.saturation = saturation
@@ -216,9 +219,9 @@ class transform:
             return result
         ctx = _state["ctx"]
         ctx.translate(self.offset_x, self.offset_y)
+        ctx.scale(self.scale_x, self.scale_y)
         if self.angle is not None:
             ctx.rotate(self.angle * math.pi / 180)
-        ctx.scale(self.scale_x, self.scale_y)
         r, g, b, alpha = ctx.get_source().get_rgba()
         # hue, lightness, saturation = colorsys.rgb_to_hls(r, g, b)
         hue, saturation, brightness = colorsys.rgb_to_hsv(r, g, b)
@@ -260,10 +263,7 @@ class scale(transform):
     """Defines scope of changed scale"""
 
     def __init__(self, scale_x, scale_y=None):
-        if scale_y is None:
-            super().__init__(scale_x=scale_x, scale_y=scale_x)
-        else:
-            super().__init__(scale_x=scale_x, scale_y=scale_y)
+        super().__init__(scale_x=scale_x, scale_y=scale_y)
 
 
 class flip_y:

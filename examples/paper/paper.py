@@ -13,16 +13,15 @@ def sheet():
 @check_limits
 def pyramid():
     sheet()
-    with rotate(1 + rnd(1)):
-        with scale(0.99):
-            with translate(rnd(0.1), rnd(0.1)):
-                with color(hue=0.1 + rnd(4)):
-                    pyramid()
+    with transform(scale_x=0.99, angle=prnd(1)):
+        with translate(rnd(0.1), rnd(0.1)):
+            with color(rnd(5)):
+                pyramid()
 
 
 def main():
     init(canvas_size=(600, 600), face_color="#48d341", max_depth=10000)
-    with scale(3):
+    with transform(scale_x=3, angle=rnd(90), hue=prnd(360)):
         pyramid()
     write_to_png("/tmp/paper.png")
 
