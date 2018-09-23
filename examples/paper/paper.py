@@ -13,10 +13,10 @@ def sheet():
 @check_limits
 def pyramid():
     sheet()
-    with rotate(0.09 + rnd(0.02)):
+    with rotate(1 + rnd(1)):
         with scale(0.99):
-            with translate(rnd(0.08), rnd(0.08)):
-                with color(hue=0.1 + rnd(3)):
+            with translate(rnd(0.1), rnd(0.1)):
+                with color(hue=0.1 + rnd(4)):
                     pyramid()
 
 

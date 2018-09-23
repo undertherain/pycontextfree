@@ -3,9 +3,7 @@ Graphite demo
 based on CFDG demo by bluesky
 https://www.contextfreeart.org/gallery2/#design/561
 
-THIS DEMO IS NOT COMPLETE YET ><
 """
-import math
 from contextfree import init, rule, scale, color, box, rotate, translate, write_to_png
 
 
@@ -20,7 +18,7 @@ def trunk():
 # pylint: disable=E0102
 @rule(1)
 def branch():
-    with rotate(math.pi / 6):
+    with rotate(30):
         branch()
 
 
@@ -34,7 +32,7 @@ def branch():
 @rule(1)
 def line():  # {300 * [r .1 x 2] dot {} }
     for i in range(300):
-        with rotate(i * math.pi / 1800):
+        with rotate(i * 0.1):
             with translate(2 * i, 0):
                 dot()
 
@@ -49,7 +47,7 @@ def dot():
 # pylint: disable=E0102
 @rule(1)
 def dot():
-    with rotate(math.pi / 2):
+    with rotate(90):
         trail()
     trail()
 
@@ -57,14 +55,14 @@ def dot():
 # pylint: disable=E0102
 @rule(0.02)
 def dot():
-    with rotate(math.pi / 2):
+    with rotate(90):
         line()  # {r 90 h 0 }  }
 
 
 # pylint: disable=E0102
 @rule(0.02)
 def dot():
-    with rotate(math.pi / 2):
+    with rotate(90):
         with color(hue=0.01):
             branch()
 
