@@ -215,9 +215,9 @@ class transform:
                 result = 0.0
             return result
         ctx = _state["ctx"]
-        if self.angle is not None:
-            ctx.rotate(self.angle)
         ctx.translate(self.offset_x, self.offset_y)
+        if self.angle is not None:
+            ctx.rotate(self.angle * math.pi / 180)
         ctx.scale(self.scale_x, self.scale_y)
         r, g, b, alpha = ctx.get_source().get_rgba()
         # hue, lightness, saturation = colorsys.rgb_to_hls(r, g, b)
