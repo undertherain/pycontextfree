@@ -1,12 +1,14 @@
 from contextfree import *
 
+# try to play with rotation angle ;)
+
 
 @check_limits
 def branch():
     circle(1)
     with translate(0, 1.6):
-        with color(alpha=0.998):
-            with rotate(0.025):
+        with color(alpha=-0.1):
+            with rotate(1):
                 with scale(0.998):
                     if coinflip(50):
                         with flip_y():

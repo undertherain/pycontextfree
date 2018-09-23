@@ -1,7 +1,6 @@
 """CFDG-inspired cairo-based pythonic generative art tool."""
 
 from io import BytesIO
-import random
 import math
 import colorsys
 import logging
@@ -21,6 +20,7 @@ _state = {}
 _background_color = None
 _rules = {}
 surface = None
+
 
 def _init_state():
     # global _state
@@ -98,7 +98,7 @@ def write_to_png(*args, **kwargs):
     return image_surface.write_to_png(*args, **kwargs)
 
 
-def check_limits(some_function):
+def check_limits(user_rule):
     """Stop recursion if resolution is too low on number of components is too high """
 
     def wrapper(*args, **kwargs):
@@ -107,7 +107,7 @@ def check_limits(some_function):
         _state["cnt_elements"] += 1
         _state["depth"] += 1
         matrix = _state["ctx"].get_matrix()
-        # print(matrix)
+        # TODO: add check of transparency = 0
         if _state["depth"] >= MAX_DEPTH:
             logger.info("stop recursion by reaching max depth {}".format(MAX_DEPTH))
         else:
@@ -115,22 +115,23 @@ def check_limits(some_function):
             current_scale = max([abs(matrix[i]) for i in range(2)])
             if (current_scale < min_size_scaled):
                 logger.info("stop recursion by reaching min feature size")
+                # TODO: check feature size with respect to current ink size
             else:
                 if _state["cnt_elements"] > MAX_ELEMENTS:
                     logger.info("stop recursion by reaching max elements")
                 else:
-                    some_function(*args, **kwargs)
+                    user_rule(*args, **kwargs)
         _state["depth"] -= 1
     return wrapper
 
 
-def rule(proba):
+def rule(proba=1):
     def real_decorator(function):
         name = function.__name__
 
         def wrapper(*args, **kwargs):
             if args:
-                raise NotImplementedError("Parameters to rules not implemented yet")
+                raise NotImplementedError("Passing parameters to rules not implemented yet")
             call_rule(name)
 
         logger.info("registering rule " + name)
@@ -177,11 +178,6 @@ def init(canvas_size=(512, 512), max_depth=12, face_color=None, background_color
     sys.setrecursionlimit(20000)
     MAX_DEPTH = max_depth
     WIDTH, HEIGHT = canvas_size
-    #   surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, WIDTH, HEIGHT)
-    # _ctx.translate(WIDTH / 2, HEIGHT / 2)
-    # scale = min(WIDTH, HEIGHT)
-    # _ctx.scale(scale, -scale)  # Normalizing the canvas
-    # _ctx.rotate(math.pi)
 
     if face_color is not None:
         _state["ctx"].set_source_rgb(* htmlcolor_to_rgb(face_color))
@@ -190,52 +186,84 @@ def init(canvas_size=(512, 512), max_depth=12, face_color=None, background_color
 
 # -------------------transformations------------------
 
-class rotate:
-    """Defines a scope of rotated view """
+class transform:
+    """Defines a scope of transformed geometry and photometry"""
 
-    def __init__(self, angle):
+    def __init__(self, x=0, y=0, angle=None, scale_x=1, scale_y=None, hue=0, lightness=0, saturation=0, alpha=0):
+        self.offset_x = x
+        self.offset_y = y
         self.angle = angle
-        self.matrix_old = None
-
-    def __enter__(self):
-        self.matrix_old = _state["ctx"].get_matrix()
-        _state["ctx"].rotate(self.angle)
-
-    def __exit__(self, type, value, traceback):
-        _state["ctx"].set_matrix(self.matrix_old)
-
-
-class translate:
-    """Defines a scope of linear translation"""
-
-    def __init__(self, offset_x, offset_y):
-        self.offset_x = offset_x
-        self.offset_y = offset_y
-
-    def __enter__(self):
-        self.matrix_old = _state["ctx"].get_matrix()
-        _state["ctx"].translate(self.offset_x, self.offset_y)
-
-    def __exit__(self, type, value, traceback):
-        _state["ctx"].set_matrix(self.matrix_old)
-
-
-class scale:
-    """Defines scope of changed scale"""
-
-    def __init__(self, scale_x, scale_y=None):
         self.scale_x = scale_x
         if scale_y is None:
             self.scale_y = scale_x
         else:
             self.scale_y = scale_y
+        self.hue = hue / 360
+        self.brightness = lightness
+        self.saturation = saturation
+        self.alpha = alpha
+
+    def __call__(self):
+        def adjust(value, step):
+            if step < 0:
+                dst = 0.0
+            else:
+                dst = 1.0
+            distance = abs(dst - value)
+            actual_step = distance * step
+            result = value + actual_step
+            if result > 1:
+                result = 1.0
+            if result < 0:
+                result = 0.0
+            return result
+        ctx = _state["ctx"]
+        ctx.translate(self.offset_x, self.offset_y)
+        ctx.scale(self.scale_x, self.scale_y)
+        if self.angle is not None:
+            ctx.rotate(self.angle * math.pi / 180)
+        r, g, b, alpha = ctx.get_source().get_rgba()
+        # hue, lightness, saturation = colorsys.rgb_to_hls(r, g, b)
+        hue, saturation, brightness = colorsys.rgb_to_hsv(r, g, b)
+        hue = math.modf(hue + self.hue)[0]
+        brightness = adjust(brightness, self.brightness)
+        saturation = adjust(saturation, self.saturation)
+        r, g, b = colorsys.hsv_to_rgb(hue, saturation, brightness)
+        alpha = adjust(alpha, self.alpha)
+        # alpha = min((alpha * self.alpha), 255)
+        rgba = [r, g, b, alpha]
+        ctx.set_source_rgba(* rgba)
 
     def __enter__(self):
         self.matrix_old = _state["ctx"].get_matrix()
-        _state["ctx"].scale(self.scale_x, self.scale_y)
+        self.source_old = _state["ctx"].get_source()
+        self()
+        return self
 
     def __exit__(self, type, value, traceback):
         _state["ctx"].set_matrix(self.matrix_old)
+        _state["ctx"].set_source(self.source_old)
+
+
+class rotate(transform):
+    """Shortcut for rotation """
+
+    def __init__(self, angle):
+        super().__init__(angle=angle)
+
+
+class translate(transform):
+    """Shortcut for linear translation"""
+
+    def __init__(self, offset_x, offset_y):
+        super().__init__(x=offset_x, y=offset_y)
+
+
+class scale(transform):
+    """Defines scope of changed scale"""
+
+    def __init__(self, scale_x, scale_y=None):
+        super().__init__(scale_x=scale_x, scale_y=scale_y)
 
 
 class flip_y:
@@ -249,47 +277,14 @@ class flip_y:
         _state["ctx"].set_matrix(self.matrix_old)
 
 
-class color:
+class color(transform):
     """
         defines scope of changed color
         TODO: describe which one is additive and which one is multiplicative
     """
 
-    def __init__(self, hue=0, lightness=0, saturation=0, alpha=1):
-        self.hue = hue
-        self.lightness = lightness
-        self.saturation = saturation
-        self.alpha = alpha
-        self.source_old = None
-
-    def __enter__(self):
-        self.source_old = _state["ctx"].get_source()
-        r, g, b, a = self.source_old.get_rgba()
-        # print("rgb old:", r, g, b)
-        hue, lightness, saturation = colorsys.rgb_to_hls(r, g, b)
-        # print("hls old:", hue, lightness, saturation)
-        hue = math.modf(hue + self.hue)[0]
-        lightness = lightness + self.lightness
-        if lightness > 1:
-            lightness = 1
-        if lightness < 0:
-            lightness = 0
-        saturation = saturation + self.saturation
-        if saturation > 1:
-            saturation = 1
-        if saturation < 0:
-            saturation = 0
-        r, g, b = colorsys.hls_to_rgb(hue, lightness, saturation)
-        # print("hls new:", hue, lightness, saturation)
-        # print("rgb new:", r, g, b)
-        a = min((a * self.alpha), 255)
-        # rgba = [int(r * 255), int(g * 255), int(b * 255), a]
-        rgba = [r, g, b, a]
-        # print(rgba)
-        _state["ctx"].set_source_rgba(* rgba)
-
-    def __exit__(self, type, value, traceback):
-        _state["ctx"].set_source(self.source_old)
+    def __init__(self, hue=0, lightness=0, saturation=0, alpha=0):
+        super().__init__(hue=hue, lightness=lightness, saturation=saturation, alpha=alpha)
 
 
 def htmlcolor_to_rgb(str_color):

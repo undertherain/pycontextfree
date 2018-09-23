@@ -2,9 +2,8 @@ from contextfree import *
 
 
 def sheet():
-    with color(lightness=-1, alpha=0.03):
-        with scale(1.3):
-            box()
+    with transform(scale_x=1.3, lightness=-1, alpha=-0.96):
+        box()
     with color(lightness=-1):
         with scale(1.007):
             box()
@@ -14,16 +13,15 @@ def sheet():
 @check_limits
 def pyramid():
     sheet()
-    with rotate(0.09 + rnd(0.02)):
-        with scale(0.99):
-            with translate(rnd(0.08), rnd(0.08)):
-                with color(hue=0.0001 + rnd(0.022)):
-                    pyramid()
+    with transform(scale_x=0.99, angle=prnd(1)):
+        with translate(rnd(0.1), rnd(0.1)):
+            with color(rnd(5)):
+                pyramid()
 
 
 def main():
     init(canvas_size=(600, 600), face_color="#48d341", max_depth=10000)
-    with scale(3):
+    with transform(scale_x=3, angle=rnd(90), hue=prnd(360)):
         pyramid()
     write_to_png("/tmp/paper.png")
 

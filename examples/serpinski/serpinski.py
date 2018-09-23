@@ -1,5 +1,5 @@
 from contextfree import *
-from math import sqrt, pi
+from math import sqrt
 
 side = 3 / sqrt(3)
 
@@ -18,7 +18,7 @@ def serp():
 
 def main():
     init(canvas_size=(600, 600), background_color="#ffffff", max_depth=8)
-    with rotate(pi / 3):
+    with rotate(60):
         with scale(2):
             serp()
     write_to_png("/tmp/serpinski.png")
