@@ -8,58 +8,58 @@ from contextfree import *
 
 @rule()
 def lines():
-    with transform(scale_x=0.1, alpha=-0.6, lightness=1, saturation=1):
-        sq()
     with transform(x=8, scale_x=0.8, hue=20):
         lines()
+    with transform(scale_x=0.1, alpha=-0.6, lightness=1, saturation=1):
+        sq()
 
 
 @rule()
 def lines():
-    with transform(scale_x=0.1, alpha=-0.6, lightness=1, saturation=1):
-        sq()
     with transform(angle=90, x=8, scale_x=0.8, hue=20):
         lines()
     with transform(angle=-90, x=8, scale_x=0.8, hue=20):
         lines()
+    with transform(scale_x=0.1, alpha=-0.6, lightness=1, saturation=1):
+        sq()
 
 
 @rule()
 def lines():
-    with transform(scale_x=0.1, alpha=-0.6, lightness=1, saturation=1):
-        sq()
     with transform(angle=90, y=8, scale_x=0.8, hue=20):
         lines()
+    with transform(scale_x=0.1, alpha=-0.6, lightness=1, saturation=1):
+        sq()
 
 
 @rule()
 def lines():
-    with transform(scale_x=0.1, alpha=-0.6, lightness=1, saturation=1):
-        sq()
     with transform(angle=90, y=8, scale_x=0.8, hue=20):
         lines()
     with transform(angle=-90, y=8, scale_x=0.8, hue=20):
         lines()
+    with transform(scale_x=0.1, alpha=-0.6, lightness=1, saturation=1):
+        sq()
 
 
 @rule()
 def lines():
-    with transform(scale_x=0.1, alpha=-0.6, lightness=1, saturation=1):
-        sq()
     with transform(angle=90, x=8, scale_x=0.8, hue=20):
         lines()
     with transform(angle=-90, y=8, scale_x=0.8, hue=10):
         lines()
+    with transform(scale_x=0.1, alpha=-0.6, lightness=1, saturation=1):
+        sq()
 
 
 @rule()
 def lines():
-    with transform(scale_x=0.1, alpha=-0.6, lightness=1, saturation=1):
-        sq()
     with transform(angle=90, y=8, scale_x=0.8, hue=20):
         lines()
     with transform(angle=-90, x=8, scale_x=0.8, hue=10):
         lines()
+    with transform(scale_x=0.1, alpha=-0.6, lightness=1, saturation=1):
+        sq()
 
 
 @rule()
