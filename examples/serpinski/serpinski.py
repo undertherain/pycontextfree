@@ -9,7 +9,7 @@ def serp():
     triangle()
     with transform(angle=120, saturation=0.3, lightness=0.1, hue=3) as t:
         for _ in range(3):
-            with transform(scale_x=0.501, y=-0.5):
+            with transform(scale_x=0.5, y=-0.5):
                 serp()
             t()
         #with translate(0, -1):

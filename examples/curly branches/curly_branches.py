@@ -6,8 +6,8 @@ from contextfree import *
 @check_limits
 def branch():
     circle(1)
-    with translate(0, 1.6):
-        with color(alpha=-0.1):
+    with translate(0, 1.5):
+        with color(alpha=-0.001):
             with rotate(1):
                 with scale(0.998):
                     if coinflip(50):
