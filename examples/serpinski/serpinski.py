@@ -7,17 +7,21 @@ side = 3 / sqrt(3)
 @check_limits
 def serp():
     triangle()
-    with scale(0.5):
-        with translate(0, -1):
-            serp()
-        with translate(side / 2, 0.5):
-            serp()
-        with translate(-side / 2, 0.5):
-            serp()
+    with transform(angle=120, saturation=0.3, lightness=0.1, hue=3) as t:
+        for _ in range(3):
+            with transform(scale_x=0.501, y=-0.5):
+                serp()
+            t()
+        #with translate(0, -1):
+        #    serp()
+        #with translate(side / 2, 0.5):
+        #    serp()
+        #with translate(-side / 2, 0.5):
+        #    serp()
 
 
 def main():
-    init(canvas_size=(600, 600), background_color="#ffffff", max_depth=8)
+    init(canvas_size=(600, 600), background_color="#ffffff", max_depth=11)
     with rotate(60):
         with scale(2):
             serp()
