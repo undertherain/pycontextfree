@@ -13,7 +13,7 @@ def sheet():
 @check_limits
 def pyramid():
     sheet()
-    with transform(scale_x=0.99, angle=prnd(1)):
+    with transform(scale_x=0.99, angle=1 + prnd(1)):
         with translate(rnd(0.1), rnd(0.1)):
             with color(rnd(5)):
                 pyramid()

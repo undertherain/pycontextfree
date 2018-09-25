@@ -22,8 +22,8 @@ before_script: # configure a headless display to test plot generation
   - sleep 3 # give xvfb some time to start
 
 script:
-  - python -m coverage run --source . -m unittest discover --verbose
-  - PYTHONPATH=./ find ./examples/ -name "*.py" -exec python3 -m coverage run --append --source . {} \;
+  - python -m coverage run --source ./contextfee -m unittest discover --verbose
+  # - PYTHONPATH=./ find ./examples/ -name "*.py" -exec python3 -m coverage run --append --source . {} \;
 
 after_success:
   - python -m coverage report --show-missing

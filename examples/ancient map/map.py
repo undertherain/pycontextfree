@@ -44,7 +44,7 @@ def wall():
 
 
 def main():
-    init(canvas_size=(600, 600), background_color="#e5d5ac", max_depth=120)
+    init(canvas_size=(600, 600), background_color="#e5d5ac", max_depth=122)
 
     with transform(hue=34, lightness=0.1, saturation=0.25):
         wall()

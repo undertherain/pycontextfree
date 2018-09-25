@@ -28,6 +28,7 @@ def _init_state():
     global surface
     surface = cairo.RecordingSurface(cairo.CONTENT_COLOR_ALPHA, None)
     _state["ctx"] = cairo.Context(surface)
+    _state["color"] = (0, 0, 0, 1)
     _state["depth"] = 0
     _state["cnt_elements"] = 0
 
@@ -180,7 +181,10 @@ def init(canvas_size=(512, 512), max_depth=12, face_color=None, background_color
     WIDTH, HEIGHT = canvas_size
 
     if face_color is not None:
-        _state["ctx"].set_source_rgb(* htmlcolor_to_rgb(face_color))
+        r, g, b = htmlcolor_to_rgb(face_color)
+        _state["ctx"].set_source_rgb(r, g, b)
+        hue, saturation, brightness = colorsys.rgb_to_hsv(r, g, b)
+        _state["color"] = (hue, saturation, brightness, 1)
     logger.debug("Init done")
 
 
@@ -222,27 +226,30 @@ class transform:
         ctx.scale(self.scale_x, self.scale_y)
         if self.angle is not None:
             ctx.rotate(self.angle * math.pi / 180)
-        r, g, b, alpha = ctx.get_source().get_rgba()
-        # hue, lightness, saturation = colorsys.rgb_to_hls(r, g, b)
-        hue, saturation, brightness = colorsys.rgb_to_hsv(r, g, b)
+        # r, g, b, alpha = ctx.get_source().get_rgba()
+        # hue, saturation, brightness = colorsys.rgb_to_hsv(r, g, b)
+        hue, saturation, brightness, alpha = _state["color"]
         hue = math.modf(hue + self.hue)[0]
         brightness = adjust(brightness, self.brightness)
         saturation = adjust(saturation, self.saturation)
-        r, g, b = colorsys.hsv_to_rgb(hue, saturation, brightness)
         alpha = adjust(alpha, self.alpha)
+        r, g, b = colorsys.hsv_to_rgb(hue, saturation, brightness)
         # alpha = min((alpha * self.alpha), 255)
         rgba = [r, g, b, alpha]
         ctx.set_source_rgba(* rgba)
+        _state["color"] = (hue, saturation, brightness, alpha)
 
     def __enter__(self):
         self.matrix_old = _state["ctx"].get_matrix()
         self.source_old = _state["ctx"].get_source()
+        self.color_old = _state["color"]
         self()
         return self
 
     def __exit__(self, type, value, traceback):
         _state["ctx"].set_matrix(self.matrix_old)
         _state["ctx"].set_source(self.source_old)
+        _state["color"] = self.color_old
 
 
 class rotate(transform):

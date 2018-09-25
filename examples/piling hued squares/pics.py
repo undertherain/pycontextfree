@@ -1,3 +1,9 @@
+"""
+piling hued squares
+
+based on piling hued squares by phi,
+https://www.contextfreeart.org/gallery2/#design/934
+"""
 import contextfree as cf
 
 
