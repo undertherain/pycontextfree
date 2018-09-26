@@ -162,6 +162,7 @@ PAGES = (
     ("pages/*.md", "", "page.tmpl"),
     ("pages/*.txt", "", "page.tmpl"),
     ("pages/*.html", "", "page.tmpl"),
+    ("pages/*.pdoc", "", "page.tmpl"),
 )
 POSTS = ()
 
@@ -248,6 +249,7 @@ COMPILERS = {
     # The resulting files have .php extensions, making it possible to run
     # them without reconfiguring your server to recognize them.
     "php": ('.php',),
+    "pdoc": ('.pdoc',),
     # Pandoc detects the input from the source filename
     # but is disabled by default as it would conflict
     # with many of the others.
