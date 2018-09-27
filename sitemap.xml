@@ -7,30 +7,38 @@
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <url>
   <loc>http://pycontextfree.blackbird.pw/</loc>
-  <lastmod>2018-09-24T06:46:00Z</lastmod>
+  <lastmod>2018-09-27T13:40:00Z</lastmod>
  </url>
  <url>
   <loc>http://pycontextfree.blackbird.pw/archive.html</loc>
-  <lastmod>2018-09-25T13:38:00Z</lastmod>
+  <lastmod>2018-09-27T14:37:00Z</lastmod>
  </url>
  <url>
   <loc>http://pycontextfree.blackbird.pw/blog/</loc>
-  <lastmod>2018-09-24T06:46:00Z</lastmod>
+  <lastmod>2018-09-27T13:40:00Z</lastmod>
  </url>
  <url>
   <loc>http://pycontextfree.blackbird.pw/categories/</loc>
-  <lastmod>2018-09-24T06:46:00Z</lastmod>
+  <lastmod>2018-09-27T13:40:00Z</lastmod>
  </url>
  <url>
   <loc>http://pycontextfree.blackbird.pw/gallery/</loc>
-  <lastmod>2018-09-24T06:46:00Z</lastmod>
+  <lastmod>2018-09-27T13:40:00Z</lastmod>
  </url>
  <url>
   <loc>http://pycontextfree.blackbird.pw/listings/</loc>
-  <lastmod>2018-09-24T06:46:00Z</lastmod>
+  <lastmod>2018-09-27T13:40:00Z</lastmod>
  </url>
  <url>
   <loc>http://pycontextfree.blackbird.pw/listings/cf.py.html</loc>
-  <lastmod>2018-09-25T13:38:00Z</lastmod>
+  <lastmod>2018-09-27T14:37:00Z</lastmod>
+ </url>
+ <url>
+  <loc>http://pycontextfree.blackbird.pw/reference/</loc>
+  <lastmod>2018-09-27T13:40:00Z</lastmod>
+ </url>
+ <url>
+  <loc>http://pycontextfree.blackbird.pw/tutorial/</loc>
+  <lastmod>2018-09-27T13:40:00Z</lastmod>
  </url>
 </urlset>
