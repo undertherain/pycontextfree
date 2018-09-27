@@ -79,7 +79,7 @@ NAVIGATION_LINKS = {
     (
         ("/gallery/", "Gallery"),
         ("https://github.com/undertherain/pycontextfree/blob/master/examples/tutorial.ipynb", "Tutorial"),
-        ("/", "API reference"),
+        ("/reference/", "API reference"),
         ("https://github.com/undertherain/pycontextfree", "Github repo"),
     )
 }

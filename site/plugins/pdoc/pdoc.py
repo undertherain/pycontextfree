@@ -49,10 +49,11 @@ class CompilePdoc(PageCompiler):
     supports_metadata = False
 
     def __init__(self):
-        plugin_path = os.path.dirname(os.path.realpath(__file__))
-        base_path = plugin_path.split("plugins")[0]
-        LOGGER.info(f"!!!!!!!!!!!!!!!!base path = {base_path}")
+        self.plugin_path = os.path.dirname(os.path.realpath(__file__))
+        base_path = self.plugin_path.split("plugins")[0]
+        LOGGER.info(f"base path = {base_path}")
         sys.path.insert(0, os.path.join(base_path, "../"))
+        super().__init__()
 
     def compile_string(self, data, source_path=None, is_two_file=True, post=None, lang=None):
         """Compile docstrings into HTML strings, with shortcode support."""
@@ -60,10 +61,15 @@ class CompilePdoc(PageCompiler):
             _, data = self.split_metadata(data, None, lang)
         new_data, shortcodes = sc.extract_shortcodes(data)
         # The way pdoc generates output is a bit inflexible
+        path_templates = os.path.join(self.plugin_path, "tempaltes")
+        LOGGER.info(f"set path tempaltes to {path_templates}")
         with tempfile.TemporaryDirectory() as tmpdir:
-            subprocess.check_call(['pdoc', '--html', '--html-dir', tmpdir] + shlex.split(new_data.strip()))
+            subprocess.check_call(['pdoc', '--html', '--html-no-source', '--html-dir', tmpdir, "--template-dir", path_templates] + shlex.split(new_data.strip()))
             fname = os.listdir(tmpdir)[0]
-            with open(os.path.join(tmpdir, fname), 'r', encoding='utf8') as inf:
+            tmd_subdir = os.path.join(tmpdir, fname)
+            fname = os.listdir(tmd_subdir)[0]
+            LOGGER.info(f"tmpdir = {tmd_subdir}, fname = {fname}")
+            with open(os.path.join(tmd_subdir, fname), 'r', encoding='utf8') as inf:
                 output = inf.read()
         return self.site.apply_shortcodes_uuid(output, shortcodes, filename=source_path, extra_context={'post': post})
 
@@ -100,3 +106,4 @@ class CompilePdoc(PageCompiler):
             if onefile:
                 fd.write(write_metadata(metadata, comment_wrap=False, site=self.site, compiler=self))
             fd.write(content)
+
