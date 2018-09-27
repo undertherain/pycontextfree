@@ -78,9 +78,9 @@ NAVIGATION_LINKS = {
     DEFAULT_LANG:
     (
         ("/gallery/", "Gallery"),
-        ("https://github.com/undertherain/pycontextfree/blob/master/examples/tutorial.ipynb", "Tutorial"),
-        ("/reference/", "API reference"),
-        ("https://github.com/undertherain/pycontextfree", "Github repo"),
+        ("/tutorial/", "Tutorial"),
+        ("/", "API reference"),
+        ("https://github.com/undertherain/pycontextfree", 'Github repo <i class="fas fa-external-link-alt"></i>'),
     )
 }
 #        ("/", "Projects"),
@@ -163,6 +163,7 @@ PAGES = (
     ("pages/*.txt", "", "page.tmpl"),
     ("pages/*.html", "", "page.tmpl"),
     ("pages/*.pdoc", "", "page.tmpl"),
+    ("pages/*.ipynb", "", "page.tmpl"),
 )
 POSTS = ()
 
