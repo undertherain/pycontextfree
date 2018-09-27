@@ -23,8 +23,6 @@ surface = None
 
 
 def _init_state():
-    # global _state
-    # _state = {}
     global surface
     surface = cairo.RecordingSurface(cairo.CONTENT_COLOR_ALPHA, None)
     _state["ctx"] = cairo.Context(surface)
@@ -169,13 +167,11 @@ def init(canvas_size=(512, 512), max_depth=12, face_color=None, background_color
     _background_color = background_color
     global _ctx
     global cnt_elements
-    # global depth
     global MAX_DEPTH
     global WIDTH
     global HEIGHT
 
     _init_state()
-    _state["a"] = 5
     sys.setrecursionlimit(20000)
     MAX_DEPTH = max_depth
     WIDTH, HEIGHT = canvas_size
@@ -193,15 +189,15 @@ def init(canvas_size=(512, 512), max_depth=12, face_color=None, background_color
 class transform:
     """Defines a scope of transformed geometry and photometry"""
 
-    def __init__(self, x=0, y=0, angle=None, scale_x=1, scale_y=None, hue=0, lightness=0, saturation=0, alpha=0):
+    def __init__(self, x=0, y=0, angle=None, scale=1, hue=0, lightness=0, saturation=0, alpha=0):
         self.offset_x = x
         self.offset_y = y
         self.angle = angle
-        self.scale_x = scale_x
-        if scale_y is None:
-            self.scale_y = scale_x
+        if isinstance(scale, int) or isinstance(scale, float):
+            self.scale_x = scale
+            self.scale_y = scale
         else:
-            self.scale_y = scale_y
+            self.scale_x, self.scale_y = scale
         self.hue = hue / 360
         self.brightness = lightness
         self.saturation = saturation
@@ -252,27 +248,6 @@ class transform:
         _state["color"] = self.color_old
 
 
-class rotate(transform):
-    """Shortcut for rotation """
-
-    def __init__(self, angle):
-        super().__init__(angle=angle)
-
-
-class translate(transform):
-    """Shortcut for linear translation"""
-
-    def __init__(self, offset_x, offset_y):
-        super().__init__(x=offset_x, y=offset_y)
-
-
-class scale(transform):
-    """Defines scope of changed scale"""
-
-    def __init__(self, scale_x, scale_y=None):
-        super().__init__(scale_x=scale_x, scale_y=scale_y)
-
-
 class flip_y:
     """Defines scope of a view being reflected along the y axis"""
 
@@ -282,16 +257,6 @@ class flip_y:
 
     def __exit__(self, type, value, traceback):
         _state["ctx"].set_matrix(self.matrix_old)
-
-
-class color(transform):
-    """
-        defines scope of changed color
-        TODO: describe which one is additive and which one is multiplicative
-    """
-
-    def __init__(self, hue=0, lightness=0, saturation=0, alpha=0):
-        super().__init__(hue=hue, lightness=lightness, saturation=saturation, alpha=alpha)
 
 
 def htmlcolor_to_rgb(str_color):

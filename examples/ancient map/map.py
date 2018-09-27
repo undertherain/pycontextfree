@@ -12,7 +12,7 @@ from contextfree import *
 # pylint: disable=E0102
 @rule(1)
 def wall():
-    with transform(y=0.95, angle=1, scale_x=0.97):
+    with transform(y=0.95, angle=1, scale=0.97):
         wall()
 
 
@@ -20,7 +20,7 @@ def wall():
 @rule(1)
 def wall():
     box()
-    with transform(y=0.95, angle=-1, scale_x=0.97, hue=0.1, saturation=0.1, lightness=0.01):
+    with transform(y=0.95, angle=-1, scale=0.97, hue=0.1, saturation=0.1, lightness=0.01):
         wall()
 
 
@@ -28,18 +28,18 @@ def wall():
 @rule(0.09)
 def wall():
     # box()
-    with transform(y=0.95, scale_x=0.975, angle=90):
+    with transform(y=0.95, scale=0.975, angle=90):
         wall()
-    with transform(y=0.95, scale_x=0.975, angle=-90):
+    with transform(y=0.95, scale=0.975, angle=-90):
         wall()
 
 
 # pylint: disable=E0102
 @rule(0.005)
 def wall():
-    with transform(y=0.97, scale_x=1.5, angle=90):
+    with transform(y=0.97, scale=1.5, angle=90):
         wall()
-    with transform(y=0.97, scale_x=1.5, angle=-90):
+    with transform(y=0.97, scale=1.5, angle=-90):
         wall()
 
 
@@ -48,7 +48,7 @@ def main():
 
     with transform(hue=34, lightness=0.1, saturation=0.25):
         wall()
-        with rotate(180):
+        with transform(angle=180):
             wall()
 
     write_to_png("/tmp/map.png")
