@@ -2,7 +2,7 @@
 
 import logging
 import unittest
-from contextfree import init, translate, scale, circle
+from contextfree import init, transform, circle
 from contextfree import rule, call_rule
 
 
@@ -19,9 +19,8 @@ def wall():
 @rule(1)
 def mycircle():
     circle()
-    with translate(1, 0):
-        with scale(0.5):
-            mycircle()
+    with transform(x=1, scale=0.5):
+        mycircle()
 
 
 # pylint: disable=E1121

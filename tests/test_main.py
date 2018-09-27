@@ -3,7 +3,7 @@ import unittest
 import numpy as np
 from contextfree import init, get_npimage, write_to_png, report, check_limits
 from contextfree import circle, box, line, triangle
-from contextfree import transform, translate, color, scale, rotate, flip_y
+from contextfree import transform, flip_y
 from contextfree import MAX_ELEMENTS
 
 
@@ -32,27 +32,20 @@ class Tests(unittest.TestCase):
     def test_color(self):
         init(face_color="#123456", background_color="#aaaaaa")
         circle(0.5)
-        with translate(1, 0):
-            with color(alpha=1, hue=10):
-                circle(0.5)
-        with translate(1, 1):
-            with scale(0.6):
-                with color(alpha=-0.3, hue=0):
-                    circle(0.5)
-        with translate(-1, 1):
-            with scale(0.6):
-                with color(alpha=0.7, hue=10, saturation=-1, lightness=1):
-                    circle(0.5)
-        with translate(-1, -1):
-            with scale(0.6):
-                with color(alpha=0.7, hue=-10, saturation=-1, lightness=-1):
-                    circle(0.5)
+        with transform(x=1, alpha=1, hue=10):
+            circle(0.5)
+        with transform(x=1, y=1, scale=0.6, alpha=-0.3, hue=0):
+            circle(0.5)
+        with transform(x=-1, y=1, scale=0.6, alpha=0.7, hue=10, saturation=-1, lightness=1):
+            circle(0.5)
+        with transform(x=-1, y=-1, scale=0.6, alpha=0.7, hue=-10, saturation=-1, lightness=-1):
+            circle(0.5)
 
         write_to_png("/tmp/color.png")
 
     def test_rotate(self):
         init()
-        with rotate(0.1):
+        with transform(angle=0.1):
             box(0.5)
         write_to_png("/tmp/rotate.png")
         a = get_npimage()
@@ -77,9 +70,8 @@ class Tests(unittest.TestCase):
         @check_limits
         def element():
             circle(1)
-            with translate(1, 0):
-                with scale(0.2, 0.2):
-                        element()
+            with transform(x=1, scale=0.2):
+                element()
 
         init()
         element()
