@@ -31,12 +31,14 @@ import io
 import os
 import shlex
 import subprocess
+import sys
 import tempfile
 
 
 from nikola import shortcodes as sc
 from nikola.plugin_categories import PageCompiler
 from nikola.utils import makedirs, write_metadata
+from nikola.utils import LOGGER
 
 
 class CompilePdoc(PageCompiler):
@@ -45,6 +47,12 @@ class CompilePdoc(PageCompiler):
     name = "pdoc"
     friendly_name = "PDoc"
     supports_metadata = False
+
+    def __init__(self):
+        plugin_path = os.path.dirname(os.path.realpath(__file__))
+        base_path = plugin_path.split("plugins")[0]
+        LOGGER.info(f"!!!!!!!!!!!!!!!!base path = {base_path}")
+        sys.path.insert(0, os.path.join(base_path, "../"))
 
     def compile_string(self, data, source_path=None, is_two_file=True, post=None, lang=None):
         """Compile docstrings into HTML strings, with shortcode support."""
