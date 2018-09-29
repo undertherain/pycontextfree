@@ -30,9 +30,10 @@ def branch():
 # pylint: disable=E0102
 @rule(1)
 def line():  # {300 * [r .1 x 2] dot {} }
-    for i in range(300):
-        with transform(angle=i * 0.1, x=2 * i):
+    with transform(angle=0.1, x=2) as t:
+        for i in range(300):
             dot()
+            t()
 
 
 # pylint: disable=E0102
@@ -67,9 +68,10 @@ def dot():
 # pylint: disable=E0102
 @rule(1)
 def trail():  # { 200    * [y 2 a -0.02] grain {a -.1} }
-    for i in range(200):
-        with transform(y=2 * i, alpha=-0.5 ** i):
+    with transform(y=2, alpha=-0.02) as t:
+        for i in range(200):
             grain()
+            t()
 
 
 # pylint: disable=E0102
