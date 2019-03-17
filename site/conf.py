@@ -880,7 +880,7 @@ LICENSE = ""
 # A small copyright notice for the page footer (in HTML).
 # (translatable)
 
-CONTENT_FOOTER = 'Maintained by  <a href="http://blackbird.pw">{author}</a>'
+CONTENT_FOOTER = 'Maintained by  <a href="http://blackbird.pw">{author}</a> <a href="https://twitter.com/bkbrd"><i class="fab fa-twitter circle"></i></a>'
 
 # Things that will be passed to CONTENT_FOOTER.format().  This is done
 # for translatability, as dicts are not formattable.  Nikola will
