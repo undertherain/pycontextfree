@@ -11,7 +11,7 @@
 <link href="/assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
 <meta name="theme-color" content="#5670d4">
 <meta name="generator" content="Nikola (getnikola.com)">
-<link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="/rss.xml">
 <link rel="canonical" href="http://pycontextfree.blackbird.pw/listings/cf.py.html">
 <!--[if lt IE 9]><script src="/assets/js/html5.js"></script><![endif]-->
 </head>
@@ -66,36 +66,77 @@ navbar-dark bg-dark
 </ul></nav><h1>cf.py
         <small><a href="/listings/cf.py">(Source)</a></small>
     </h1>
-    <table class="codetable"><tr>
-<td class="linenos"><div class="linenodiv"><pre><a href="#listingscfpy-1"> 1</a>
-<a href="#listingscfpy-2"> 2</a>
-<a href="#listingscfpy-3"> 3</a>
-<a href="#listingscfpy-4"> 4</a>
-<a href="#listingscfpy-5"> 5</a>
-<a href="#listingscfpy-6"> 6</a>
-<a href="#listingscfpy-7"> 7</a>
-<a href="#listingscfpy-8"> 8</a>
-<a href="#listingscfpy-9"> 9</a>
-<a href="#listingscfpy-10">10</a>
-<a href="#listingscfpy-11">11</a>
-<a href="#listingscfpy-12">12</a>
-<a href="#listingscfpy-13">13</a></pre></div></td>
-<td class="code"><pre class="code literal-block"><a name="listingscfpy-1"></a><span class="kn">from</span> <span class="nn">contextfree.contextfree</span> <span class="kn">import</span> <span class="o">*</span>
-<a name="listingscfpy-2"></a><span class="nd">@check_limits</span>
-<a name="listingscfpy-3"></a><span class="k">def</span> <span class="nf">branch</span><span class="p">():</span>
-<a name="listingscfpy-4"></a>    <span class="n">line</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<a name="listingscfpy-5"></a>    <span class="k">with</span> <span class="n">translate</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">):</span>
-<a name="listingscfpy-6"></a>        <span class="k">with</span> <span class="n">scale</span><span class="p">(</span><span class="mf">0.7</span> <span class="o">+</span> <span class="n">rnd</span><span class="p">(</span><span class="mf">0.3</span><span class="p">)):</span>
-<a name="listingscfpy-7"></a>            <span class="k">with</span> <span class="n">rotate</span><span class="p">(</span><span class="o">-</span><span class="mf">0.4</span> <span class="o">+</span> <span class="n">rnd</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)):</span>
-<a name="listingscfpy-8"></a>                <span class="n">branch</span><span class="p">()</span>
-<a name="listingscfpy-9"></a>            <span class="k">with</span> <span class="n">rotate</span><span class="p">(</span><span class="mf">0.4</span> <span class="o">+</span> <span class="n">rnd</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)):</span>
-<a name="listingscfpy-10"></a>                <span class="n">branch</span><span class="p">()</span>
-<a name="listingscfpy-11"></a><span class="n">init</span><span class="p">(</span><span class="n">canvas_size</span><span class="o">=</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">))</span>
-<a name="listingscfpy-12"></a><span class="n">branch</span><span class="p">()</span>
-<a name="listingscfpy-13"></a><span class="n">display_ipython</span><span class="p">()</span>
-</pre></td>
-</tr></table>
-<!--End of body content--><footer id="footer">
+    <div class="code"><table class="codetable">
+<tr>
+<td class="linenos linenodiv"><a href="#listingscfpy-1"><code data-line-number=" 1"></code></a></td>
+<td class="code"><code><a name="listingscfpy-1"></a><span class="kn">from</span> <span class="nn">contextfree.contextfree</span> <span class="kn">import</span> <span class="o">*</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#listingscfpy-2"><code data-line-number=" 2"></code></a></td>
+<td class="code"><code><a name="listingscfpy-2"></a><span class="nd">@check_limits</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#listingscfpy-3"><code data-line-number=" 3"></code></a></td>
+<td class="code"><code><a name="listingscfpy-3"></a><span class="k">def</span> <span class="nf">branch</span><span class="p">():</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#listingscfpy-4"><code data-line-number=" 4"></code></a></td>
+<td class="code"><code><a name="listingscfpy-4"></a>    <span class="n">line</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#listingscfpy-5"><code data-line-number=" 5"></code></a></td>
+<td class="code"><code><a name="listingscfpy-5"></a>    <span class="k">with</span> <span class="n">translate</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">):</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#listingscfpy-6"><code data-line-number=" 6"></code></a></td>
+<td class="code"><code><a name="listingscfpy-6"></a>        <span class="k">with</span> <span class="n">scale</span><span class="p">(</span><span class="mf">0.7</span> <span class="o">+</span> <span class="n">rnd</span><span class="p">(</span><span class="mf">0.3</span><span class="p">)):</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#listingscfpy-7"><code data-line-number=" 7"></code></a></td>
+<td class="code"><code><a name="listingscfpy-7"></a>            <span class="k">with</span> <span class="n">rotate</span><span class="p">(</span><span class="o">-</span><span class="mf">0.4</span> <span class="o">+</span> <span class="n">rnd</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)):</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#listingscfpy-8"><code data-line-number=" 8"></code></a></td>
+<td class="code"><code><a name="listingscfpy-8"></a>                <span class="n">branch</span><span class="p">()</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#listingscfpy-9"><code data-line-number=" 9"></code></a></td>
+<td class="code"><code><a name="listingscfpy-9"></a>            <span class="k">with</span> <span class="n">rotate</span><span class="p">(</span><span class="mf">0.4</span> <span class="o">+</span> <span class="n">rnd</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)):</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#listingscfpy-10"><code data-line-number="10"></code></a></td>
+<td class="code"><code><a name="listingscfpy-10"></a>                <span class="n">branch</span><span class="p">()</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#listingscfpy-11"><code data-line-number="11"></code></a></td>
+<td class="code"><code><a name="listingscfpy-11"></a><span class="n">init</span><span class="p">(</span><span class="n">canvas_size</span><span class="o">=</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">))</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#listingscfpy-12"><code data-line-number="12"></code></a></td>
+<td class="code"><code><a name="listingscfpy-12"></a><span class="n">branch</span><span class="p">()</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#listingscfpy-13"><code data-line-number="13"></code></a></td>
+<td class="code"><code><a name="listingscfpy-13"></a><span class="n">display_ipython</span><span class="p">()</span>
+</code></td>
+</tr>
+</table></div>
+
+        <!--End of body content-->
+
+        <footer id="footer">
             Maintained by  <a href="http://blackbird.pw">Aleksandr Drozd</a> <a href="https://twitter.com/bkbrd"><i class="fab fa-twitter circle"></i></a>
             
         </footer>
