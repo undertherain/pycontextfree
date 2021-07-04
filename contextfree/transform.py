@@ -1,6 +1,7 @@
+import colorsys
 import math
 
-from core import _state
+from .core import _state
 
 
 class transform:
