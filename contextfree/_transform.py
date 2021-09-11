@@ -66,6 +66,16 @@ class transform:
         _state["color"] = self.color_old
 
 
+class translate(transform):
+    def __init__(x=0, y=0):
+        super.__init__(x=x, y=y)
+
+
+class scale(transform):
+    def __init__(scale):
+        super.__init__(scale=scale)
+
+
 class flip_y:
     """Defines scope of a view being reflected along the y axis"""
 
