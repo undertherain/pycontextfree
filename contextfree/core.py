@@ -88,7 +88,8 @@ def render_record_surface():
     # shrink and translate to match specified width and height
     image_surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, WIDTH, HEIGHT)
     context = cairo.Context(image_surface)
-    scale = min(WIDTH / width_actual, HEIGHT / height_actual)
+    epsilon = 0.00001
+    scale = min(WIDTH / (width_actual + epsilon), HEIGHT / (height_actual + epsilon))
     if _background_color is not None:
         logger.info("filling background_color")
         source = context.get_source()
