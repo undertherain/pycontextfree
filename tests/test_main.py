@@ -4,7 +4,7 @@ import numpy as np
 from contextfree import init, get_npimage, write_to_png, report, check_limits
 from contextfree import circle, box, line, triangle
 from contextfree import transform, flip_y
-from contextfree import MAX_ELEMENTS
+from contextfree.core import MAX_ELEMENTS
 
 
 logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG)

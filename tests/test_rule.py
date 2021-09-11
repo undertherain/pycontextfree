@@ -3,7 +3,7 @@
 import logging
 import unittest
 from contextfree import init, transform, circle
-from contextfree import rule, call_rule
+from contextfree.core import rule, call_rule
 
 
 logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG)
