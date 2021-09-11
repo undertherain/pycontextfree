@@ -76,12 +76,22 @@ class transform:
 
 class translate(transform):
     def __init__(self, x=0, y=0):
-        super.__init__(x=x, y=y)
+        super().__init__(x=x, y=y)
 
 
 class scale(transform):
     def __init__(self, factor):
-        super.__init__(scale=factor)
+        super().__init__(scale=factor)
+
+
+class rotate(transform):
+    def __init__(self, angle):
+        super().__init__(angle=angle)
+
+
+class color(transform):
+    def __init__(self, hue=0, lightness=0, saturation=0, alpha=0):
+        super().__init__(hue=hue, lightness=lightness, saturation=saturation, alpha=alpha)
 
 
 class flip_y:
