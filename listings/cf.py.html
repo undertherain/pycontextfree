@@ -69,7 +69,7 @@ navbar-dark bg-dark
     <div class="code"><table class="codetable">
 <tr>
 <td class="linenos linenodiv"><a href="#listingscfpy-1"><code data-line-number=" 1"></code></a></td>
-<td class="code"><code><a name="listingscfpy-1"></a><span class="kn">from</span> <span class="nn">contextfree.contextfree</span> <span class="kn">import</span> <span class="o">*</span>
+<td class="code"><code><a name="listingscfpy-1"></a><span class="kn">from</span> <span class="nn">contextfree</span> <span class="kn">import</span> <span class="o">*</span>
 </code></td>
 </tr>
 <tr>
@@ -94,42 +94,47 @@ navbar-dark bg-dark
 </tr>
 <tr>
 <td class="linenos linenodiv"><a href="#listingscfpy-6"><code data-line-number=" 6"></code></a></td>
-<td class="code"><code><a name="listingscfpy-6"></a>        <span class="k">with</span> <span class="n">scale</span><span class="p">(</span><span class="mf">0.7</span> <span class="o">+</span> <span class="n">rnd</span><span class="p">(</span><span class="mf">0.3</span><span class="p">)):</span>
+<td class="code"><code><a name="listingscfpy-6"></a>        <span class="k">with</span> <span class="n">scale</span><span class="p">(</span><span class="mf">0.7</span> <span class="o">+</span> <span class="n">rnd</span><span class="p">(</span><span class="mf">0.15</span><span class="p">)):</span>
 </code></td>
 </tr>
 <tr>
 <td class="linenos linenodiv"><a href="#listingscfpy-7"><code data-line-number=" 7"></code></a></td>
-<td class="code"><code><a name="listingscfpy-7"></a>            <span class="k">with</span> <span class="n">rotate</span><span class="p">(</span><span class="o">-</span><span class="mf">0.4</span> <span class="o">+</span> <span class="n">rnd</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)):</span>
+<td class="code"><code><a name="listingscfpy-7"></a>            <span class="k">with</span> <span class="n">color</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.95</span><span class="p">):</span>
 </code></td>
 </tr>
 <tr>
 <td class="linenos linenodiv"><a href="#listingscfpy-8"><code data-line-number=" 8"></code></a></td>
-<td class="code"><code><a name="listingscfpy-8"></a>                <span class="n">branch</span><span class="p">()</span>
+<td class="code"><code><a name="listingscfpy-8"></a>                <span class="k">with</span> <span class="n">rotate</span><span class="p">(</span><span class="n">rnd</span><span class="p">(</span><span class="mi">40</span><span class="p">)</span> <span class="o">-</span> <span class="mi">40</span><span class="p">):</span>
 </code></td>
 </tr>
 <tr>
 <td class="linenos linenodiv"><a href="#listingscfpy-9"><code data-line-number=" 9"></code></a></td>
-<td class="code"><code><a name="listingscfpy-9"></a>            <span class="k">with</span> <span class="n">rotate</span><span class="p">(</span><span class="mf">0.4</span> <span class="o">+</span> <span class="n">rnd</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)):</span>
+<td class="code"><code><a name="listingscfpy-9"></a>                    <span class="n">branch</span><span class="p">()</span>
 </code></td>
 </tr>
 <tr>
 <td class="linenos linenodiv"><a href="#listingscfpy-10"><code data-line-number="10"></code></a></td>
-<td class="code"><code><a name="listingscfpy-10"></a>                <span class="n">branch</span><span class="p">()</span>
+<td class="code"><code><a name="listingscfpy-10"></a>                <span class="k">with</span> <span class="n">rotate</span><span class="p">(</span><span class="n">rnd</span><span class="p">(</span><span class="mi">40</span><span class="p">)</span> <span class="o">+</span> <span class="mi">40</span><span class="p">):</span>
 </code></td>
 </tr>
 <tr>
 <td class="linenos linenodiv"><a href="#listingscfpy-11"><code data-line-number="11"></code></a></td>
-<td class="code"><code><a name="listingscfpy-11"></a><span class="n">init</span><span class="p">(</span><span class="n">canvas_size</span><span class="o">=</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">))</span>
+<td class="code"><code><a name="listingscfpy-11"></a>                    <span class="n">branch</span><span class="p">()</span>
 </code></td>
 </tr>
 <tr>
 <td class="linenos linenodiv"><a href="#listingscfpy-12"><code data-line-number="12"></code></a></td>
-<td class="code"><code><a name="listingscfpy-12"></a><span class="n">branch</span><span class="p">()</span>
+<td class="code"><code><a name="listingscfpy-12"></a><span class="n">init</span><span class="p">(</span><span class="n">canvas_size</span><span class="o">=</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">))</span>
 </code></td>
 </tr>
 <tr>
 <td class="linenos linenodiv"><a href="#listingscfpy-13"><code data-line-number="13"></code></a></td>
-<td class="code"><code><a name="listingscfpy-13"></a><span class="n">display_ipython</span><span class="p">()</span>
+<td class="code"><code><a name="listingscfpy-13"></a><span class="n">branch</span><span class="p">()</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#listingscfpy-14"><code data-line-number="14"></code></a></td>
+<td class="code"><code><a name="listingscfpy-14"></a><span class="n">display_ipython</span><span class="p">()</span>
 </code></td>
 </tr>
 </table></div>
@@ -181,3 +186,4 @@ navbar-dark bg-dark
 <!-- /Yandex.Metrika counter -->
 </body>
 </html>
+
