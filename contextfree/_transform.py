@@ -7,7 +7,15 @@ from .core import _state
 class transform:
     """Defines a scope of transformed geometry and photometry"""
 
-    def __init__(self, x=0, y=0, angle=None, scale=1, hue=0, lightness=0, saturation=0, alpha=0):
+    def __init__(self,
+                 x=0,
+                 y=0,
+                 angle=None,
+                 scale=1,
+                 hue=0,
+                 lightness=0,
+                 saturation=0,
+                 alpha=0):
         self.offset_x = x
         self.offset_y = y
         self.angle = angle
@@ -67,13 +75,13 @@ class transform:
 
 
 class translate(transform):
-    def __init__(x=0, y=0):
+    def __init__(self, x=0, y=0):
         super.__init__(x=x, y=y)
 
 
 class scale(transform):
-    def __init__(scale):
-        super.__init__(scale=scale)
+    def __init__(self, factor):
+        super.__init__(scale=factor)
 
 
 class flip_y:
