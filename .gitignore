@@ -4,7 +4,9 @@ output
 .doit.db
 .doit.db.db
 .venv
-
+build/
+dist/
+*.egg-info/
 /.project
 /.pydevproject
 /.settings
