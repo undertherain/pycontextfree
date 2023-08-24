@@ -4,6 +4,21 @@ import math
 from .core import _state
 
 
+def adjust(value, step):
+    if step < 0:
+        dst = 0.0
+    else:
+        dst = 1.0
+    distance = abs(dst - value)
+    actual_step = distance * step
+    result = value + actual_step
+    if result > 1:
+        result = 1.0
+    if result < 0:
+        result = 0.0
+    return result
+
+
 class transform:
     """Defines a scope of transformed geometry and photometry"""
 
@@ -30,19 +45,6 @@ class transform:
         self.alpha = alpha
 
     def __call__(self):
-        def adjust(value, step):
-            if step < 0:
-                dst = 0.0
-            else:
-                dst = 1.0
-            distance = abs(dst - value)
-            actual_step = distance * step
-            result = value + actual_step
-            if result > 1:
-                result = 1.0
-            if result < 0:
-                result = 0.0
-            return result
         ctx = _state["ctx"]
         ctx.translate(self.offset_x, self.offset_y)
         ctx.scale(self.scale_x, self.scale_y)
