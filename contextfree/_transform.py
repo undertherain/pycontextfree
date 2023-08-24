@@ -28,7 +28,7 @@ class transform:
                  angle=None,
                  scale=1,
                  hue=0,
-                 lightness=0,
+                 brightness=0,
                  saturation=0,
                  alpha=0):
         self.offset_x = x
@@ -40,7 +40,8 @@ class transform:
         else:
             self.scale_x, self.scale_y = scale
         self.hue = hue / 360
-        self.brightness = lightness
+        # TODO: make it all brightness or all brightness
+        self.brightness = brightness
         self.saturation = saturation
         self.alpha = alpha
 
@@ -61,6 +62,7 @@ class transform:
         # alpha = min((alpha * self.alpha), 255)
         rgba = [r, g, b, alpha]
         ctx.set_source_rgba(* rgba)
+        # TODO: make it named tuple or class
         _state["color"] = (hue, saturation, brightness, alpha)
 
     def __enter__(self):
@@ -74,6 +76,8 @@ class transform:
         _state["ctx"].set_matrix(self.matrix_old)
         _state["ctx"].set_source(self.source_old)
         _state["color"] = self.color_old
+        # TODO: don't we have to recover color?
+        # why not hust restore whole ctx
 
 
 class translate(transform):
@@ -92,8 +96,33 @@ class rotate(transform):
 
 
 class color(transform):
-    def __init__(self, hue=0, lightness=0, saturation=0, alpha=0):
-        super().__init__(hue=hue, lightness=lightness, saturation=saturation, alpha=alpha)
+    def __init__(self, hue=0, saturation=0, brightness=0, alpha=0):
+        super().__init__(hue=hue, brightness=brightness, saturation=saturation, alpha=alpha)
+
+
+class set_color:
+    def __init__(self, hue=None, saturation=None, brightness=None, alpha=None):
+        color_old = _state["color"]
+        self.hue = hue if hue else color_old[0]
+        self.saturation = saturation if saturation else color_old[1]
+        self.brightness = brightness if brightness else color_old[2]
+        self.alpha = alpha if alpha else color_old[3]
+
+    def __enter__(self):
+        self.color_old = _state["color"]
+        print("SET COLOR")
+        _state["color"] = (self.hue,
+                           self.saturation,
+                           self.brightness,
+                           self.alpha)
+        # TODO: but here we call HSV, not HSL :-\
+        r, g, b = colorsys.hsv_to_rgb(self.hue, self.saturation, self.brightness)
+        # alpha = min((alpha * self.alpha), 255)
+        rgba = [r, g, b, self.alpha]
+        _state["ctx"].set_source_rgba(* rgba)
+
+    def __exit__(self, type, value, traceback):
+        _state["color"] = self.color_old
 
 
 class flip_y:
