@@ -110,7 +110,6 @@ class set_color:
 
     def __enter__(self):
         self.color_old = _state["color"]
-        print("SET COLOR")
         _state["color"] = (self.hue,
                            self.saturation,
                            self.brightness,
