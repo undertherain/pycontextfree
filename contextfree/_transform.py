@@ -103,7 +103,7 @@ class color(transform):
 class set_color:
     def __init__(self, hue=None, saturation=None, brightness=None, alpha=None):
         color_old = _state["color"]
-        self.hue = hue if hue else color_old[0]
+        self.hue = hue / 360 if hue else color_old[0]
         self.saturation = saturation if saturation else color_old[1]
         self.brightness = brightness if brightness else color_old[2]
         self.alpha = alpha if alpha else color_old[3]
