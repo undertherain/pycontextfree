@@ -1,6 +1,7 @@
 import colorsys
 import math
 
+from .color import htmlcolor_to_rgb
 from .core import _state
 
 
@@ -118,6 +119,21 @@ class set_color:
         r, g, b = colorsys.hsv_to_rgb(self.hue, self.saturation, self.brightness)
         # alpha = min((alpha * self.alpha), 255)
         rgba = [r, g, b, self.alpha]
+        _state["ctx"].set_source_rgba(* rgba)
+
+    def __exit__(self, type, value, traceback):
+        _state["color"] = self.color_old
+
+
+class set_color_rgba:
+    def __init__(self, color=None, alpha=1):
+        self.color = htmlcolor_to_rgb(color)
+        self.alpha = alpha
+
+    def __enter__(self):
+        self.color_old = _state["color"]
+        _state["color"] = self.color
+        rgba = * self.color, self.alpha
         _state["ctx"].set_source_rgba(* rgba)
 
     def __exit__(self, type, value, traceback):

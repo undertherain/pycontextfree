@@ -21,6 +21,7 @@ from io import BytesIO
 import cairocffi as cairo
 import numpy as np
 
+from .color import htmlcolor_to_rgb
 from .random import prnd
 
 logger = logging.getLogger(__name__)
@@ -197,21 +198,3 @@ def init(canvas_size=(512, 512), max_depth=12, face_color=None, background_color
         hue, saturation, brightness = colorsys.rgb_to_hsv(r, g, b)
         _state["color"] = (hue, saturation, brightness, 1)
     logger.debug("Init done")
-
-
-# -------------------transformations------------------
-
-
-def htmlcolor_to_rgb(str_color):
-    """function to convert HTML-styly color string to RGB values
-
-    Args:
-        s: Color in HTML format
-
-    Returns:
-        list of three RGB color components
-    """
-    if not (str_color.startswith('#') and len(str_color) == 7):
-        raise ValueError("Bad html color format. Expected: '#RRGGBB' ")
-    result = [1.0 * int(n, 16) / 255 for n in (str_color[1:3], str_color[3:5], str_color[5:])]
-    return result
