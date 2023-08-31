@@ -132,12 +132,13 @@ class set_color_rgba:
 
     def __enter__(self):
         self.color_old = _state["color"]
-        _state["color"] = self.color
+        _state["color"] = self.color + self.alpha
         rgba = * self.color, self.alpha
         _state["ctx"].set_source_rgba(* rgba)
 
     def __exit__(self, type, value, traceback):
         _state["color"] = self.color_old
+        # _state["ctx"].set_source_rgba(* rgba)
 
 
 class flip_y:
