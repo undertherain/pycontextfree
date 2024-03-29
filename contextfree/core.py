@@ -3,6 +3,7 @@
 __all__ = [
     "htmlcolor_to_rgb",
     "surface_to_image",
+    "record_surface_to_vector",
     "display_ipython",
     "get_npimage",
     "render_record_surface",
@@ -82,13 +83,21 @@ def get_npimage(transparent=False, y_origin="top"):
     return img if transparent else img[:, :, :3]
 
 
-def record_surface_to_pdf(filename, margin=10):
+def record_surface_to_vector(filename, margin=10):
     global surface
     record_surface = surface
     x_start, y_start, width_actual, height_actual = record_surface.ink_extents()
-    pdf_surface = cairo.PDFSurface(
-        filename, width_actual + margin * 2, height_actual + margin * 2
-    )
+    if filename.endswith(".pdf"):
+        pdf_surface = cairo.PDFSurface(
+            filename, width_actual + margin * 2, height_actual + margin * 2
+        )
+    elif filename.endswith(".svg"):
+        pdf_surface = cairo.SVGSurface(
+            filename, width_actual + margin * 2, height_actual + margin * 2
+        )
+    else:
+        raise ValueError("can not recognize image format")
+
     context = cairo.Context(pdf_surface)
     context.translate(-x_start + margin, -y_start + margin)
     context.set_source_surface(record_surface, 0, 0)
