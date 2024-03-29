@@ -1,17 +1,17 @@
 """CFDG-inspired cairo-based pythonic generative art tool."""
 
-
-__all__ = ['htmlcolor_to_rgb',
-           'surface_to_image',
-           'display_ipython',
-           'get_npimage',
-           'render_record_surface',
-           'write_to_png',
-           'check_limits',
-           'rule',
-           'report',
-           'init',
-           ]
+__all__ = [
+    "htmlcolor_to_rgb",
+    "surface_to_image",
+    "display_ipython",
+    "get_npimage",
+    "render_record_surface",
+    "write_to_png",
+    "check_limits",
+    "rule",
+    "report",
+    "init",
+]
 
 import colorsys
 import logging
@@ -49,6 +49,7 @@ def _init_state():
 def surface_to_image(surface):
     """Renders current buffer surface to IPython image"""
     from IPython.display import Image
+
     buf = BytesIO()
     surface.write_to_png(buf)
     data = buf.getvalue()
@@ -63,7 +64,7 @@ def display_ipython():
 
 
 def get_npimage(transparent=False, y_origin="top"):
-    """ Returns a WxHx[3-4] numpy array representing the RGB picture.
+    """Returns a WxHx[3-4] numpy array representing the RGB picture.
 
     If `transparent` is True the image is WxHx4 and represents a RGBA picture,
     i.e. array[i,j] is the [r,g,b,a] value of the pixel at position [i,j].
@@ -78,13 +79,29 @@ def get_npimage(transparent=False, y_origin="top"):
     img = img[:, :, [2, 1, 0, 3]]
     if y_origin == "bottom":
         img = img[::-1]
-    return img if transparent else img[:, :, : 3]
+    return img if transparent else img[:, :, :3]
+
+
+def record_surface_to_pdf(filename, margin=10):
+    global surface
+    record_surface = surface
+    x_start, y_start, width_actual, height_actual = record_surface.ink_extents()
+    pdf_surface = cairo.PDFSurface(
+        filename, width_actual + margin * 2, height_actual + margin * 2
+    )
+    context = cairo.Context(pdf_surface)
+    context.translate(-x_start + margin, -y_start + margin)
+    context.set_source_surface(record_surface, 0, 0)
+    context.paint()
+    pdf_surface.finish()
 
 
 def render_record_surface():
     # image_surface = cairo.SVGSurface(None, HEIGHT, WIDTH)
     x_start, y_start, width_actual, height_actual = surface.ink_extents()
-    logger.debug(f"x start={x_start}, y start={y_start}, width actual={width_actual}, height_actual={height_actual}")
+    logger.debug(
+        f"x start={x_start}, y start={y_start}, width actual={width_actual}, height_actual={height_actual}"
+    )
     # print(x_start, y_start, width_actual, height_actual)
     # shrink and translate to match specified width and height
     image_surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, WIDTH, HEIGHT)
@@ -94,7 +111,7 @@ def render_record_surface():
     if _background_color is not None:
         logger.info("filling background_color")
         source = context.get_source()
-        pat = cairo.SolidPattern(* htmlcolor_to_rgb(_background_color))
+        pat = cairo.SolidPattern(*htmlcolor_to_rgb(_background_color))
         context.rectangle(0, 0, WIDTH, HEIGHT)  # Rectangle(x0, y0, x1, y1)
         context.set_source(pat)
         context.fill()
@@ -114,10 +131,10 @@ def write_to_png(*args, **kwargs):
 
 
 def check_limits(user_rule):
-    """Stop recursion if resolution is too low on number of components is too high """
+    """Stop recursion if resolution is too low on number of components is too high"""
 
     def wrapper(*args, **kwargs):
-        """The body of the decorator """
+        """The body of the decorator"""
         global _state
         _state["cnt_elements"] += 1
         _state["depth"] += 1
@@ -128,7 +145,7 @@ def check_limits(user_rule):
         else:
             min_size_scaled = SIZE_MIN_FEATURE / min(WIDTH, HEIGHT)
             current_scale = max([abs(matrix[i]) for i in range(2)])
-            if (current_scale < min_size_scaled):
+            if current_scale < min_size_scaled:
                 logger.info("stop recursion by reaching min feature size")
                 # TODO: check feature size with respect to current ink size
             else:
@@ -137,6 +154,7 @@ def check_limits(user_rule):
                 else:
                     user_rule(*args, **kwargs)
         _state["depth"] -= 1
+
     return wrapper
 
 
@@ -146,7 +164,9 @@ def rule(proba=1):
 
         def wrapper(*args, **kwargs):
             if args:
-                raise NotImplementedError("Passing parameters to rules not implemented yet")
+                raise NotImplementedError(
+                    "Passing parameters to rules not implemented yet"
+                )
             call_rule(name)
 
         logger.info("registering rule " + name)

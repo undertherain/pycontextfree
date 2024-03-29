@@ -23,15 +23,9 @@ def adjust(value, step):
 class transform:
     """Defines a scope of transformed geometry and photometry"""
 
-    def __init__(self,
-                 x=0,
-                 y=0,
-                 angle=None,
-                 scale=1,
-                 hue=0,
-                 brightness=0,
-                 saturation=0,
-                 alpha=0):
+    def __init__(
+        self, x=0, y=0, angle=None, scale=1, hue=0, brightness=0, saturation=0, alpha=0
+    ):
         self.offset_x = x
         self.offset_y = y
         self.angle = angle
@@ -62,7 +56,7 @@ class transform:
         r, g, b = colorsys.hsv_to_rgb(hue, saturation, brightness)
         # alpha = min((alpha * self.alpha), 255)
         rgba = [r, g, b, alpha]
-        ctx.set_source_rgba(* rgba)
+        ctx.set_source_rgba(*rgba)
         # TODO: make it named tuple or class
         _state["color"] = (hue, saturation, brightness, alpha)
 
@@ -98,7 +92,9 @@ class rotate(transform):
 
 class color(transform):
     def __init__(self, hue=0, saturation=0, brightness=0, alpha=0):
-        super().__init__(hue=hue, brightness=brightness, saturation=saturation, alpha=alpha)
+        super().__init__(
+            hue=hue, brightness=brightness, saturation=saturation, alpha=alpha
+        )
 
 
 class set_color:
@@ -111,15 +107,12 @@ class set_color:
 
     def __enter__(self):
         self.color_old = _state["color"]
-        _state["color"] = (self.hue,
-                           self.saturation,
-                           self.brightness,
-                           self.alpha)
+        _state["color"] = (self.hue, self.saturation, self.brightness, self.alpha)
         # TODO: but here we call HSV, not HSL :-\
         r, g, b = colorsys.hsv_to_rgb(self.hue, self.saturation, self.brightness)
         # alpha = min((alpha * self.alpha), 255)
         rgba = [r, g, b, self.alpha]
-        _state["ctx"].set_source_rgba(* rgba)
+        _state["ctx"].set_source_rgba(*rgba)
 
     def __exit__(self, type, value, traceback):
         _state["color"] = self.color_old
@@ -133,8 +126,8 @@ class set_color_rgba:
     def __enter__(self):
         self.color_old = _state["color"]
         _state["color"] = self.color + [self.alpha]
-        rgba = * self.color, self.alpha
-        _state["ctx"].set_source_rgba(* rgba)
+        rgba = *self.color, self.alpha
+        _state["ctx"].set_source_rgba(*rgba)
 
     def __exit__(self, type, value, traceback):
         _state["color"] = self.color_old

@@ -1,6 +1,8 @@
 import math
+
 # from .core import _ctx
 from .core import _state
+
 # import contextfree
 
 
@@ -25,6 +27,16 @@ def line(x, y, width=0.1):
     ctx.stroke()
 
 
+def polygon(points, width=0.1):
+    ctx = _state["ctx"]
+    ctx.set_line_width(width)
+    ctx.move_to(*points[0])
+    for p in points[1:]:
+        ctx.line_to(*p)
+    ctx.close_path()
+    ctx.stroke()
+
+
 def triangle(rad=0.5):
     """Draw a triangle"""
     # half_height = math.sqrt(3) * side / 6
@@ -39,8 +51,10 @@ def triangle(rad=0.5):
     ctx.fill()
 
 
-def box(side=1):
+def box(side=1, border_width=0):
     """Draw a box"""
     half_side = side / 2
-    _state["ctx"].rectangle(-half_side, -half_side, side, side)
-    _state["ctx"].fill()
+    ctx = _state["ctx"]
+    ctx.set_line_width(border_width)
+    ctx.rectangle(-half_side, -half_side, side, side)
+    ctx.fill()
