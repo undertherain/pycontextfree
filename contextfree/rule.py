@@ -2,7 +2,7 @@ import logging
 
 import contextfree.core as core
 
-from .core import HEIGHT, WIDTH, _state
+from .core import _state
 from .random import prnd
 
 # import .core.MAX_DEPTH as MAX_DEPTH
@@ -34,7 +34,7 @@ def check_limits(user_rule):
                 "stop recursion by reaching max depth {}".format(core.MAX_DEPTH)
             )
         else:
-            min_size_scaled = SIZE_MIN_FEATURE / min(WIDTH, HEIGHT)
+            min_size_scaled = SIZE_MIN_FEATURE / min(core.WIDTH, core.HEIGHT)
             current_scale = max([abs(matrix[i]) for i in range(2)])
             if current_scale < min_size_scaled:
                 logger.info("stop recursion by reaching min feature size")

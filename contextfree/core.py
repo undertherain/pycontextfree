@@ -95,7 +95,8 @@ def record_surface_to_vector(filename, margin=10):
 
     context = cairo.Context(pdf_surface)
     context.translate(-x_start + margin, -y_start + margin)
-    # context.scale(1, -1)
+    context.scale(1, -1)
+    context.translate(0, -height_actual - margin)
     context.set_source_surface(record_surface, 0, 0)
     context.paint()
     pdf_surface.finish()
