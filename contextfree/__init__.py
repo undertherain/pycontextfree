@@ -13,6 +13,7 @@ from ._transform import (
 from ._version import VERSION
 from .core import *
 from .random import coinflip, prnd, rnd
+from .rule import check_limits, rule
 from .shapes import box, circle, line, polygon, triangle
 
 __version__ = VERSION

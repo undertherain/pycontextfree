@@ -8,8 +8,6 @@ __all__ = [
     "get_npimage",
     "render_record_surface",
     "write_to_png",
-    "check_limits",
-    "rule",
     "report",
     "init",
 ]
@@ -23,18 +21,14 @@ import cairocffi as cairo
 import numpy as np
 
 from .color import htmlcolor_to_rgb
-from .random import prnd
 
 logger = logging.getLogger(__name__)
 
-MAX_ELEMENTS = 1000000
-MAX_DEPTH = 8
 HEIGHT = 100
 WIDTH = 100
 SIZE_MIN_FEATURE = 0.5
 _state = {}
 _background_color = None
-_rules = {}
 surface = None
 
 
@@ -100,6 +94,7 @@ def record_surface_to_vector(filename, margin=10):
 
     context = cairo.Context(pdf_surface)
     context.translate(-x_start + margin, -y_start + margin)
+    context.scale(1, -1)
     context.set_source_surface(record_surface, 0, 0)
     context.paint()
     pdf_surface.finish()
@@ -137,67 +132,6 @@ def write_to_png(*args, **kwargs):
     """Saves current buffer surface to png file"""
     image_surface = render_record_surface()
     return image_surface.write_to_png(*args, **kwargs)
-
-
-def check_limits(user_rule):
-    """Stop recursion if resolution is too low on number of components is too high"""
-
-    def wrapper(*args, **kwargs):
-        """The body of the decorator"""
-        global _state
-        _state["cnt_elements"] += 1
-        _state["depth"] += 1
-        matrix = _state["ctx"].get_matrix()
-        # TODO: add check of transparency = 0
-        if _state["depth"] >= MAX_DEPTH:
-            logger.info("stop recursion by reaching max depth {}".format(MAX_DEPTH))
-        else:
-            min_size_scaled = SIZE_MIN_FEATURE / min(WIDTH, HEIGHT)
-            current_scale = max([abs(matrix[i]) for i in range(2)])
-            if current_scale < min_size_scaled:
-                logger.info("stop recursion by reaching min feature size")
-                # TODO: check feature size with respect to current ink size
-            else:
-                if _state["cnt_elements"] > MAX_ELEMENTS:
-                    logger.info("stop recursion by reaching max elements")
-                else:
-                    user_rule(*args, **kwargs)
-        _state["depth"] -= 1
-
-    return wrapper
-
-
-def rule(proba=1):
-    def real_decorator(function):
-        name = function.__name__
-
-        def wrapper(*args, **kwargs):
-            if args:
-                raise NotImplementedError(
-                    "Passing parameters to rules not implemented yet"
-                )
-            call_rule(name)
-
-        logger.info("registering rule " + name)
-        if name not in _rules:
-            _rules[name] = []
-            last_proba = 0
-        else:
-            last_proba = _rules[name][-1][0]
-        _rules[name].append((last_proba + proba, function))
-        return wrapper
-
-    return real_decorator
-
-
-@check_limits
-def call_rule(name):
-    rules = _rules[name]
-    die_roll = prnd(rules[-1][0])
-    for i in range(len(rules)):
-        if die_roll < rules[i][0]:
-            rules[i][1]()
-            break
 
 
 def report():
