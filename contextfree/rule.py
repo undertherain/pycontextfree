@@ -1,7 +1,12 @@
 import logging
 
+import contextfree.core as core
+
 from .core import HEIGHT, WIDTH, _state
 from .random import prnd
+
+# import .core.MAX_DEPTH as MAX_DEPTH
+
 
 _rules = {}
 __all__ = [
@@ -9,7 +14,6 @@ __all__ = [
     "rule",
 ]
 MAX_ELEMENTS = 1000000
-MAX_DEPTH = 8
 SIZE_MIN_FEATURE = 0.5
 
 logger = logging.getLogger(__name__)
@@ -25,8 +29,10 @@ def check_limits(user_rule):
         _state["depth"] += 1
         matrix = _state["ctx"].get_matrix()
         # TODO: add check of transparency = 0
-        if _state["depth"] >= MAX_DEPTH:
-            logger.info("stop recursion by reaching max depth {}".format(MAX_DEPTH))
+        if _state["depth"] >= core.MAX_DEPTH:
+            logger.info(
+                "stop recursion by reaching max depth {}".format(core.MAX_DEPTH)
+            )
         else:
             min_size_scaled = SIZE_MIN_FEATURE / min(WIDTH, HEIGHT)
             current_scale = max([abs(matrix[i]) for i in range(2)])

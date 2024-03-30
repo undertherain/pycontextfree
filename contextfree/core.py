@@ -23,10 +23,11 @@ import numpy as np
 from .color import htmlcolor_to_rgb
 
 logger = logging.getLogger(__name__)
+# .params import MAX_DEPTH
 
 HEIGHT = 100
 WIDTH = 100
-SIZE_MIN_FEATURE = 0.5
+MAX_DEPTH = 8
 _state = {}
 _background_color = None
 surface = None
@@ -94,7 +95,7 @@ def record_surface_to_vector(filename, margin=10):
 
     context = cairo.Context(pdf_surface)
     context.translate(-x_start + margin, -y_start + margin)
-    context.scale(1, -1)
+    # context.scale(1, -1)
     context.set_source_surface(record_surface, 0, 0)
     context.paint()
     pdf_surface.finish()
