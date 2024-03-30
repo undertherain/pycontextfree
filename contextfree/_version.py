@@ -1,3 +1,3 @@
 """Version of contextfree package."""
 
-VERSION = "0.3.6"
+VERSION = "0.3.7"
